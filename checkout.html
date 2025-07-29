@@ -1706,7 +1706,7 @@
         // Função para enviar dados para webhook
         async function sendToWebhook(data) {
             try {
-                const response = await fetch(API_CONFIG.webhookURL, {
+                const response = await fetch(N8N_WEBHOOK_URL, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
