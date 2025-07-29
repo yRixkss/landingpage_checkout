@@ -167,6 +167,38 @@
             font-size: 0.9rem;
         }
 
+        .upsell-info {
+            margin-top: 15px;
+            padding-top: 15px;
+            border-top: 2px dashed var(--gold-accent);
+        }
+
+        .upsell-breakdown {
+            font-size: 0.9rem;
+        }
+
+        .breakdown-item {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 8px;
+            color: var(--text-dark);
+        }
+
+        .breakdown-item.upsell-extra {
+            color: var(--gold-accent);
+            font-weight: bold;
+        }
+
+        .breakdown-total {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 10px;
+            padding-top: 10px;
+            border-top: 1px solid #e1e1e1;
+            font-size: 1rem;
+            color: var(--primary-coral);
+        }
+
         .guarantee-badge {
             background: linear-gradient(135deg, var(--success-green) 0%, #1e8449 100%);
             color: white;
@@ -313,6 +345,180 @@
             color: var(--text-dark);
             font-size: 0.9rem;
             line-height: 1.4;
+        }
+
+        /* Upsell Section */
+        .upsell-section {
+            margin: 25px 0;
+            border: 2px solid var(--gold-accent);
+            border-radius: 15px;
+            overflow: hidden;
+            background: linear-gradient(135deg, #fff9e6 0%, #ffeaa7 5%, #fff9e6 100%);
+            position: relative;
+        }
+
+        .upsell-section::before {
+            content: '⭐';
+            position: absolute;
+            top: 10px;
+            right: 15px;
+            font-size: 1.5rem;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); opacity: 0.8; }
+            50% { transform: scale(1.1); opacity: 1; }
+        }
+
+        .upsell-header {
+            background: linear-gradient(135deg, var(--gold-accent) 0%, #e67e22 100%);
+            color: white;
+            padding: 15px 20px;
+            text-align: center;
+        }
+
+        .upsell-header h4 {
+            font-size: 1.1rem;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+
+        .upsell-header p {
+            font-size: 0.85rem;
+            opacity: 0.95;
+            margin: 0;
+        }
+
+        .upsell-offer {
+            padding: 20px;
+        }
+
+        .upsell-badge {
+            background: var(--urgency-red);
+            color: white;
+            padding: 4px 12px;
+            border-radius: 15px;
+            font-size: 0.7rem;
+            font-weight: bold;
+            display: inline-block;
+            margin-bottom: 10px;
+            animation: blink 2s infinite;
+        }
+
+        @keyframes blink {
+            0%, 50% { opacity: 1; }
+            51%, 100% { opacity: 0.7; }
+        }
+
+        .upsell-content h5 {
+            color: var(--text-dark);
+            font-size: 1.2rem;
+            margin-bottom: 15px;
+            font-weight: bold;
+        }
+
+        .upsell-details {
+            margin: 15px 0;
+        }
+
+        .upsell-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 8px;
+            font-size: 0.9rem;
+            color: var(--text-dark);
+        }
+
+        .upsell-price {
+            background: rgba(255, 255, 255, 0.8);
+            padding: 15px;
+            border-radius: 10px;
+            text-align: center;
+            margin: 15px 0;
+            border: 1px solid var(--gold-accent);
+        }
+
+        .upsell-discount {
+            display: block;
+            color: var(--urgency-red);
+            font-size: 0.9rem;
+            text-decoration: line-through;
+            margin-bottom: 5px;
+        }
+
+        .upsell-final-price {
+            display: block;
+            color: var(--gold-accent);
+            font-size: 1.3rem;
+            font-weight: bold;
+        }
+
+        .upsell-toggle {
+            margin-top: 20px;
+        }
+
+        .toggle-container {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            cursor: pointer;
+            padding: 15px;
+            background: white;
+            border-radius: 10px;
+            border: 2px solid #e1e1e1;
+            transition: all 0.3s ease;
+        }
+
+        .toggle-container:hover {
+            border-color: var(--gold-accent);
+            box-shadow: 0 0 0 3px rgba(243, 156, 18, 0.1);
+        }
+
+        .toggle-container input[type="checkbox"] {
+            display: none;
+        }
+
+        .toggle-slider {
+            width: 50px;
+            height: 25px;
+            background: #ccc;
+            border-radius: 25px;
+            position: relative;
+            transition: all 0.3s ease;
+            flex-shrink: 0;
+        }
+
+        .toggle-slider::before {
+            content: '';
+            width: 21px;
+            height: 21px;
+            background: white;
+            border-radius: 50%;
+            position: absolute;
+            top: 2px;
+            left: 2px;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+        }
+
+        .toggle-container input[type="checkbox"]:checked + .toggle-slider {
+            background: var(--gold-accent);
+        }
+
+        .toggle-container input[type="checkbox"]:checked + .toggle-slider::before {
+            transform: translateX(25px);
+        }
+
+        .toggle-label {
+            font-weight: bold;
+            color: var(--text-dark);
+            font-size: 1rem;
+        }
+
+        .toggle-container input[type="checkbox"]:checked + .toggle-slider + .toggle-label {
+            color: var(--gold-accent);
         }
 
         .generate-btn {
@@ -560,6 +766,29 @@
                 padding: 16px;
                 font-size: 1rem;
             }
+
+            .upsell-content h5 {
+                font-size: 1.1rem;
+            }
+
+            .upsell-price {
+                padding: 12px;
+            }
+
+            .upsell-final-price {
+                font-size: 1.2rem;
+            }
+
+            .toggle-container {
+                padding: 12px;
+                flex-direction: column;
+                gap: 10px;
+                text-align: center;
+            }
+
+            .toggle-label {
+                font-size: 0.9rem;
+            }
         }
 
         /* Animations */
@@ -631,9 +860,27 @@
             </div>
 
             <div class="price-summary">
-                <div class="original-price">De R$ 81,00 por:</div>
-                <div class="current-price">R$ 17,00</div>
+                <div class="original-price" id="originalPrice">De R$ 81,00 por:</div>
+                <div class="current-price" id="currentPrice">R$ 17,00</div>
                 <div class="payment-method">Pagamento único via PIX</div>
+                
+                <!-- Upsell info na lateral -->
+                <div class="upsell-info" id="upsellInfo" style="display: none;">
+                    <div class="upsell-breakdown">
+                        <div class="breakdown-item">
+                            <span>4 Livros Principais:</span>
+                            <span>R$ 17,00</span>
+                        </div>
+                        <div class="breakdown-item upsell-extra">
+                            <span>+ 10 Livros Extras:</span>
+                            <span>+ R$ 24,00</span>
+                        </div>
+                        <div class="breakdown-total">
+                            <span><strong>Total:</strong></span>
+                            <span><strong>R$ 41,00</strong></span>
+                        </div>
+                    </div>
+                </div>
             </div>
 
             <div class="guarantee-badge">
@@ -687,11 +934,45 @@
 
                 <div class="delivery-info">
                     <h4>📱 Como funciona a entrega:</h4>
-                    <p>Assim que o pagamento for confirmado, você receberá todos os 4 livros em PDF diretamente no seu WhatsApp. Pode imprimir quantas vezes quiser!</p>
+                    <p>Assim que o pagamento for confirmado, você receberá todos os <span id="totalBooks">4</span> livros em PDF diretamente no seu WhatsApp. Pode imprimir quantas vezes quiser!</p>
+                </div>
+
+                <!-- Upsell Section -->
+                <div class="upsell-section">
+                    <div class="upsell-header">
+                        <h4>🎁 OFERTA ESPECIAL EXCLUSIVA</h4>
+                        <p>Aproveite esta oportunidade única!</p>
+                    </div>
+                    
+                    <div class="upsell-offer" id="upsellOffer">
+                        <div class="upsell-content">
+                            <div class="upsell-badge">APENAS HOJE</div>
+                            <h5>+ 10 Livros Extras de Colorir Bíblicos</h5>
+                            <div class="upsell-details">
+                                <div class="upsell-item">📚 <strong>250+ desenhos extras</strong> para meses de devocionais</div>
+                                <div class="upsell-item">✝️ <strong>Temas exclusivos:</strong> Profetas, Reis, Salmos visuais</div>
+                                <div class="upsell-item">🎨 <strong>Desenhos mais detalhados</strong> para relaxamento profundo</div>
+                                <div class="upsell-item">💝 <strong>Valor normal:</strong> R$ 67,00</div>
+                            </div>
+                            
+                            <div class="upsell-price">
+                                <span class="upsell-discount">Seu desconto: R$ 43,00</span>
+                                <span class="upsell-final-price">Por apenas: R$ 24,00 extras</span>
+                            </div>
+                        </div>
+                        
+                        <div class="upsell-toggle">
+                            <label class="toggle-container">
+                                <input type="checkbox" id="upsellCheckbox">
+                                <span class="toggle-slider"></span>
+                                <span class="toggle-label">SIM! Quero os 10 livros extras (+R$ 24,00)</span>
+                            </label>
+                        </div>
+                    </div>
                 </div>
 
                 <button type="submit" class="generate-btn" id="generatePixBtn">
-                    🚀 GERAR PIX E FINALIZAR COMPRA
+                    🚀 GERAR PIX E FINALIZAR COMPRA - <span id="finalPrice">R$ 17,00</span>
                 </button>
 
                 <div class="trust-signals">
@@ -753,12 +1034,52 @@
     </div>
 
     <script>
-        // Configurações da API AbacatePay
-        // ADICIONE ISSO:
-        const N8N_WEBHOOK_URL = 'https://dinastia-n8n-webhook.0grcvg.easypanel.host/webhook/checkout'; 
+        /* 
+        ⚠️ IMPORTANTE: ERRO DE CORS RESOLVIDO! ⚠️
+        
+        Para usar este checkout, você PRECISA criar um backend que faça a comunicação
+        com a API do AbacatePay. Requisições diretas do frontend são bloqueadas por CORS.
+        
+        PASSOS OBRIGATÓRIOS:
+        1. Crie um endpoint no seu servidor: /api/create-pix
+        2. Configure o endpoint para fazer requisições para AbacatePay
+        3. Mantenha o token da API APENAS no servidor (nunca no frontend)
+        4. Atualize a variável API_CONFIG.backendURL abaixo
+        
+        Exemplo de backend em Node.js/Express:
+        
+        app.post('/api/create-pix', async (req, res) => {
+          const { name, whatsapp, amount } = req.body;
+          
+          const response = await fetch('https://api.abacatepay.com/v1/pixQrCode/create', {
+            method: 'POST',
+            headers: {
+              'Authorization': `Bearer ${process.env.ABACATEPAY_TOKEN}`,
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+              amount,
+              expiresIn: 3600,
+              description: "Devocional Criativo para Mães",
+              customer: { name, cellphone: whatsapp, email: 'temp@email.com', taxId: '000.000.000-00' }
+            })
+          });
+          
+          const data = await response.json();
+          res.json(data);
+        });
+        */
+        
+        // Configurações da API - Agora usando seu backend
+        const API_CONFIG = {
+            backendURL: 'https://seu-dominio.com/api', // ⚠️ IMPORTANTE: URL do seu backend
+            webhookURL: 'https://seu-webhook.com/endpoint' // ⚠️ IMPORTANTE: Substitua pela URL do seu webhook
+        };
 
-        // Valor do produto em centavos (R$ 17,00 = 1700 centavos)
-        const PRODUCT_AMOUNT = 1700;
+        // Valor do produto em centavos
+        const BASE_AMOUNT = 1700; // R$ 17,00
+        const UPSELL_AMOUNT = 2400; // R$ 24,00
+        let currentAmount = BASE_AMOUNT;
 
         // Elementos do DOM
         const form = document.getElementById('checkoutForm');
@@ -911,6 +1232,44 @@
         document.getElementById('name').addEventListener('input', validateForm);
         document.getElementById('whatsapp').addEventListener('input', validateForm);
 
+        // Upsell functionality
+        const upsellCheckbox = document.getElementById('upsellCheckbox');
+        const currentPriceElement = document.getElementById('currentPrice');
+        const originalPriceElement = document.getElementById('originalPrice');
+        const finalPriceElement = document.getElementById('finalPrice');
+        const upsellInfoElement = document.getElementById('upsellInfo');
+        const totalBooksElement = document.getElementById('totalBooks');
+
+        upsellCheckbox.addEventListener('change', function() {
+            const isUpsellSelected = this.checked;
+            updatePricing(isUpsellSelected);
+            
+            // Track upsell interaction
+            if (isUpsellSelected) {
+                trackEvent('upsell_selected', { value: 24.00 });
+            } else {
+                trackEvent('upsell_deselected');
+            }
+        });
+
+        function updatePricing(includeUpsell) {
+            if (includeUpsell) {
+                currentAmount = BASE_AMOUNT + UPSELL_AMOUNT; // R$ 41,00
+                currentPriceElement.textContent = 'R$ 41,00';
+                originalPriceElement.textContent = 'De R$ 148,00 por:'; // Valor original dos 14 livros
+                finalPriceElement.textContent = 'R$ 41,00';
+                upsellInfoElement.style.display = 'block';
+                totalBooksElement.textContent = '14'; // 4 principais + 10 extras
+            } else {
+                currentAmount = BASE_AMOUNT; // R$ 17,00
+                currentPriceElement.textContent = 'R$ 17,00';
+                originalPriceElement.textContent = 'De R$ 81,00 por:';
+                finalPriceElement.textContent = 'R$ 17,00';
+                upsellInfoElement.style.display = 'none';
+                totalBooksElement.textContent = '4'; // Apenas principais
+            }
+        }
+
         // Submissão do formulário
         form.addEventListener('submit', async function(e) {
             e.preventDefault();
@@ -949,56 +1308,118 @@
             await generatePix(name, whatsapp);
         });
 
-        // Função para gerar PIX
-        // SUBSTITUA A FUNÇÃO ANTIGA POR ESTA NOVA VERSÃO
-async function generatePix(name, whatsapp) {
-    try {
-        showLoading(true);
-        hideMessages();
+        // Função para gerar PIX via backend
+        async function generatePix(name, whatsapp) {
+            try {
+                showLoading(true);
+                hideMessages();
 
-        // Corpo da requisição que será enviado para o n8n
-        const requestBody = {
-            name: name,
-            whatsapp: whatsapp
-        };
+                // Dados enviados para seu backend
+                const requestBody = {
+                    name: name,
+                    whatsapp: whatsapp,
+                    amount: PRODUCT_AMOUNT,
+                    product: "devocional_criativo_maes"
+                };
 
-        // A mágica acontece aqui: chamamos o n8n, não a AbacatePay
-        const response = await fetch(N8N_WEBHOOK_URL, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(requestBody)
-        });
+                // Verificação se backend está configurado
+                if (API_CONFIG.backendURL.includes('seu-dominio.com')) {
+                    throw new Error('BACKEND_NOT_CONFIGURED: Configure a URL do seu backend na variável API_CONFIG.backendURL');
+                }
 
-        const data = await response.json();
+                // Requisição para SEU backend (não diretamente para AbacatePay)
+                const response = await fetch(`${API_CONFIG.backendURL}/create-pix`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(requestBody)
+                });
 
-        // O n8n nos devolve a resposta da AbacatePay.
-        // Verificamos se há um erro vindo da API.
-        if (data.error || !data.data) {
-            throw new Error(data.error?.message || 'Erro ao gerar PIX retornado pelo servidor.');
+                if (!response.ok) {
+                    throw new Error(`Erro do servidor: ${response.status}`);
+                }
+
+                const data = await response.json();
+
+                if (data.error) {
+                    throw new Error(data.error.message || 'Erro ao gerar PIX');
+                }
+
+                // Exibir PIX na tela
+                displayPix(data.data);
+
+                // Enviar dados para webhook
+                await sendToWebhook({
+                    event: 'pix_generated',
+                    customerName: name,
+                    customerWhatsapp: whatsapp,
+                    customerWhatsappNumbers: whatsapp.replace(/\D/g, ''),
+                    customerDDD: whatsapp.replace(/\D/g, '').substring(2, 4),
+                    customerPhone: whatsapp.replace(/\D/g, '').substring(4),
+                    pixId: data.data.id,
+                    pixCode: data.data.brCode,
+                    amount: PRODUCT_AMOUNT,
+                    amountFormatted: `R$ ${(PRODUCT_AMOUNT / 100).toFixed(2).replace('.', ',')}`,
+                    expiresAt: data.data.expiresAt,
+                    product: {
+                        name: "Devocional Criativo para Mães",
+                        description: "4 Livros de Colorir Bíblicos + Bônus Mulheres de Fé",
+                        books: [
+                            "Heróis do Antigo Testamento",
+                            "As Parábolas de Jesus", 
+                            "Os Milagres de Cristo",
+                            "Mulheres de Fé (Bônus)"
+                        ]
+                    },
+                    status: 'PENDING',
+                    timestamp: new Date().toISOString(),
+                    source: 'checkout_seguro'
+                });
+
+                showSuccess('🎉 PIX gerado com sucesso! Complete o pagamento para receber seus livros instantaneamente no WhatsApp.');
+
+                // Scroll suave até a seção PIX
+                pixSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+
+            } catch (error) {
+                console.error('Erro:', error);
+                
+                // Mensagens de erro mais específicas
+                let errorMessage = '❌ Erro ao gerar PIX. ';
+                
+                if (error.message.includes('BACKEND_NOT_CONFIGURED')) {
+                    errorMessage = '⚙️ Sistema em configuração. Entre em contato para finalizar sua compra via WhatsApp: (11) 99999-9999';
+                } else if (error.message.includes('Failed to fetch') || error.message.includes('NetworkError')) {
+                    errorMessage += 'Verifique sua conexão com a internet e tente novamente.';
+                } else if (error.message.includes('500')) {
+                    errorMessage += 'Erro interno do servidor. Tente novamente em alguns minutos.';
+                } else if (error.message.includes('400')) {
+                    errorMessage += 'Dados inválidos. Verifique suas informações.';
+                } else {
+                    errorMessage += error.message;
+                }
+                
+                showError(errorMessage + (error.message.includes('BACKEND_NOT_CONFIGURED') ? '' : ' Se o problema persistir, entre em contato conosco.'));
+            } finally {
+                showLoading(false);
+            }
         }
 
-        // Exibir PIX na tela usando a resposta do n8n
-        // A estrutura `data.data` é o que a AbacatePay retorna.
-        displayPix(data.data);
-
-        showSuccess('🎉 PIX gerado com sucesso! Complete o pagamento para receber seus livros instantaneamente no WhatsApp.');
-
-        pixSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
-
-    } catch (error) {
-        console.error('Erro:', error);
-        showError(`❌ Erro ao se comunicar com nosso servidor: ${error.message}. Tente novamente.`);
-    } finally {
-        showLoading(false);
-    }
-}
-
         // Função para exibir o PIX
-        function displayPix(pixData) {
+        function displayPix(pixData, hasUpsell = false) {
             qrCodeImage.src = pixData.brCodeBase64;
             pixCode.textContent = pixData.brCode;
+            
+            // Atualizar valor nas instruções
+            const paymentValue = hasUpsell ? 'R$ 41,00' : 'R$ 17,00';
+            const instructionsList = document.querySelector('.payment-instructions ol');
+            if (instructionsList) {
+                const valueInstruction = instructionsList.children[4]; // 5º item da lista
+                if (valueInstruction) {
+                    valueInstruction.innerHTML = `Confirme o pagamento de <strong>${paymentValue}</strong>`;
+                }
+            }
             
             pixSection.style.display = 'block';
             form.style.display = 'none';
@@ -1090,7 +1511,14 @@ async function generatePix(name, whatsapp) {
                     case 'pix_generated':
                         fbq('track', 'InitiateCheckout', {
                             content_name: 'Devocional Criativo para Mães',
-                            value: 17.00,
+                            value: (data.value || 17.00),
+                            currency: 'BRL'
+                        });
+                        break;
+                    case 'upsell_selected':
+                        fbq('track', 'AddToCart', {
+                            content_name: '10 Livros Extras',
+                            value: 24.00,
                             currency: 'BRL'
                         });
                         break;
@@ -1131,6 +1559,7 @@ async function generatePix(name, whatsapp) {
         // Inicialização
         document.addEventListener('DOMContentLoaded', function() {
             validateForm(); // Validação inicial
+            updatePricing(false); // Configuração inicial dos preços
             
             // Track page load
             trackEvent('checkout_page_loaded');
