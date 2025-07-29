@@ -6,6 +6,36 @@
     <title>Checkout Seguro - Devocional Criativo para Mães</title>
     <meta name="description" content="Finalize sua compra de forma segura. 4 livros de colorir bíblicos + bônus por apenas R$ 17,00 via PIX.">
     
+    <!-- Performance Optimization -->
+    <link rel="preconnect" href="https://www.googletagmanager.com">
+    <link rel="preconnect" href="https://connect.facebook.net">
+    
+    <!-- Google Analytics 4 -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-07XMDKPW1B"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'G-07XMDKPW1B');
+    </script>
+
+    <!-- Facebook Pixel -->
+    <script>
+        !function(f,b,e,v,n,t,s)
+        {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+        n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+        if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+        n.queue=[];t=b.createElement(e);t.async=!0;
+        t.src=v;s=b.getElementsByTagName(e)[0];
+        s.parentNode.insertBefore(t,s)}(window, document,'script',
+        'https://connect.facebook.net/en_US/fbevents.js');
+        fbq('init', '752052097213780');
+        fbq('track', 'PageView');
+    </script>
+    <noscript><img height="1" width="1" style="display:none"
+        src="https://www.facebook.com/tr?id=752052097213780&ev=PageView&noscript=1"
+    /></noscript>
+    
     <style>
         * {
             margin: 0;
@@ -325,6 +355,14 @@
             font-size: 0.8rem;
             color: var(--text-light);
             margin-top: 5px;
+            line-height: 1.4;
+        }
+
+        #cpfStatus, #whatsappStatus {
+            display: block;
+            margin: 2px 0;
+            font-weight: 500;
+            transition: color 0.3s ease;
         }
 
         .delivery-info {
@@ -543,11 +581,23 @@
             box-shadow: 0 12px 40px rgba(255, 122, 122, 0.4);
         }
 
+        .generate-btn:not(:disabled) {
+            background: linear-gradient(135deg, var(--success-green) 0%, #1e8449 100%);
+            animation: pulse-success 2s infinite;
+        }
+
+        @keyframes pulse-success {
+            0%, 100% { box-shadow: 0 8px 30px rgba(39, 174, 96, 0.3); }
+            50% { box-shadow: 0 12px 40px rgba(39, 174, 96, 0.5); }
+        }
+
         .generate-btn:disabled {
             opacity: 0.6;
             cursor: not-allowed;
             transform: none;
             box-shadow: 0 8px 30px rgba(255, 122, 122, 0.3);
+            background: linear-gradient(135deg, var(--primary-coral) 0%, var(--soft-peach) 100%);
+            animation: none;
         }
 
         .trust-signals {
@@ -944,6 +994,7 @@
                 <div class="delivery-info">
                     <h4>📱 Como funciona a entrega:</h4>
                     <p>Assim que o pagamento for confirmado, você receberá todos os <span id="totalBooks">4</span> livros em PDF diretamente no seu WhatsApp. Pode imprimir quantas vezes quiser!</p>
+                    <p><small>💼 <strong>Nota fiscal:</strong> Será emitida com os dados fornecidos (Nome e CPF)</small></p>
                 </div>
 
                 <!-- Upsell Section -->
@@ -986,6 +1037,7 @@
 
                 <div class="trust-signals">
                     <p>🔒 Seus dados estão protegidos e não serão compartilhados</p>
+                    <p>📄 CPF usado apenas para emissão da nota fiscal</p>
                     <p>⚡ Acesso liberado em até 2 minutos após o pagamento</p>
                     <p>✝️ Empresa cristã comprometida com valores bíblicos</p>
                 </div>
@@ -1146,11 +1198,17 @@
                 input.style.backgroundColor = '#f0fff4';
                 statusElement.textContent = '✅ CPF válido!';
                 statusElement.style.color = 'var(--success-green)';
+                
+                // Track field completion
+                trackEvent('form_field_completed', { field: 'cpf' });
             } else {
                 input.style.borderColor = 'var(--urgency-red)';
                 input.style.backgroundColor = '#fff5f5';
                 statusElement.textContent = '❌ CPF inválido. Verifique os números digitados';
                 statusElement.style.color = 'var(--urgency-red)';
+                
+                // Track validation error
+                trackEvent('form_validation_error', { error: 'invalid_cpf' });
             }
             
             return isValid;
@@ -1252,6 +1310,9 @@
                 input.style.backgroundColor = '#f0fff4';
                 statusElement.textContent = '✅ Número válido! Você receberá os livros neste WhatsApp.';
                 statusElement.style.color = 'var(--success-green)';
+                
+                // Track field completion
+                trackEvent('form_field_completed', { field: 'whatsapp' });
             } else if (value.length > 0) {
                 input.style.borderColor = 'var(--urgency-red)';
                 input.style.backgroundColor = '#fff5f5';
@@ -1264,6 +1325,9 @@
                     statusElement.textContent = '⚠️ Formato inválido. Use: +55 (DDD) 9XXXX-XXXX';
                 }
                 statusElement.style.color = 'var(--urgency-red)';
+                
+                // Track validation error
+                trackEvent('form_validation_error', { error: 'invalid_whatsapp' });
             } else {
                 input.style.borderColor = '#e1e1e1';
                 input.style.backgroundColor = 'var(--light-gray)';
@@ -1315,12 +1379,30 @@
             
             // Feedback visual para o nome
             const nameInput = document.getElementById('name');
-            if (nameValid || name.length === 0) {
+            if (nameValid) {
+                nameInput.style.borderColor = 'var(--success-green)';
+                nameInput.style.backgroundColor = '#f0fff4';
+                
+                // Track field completion (only once per session)
+                if (!nameInput.dataset.tracked) {
+                    trackEvent('form_field_completed', { field: 'name' });
+                    nameInput.dataset.tracked = 'true';
+                }
+            } else if (name.length === 0) {
                 nameInput.style.borderColor = '#e1e1e1';
-                nameInput.style.backgroundColor = name.length > 0 ? '#f0fff4' : 'var(--light-gray)';
+                nameInput.style.backgroundColor = 'var(--light-gray)';
             } else {
                 nameInput.style.borderColor = 'var(--urgency-red)';
                 nameInput.style.backgroundColor = '#fff5f5';
+            }
+            
+            // Track when all fields are valid (form completion)
+            if (isValid && !generateBtn.dataset.formCompleted) {
+                trackEvent('form_completed', { 
+                    all_fields_valid: true,
+                    form_completion_time: Date.now() - (window.checkoutStartTime || Date.now())
+                });
+                generateBtn.dataset.formCompleted = 'true';
             }
             
             return isValid;
@@ -1345,9 +1427,16 @@
             
             // Track upsell interaction
             if (isUpsellSelected) {
-                trackEvent('upsell_selected', { value: 24.00 });
+                trackEvent('upsell_selected', { 
+                    value: 24.00,
+                    new_total: currentAmount / 100,
+                    interaction_time: Date.now() - window.checkoutStartTime
+                });
             } else {
-                trackEvent('upsell_deselected');
+                trackEvent('upsell_deselected', {
+                    old_total: (currentAmount + UPSELL_AMOUNT) / 100,
+                    new_total: currentAmount / 100
+                });
             }
         });
 
@@ -1373,6 +1462,13 @@
         form.addEventListener('submit', async function(e) {
             e.preventDefault();
             
+            // Verificação de sanidade das variáveis
+            if (typeof BASE_AMOUNT === 'undefined' || typeof UPSELL_AMOUNT === 'undefined' || typeof currentAmount === 'undefined') {
+                console.error('❌ Variáveis não definidas:', { BASE_AMOUNT, UPSELL_AMOUNT, currentAmount });
+                showError('Erro interno do sistema. Recarregue a página e tente novamente.');
+                return;
+            }
+            
             const name = document.getElementById('name').value.trim();
             const cpf = document.getElementById('cpf').value.trim();
             const whatsapp = document.getElementById('whatsapp').value.trim();
@@ -1386,6 +1482,7 @@
             const cpfNumbers = cpf.replace(/\D/g, '');
             if (cpfNumbers.length !== 11 || !isValidCPF(cpfNumbers)) {
                 showError('Por favor, insira um CPF válido.');
+                trackEvent('form_validation_error', { error: 'invalid_cpf_submission' });
                 return;
             }
 
@@ -1393,6 +1490,7 @@
             const whatsappNumbers = whatsapp.replace(/\D/g, '');
             if (whatsappNumbers.length !== 13 || !whatsappNumbers.startsWith('55')) {
                 showError('Por favor, insira um WhatsApp válido no formato: +55 (DDD) 9XXXX-XXXX');
+                trackEvent('form_validation_error', { error: 'invalid_whatsapp_submission' });
                 return;
             }
 
@@ -1402,6 +1500,7 @@
             
             if (!validDDDs.includes(ddd)) {
                 showError('Por favor, insira um DDD válido do Brasil.');
+                trackEvent('form_validation_error', { error: 'invalid_ddd' });
                 return;
             }
 
@@ -1409,8 +1508,15 @@
             const phoneNumber = whatsappNumbers.substring(4);
             if (!phoneNumber.startsWith('9') || phoneNumber.length !== 9) {
                 showError('Por favor, insira um número de celular válido (deve começar com 9).');
+                trackEvent('form_validation_error', { error: 'invalid_phone_format' });
                 return;
             }
+
+            // Track form submission attempt
+            trackEvent('form_submission_attempt', {
+                has_upsell: document.getElementById('upsellCheckbox').checked,
+                total_value: currentAmount / 100
+            });
 
             await generatePix(name, cpf, whatsapp);
         });
@@ -1551,7 +1657,11 @@
                 }, 2000);
                 
                 // Track copy action
-                trackEvent('pix_code_copied');
+                trackEvent('pix_code_copied', {
+                    value: currentAmount / 100,
+                    copy_method: 'clipboard_api',
+                    time_to_copy: Date.now() - window.checkoutStartTime
+                });
                 
             } catch (err) {
                 // Fallback para browsers mais antigos
@@ -1569,12 +1679,24 @@
                     copyBtn.textContent = '✅ Código Copiado!';
                     copyBtn.style.background = 'linear-gradient(135deg, var(--success-green) 0%, #1e8449 100%)';
                     
+                    // Track copy action (fallback method)
+                    trackEvent('pix_code_copied', {
+                        value: currentAmount / 100,
+                        copy_method: 'execCommand_fallback',
+                        time_to_copy: Date.now() - window.checkoutStartTime
+                    });
+                    
                     setTimeout(() => {
                         copyBtn.textContent = '📋 Copiar Código PIX';
                         copyBtn.style.background = 'linear-gradient(135deg, #007bff 0%, #0056b3 100%)';
                     }, 2000);
                 } catch (copyErr) {
                     showError('Não foi possível copiar automaticamente. Selecione e copie o código manualmente.');
+                    
+                    // Track copy failure
+                    trackEvent('pix_copy_failed', {
+                        error: 'manual_copy_required'
+                    });
                 }
                 
                 document.body.removeChild(textArea);
@@ -1608,6 +1730,7 @@
                 gtag('event', eventName, {
                     event_category: 'checkout',
                     event_label: 'devocional_criativo',
+                    page_title: 'Checkout',
                     ...data
                 });
             }
@@ -1615,10 +1738,24 @@
             // Facebook Pixel
             if (typeof fbq !== 'undefined') {
                 switch(eventName) {
-                    case 'pix_generated':
-                        fbq('track', 'InitiateCheckout', {
-                            content_name: 'Devocional Criativo para Mães',
-                            value: (data.value || 17.00),
+                    case 'checkout_page_loaded':
+                        fbq('track', 'ViewContent', {
+                            content_name: 'Checkout Page',
+                            content_category: 'Checkout',
+                            value: 17.00,
+                            currency: 'BRL'
+                        });
+                        break;
+                    case 'form_field_completed':
+                        fbq('track', 'Lead', {
+                            content_name: 'Form Progress',
+                            content_category: data.field || 'Unknown'
+                        });
+                        break;
+                    case 'upsell_viewed':
+                        fbq('track', 'ViewContent', {
+                            content_name: 'Upsell Offer',
+                            value: 24.00,
                             currency: 'BRL'
                         });
                         break;
@@ -1629,11 +1766,29 @@
                             currency: 'BRL'
                         });
                         break;
+                    case 'pix_generated':
+                        fbq('track', 'InitiateCheckout', {
+                            content_name: 'Devocional Criativo para Mães',
+                            value: (data.value || 17.00),
+                            currency: 'BRL',
+                            num_items: data.totalBooks || 4
+                        });
+                        break;
                     case 'pix_code_copied':
                         fbq('track', 'AddPaymentInfo', {
                             content_name: 'PIX Code Copied'
                         });
                         break;
+                    case 'form_validation_error':
+                        fbq('track', 'Lead', {
+                            content_name: 'Form Error',
+                            content_category: data.error || 'Validation Error'
+                        });
+                        break;
+                    default:
+                        fbq('track', 'Lead', {
+                            content_name: eventName
+                        });
                 }
             }
             
@@ -1665,11 +1820,36 @@
 
         // Inicialização
         document.addEventListener('DOMContentLoaded', function() {
+            // Marcar tempo de início da sessão
+            window.checkoutStartTime = Date.now();
+            
             validateForm(); // Validação inicial
             updatePricing(false); // Configuração inicial dos preços
             
+            // Observer para detectar quando upsell entra na viewport
+            const upsellSection = document.querySelector('.upsell-section');
+            if (upsellSection) {
+                const upsellObserver = new IntersectionObserver((entries) => {
+                    entries.forEach(entry => {
+                        if (entry.isIntersecting && !upsellSection.dataset.viewed) {
+                            trackEvent('upsell_viewed', { 
+                                viewport_time: Date.now() - window.checkoutStartTime 
+                            });
+                            upsellSection.dataset.viewed = 'true';
+                        }
+                    });
+                }, { threshold: 0.5 });
+                
+                upsellObserver.observe(upsellSection);
+            }
+            
             // Track page load
-            trackEvent('checkout_page_loaded');
+            trackEvent('checkout_page_loaded', {
+                timestamp: new Date().toISOString(),
+                user_agent: navigator.userAgent,
+                screen_resolution: `${screen.width}x${screen.height}`,
+                referrer: document.referrer || 'direct'
+            });
             
             console.log('🥑 Checkout Devocional Criativo carregado com sucesso!');
         });
