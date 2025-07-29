@@ -1531,7 +1531,7 @@
                 const requestBody = {
                     name: name,
                     whatsapp: whatsapp,
-                    amount: PRODUCT_AMOUNT,
+                    amount: currentAmount, // CORREÇÃO: Usar a variável correta
                     product: "devocional_criativo_maes"
                 };
 
@@ -1572,8 +1572,8 @@
                     customerPhone: whatsapp.replace(/\D/g, '').substring(4),
                     pixId: data.data.id,
                     pixCode: data.data.brCode,
-                    amount: PRODUCT_AMOUNT,
-                    amountFormatted: `R$ ${(PRODUCT_AMOUNT / 100).toFixed(2).replace('.', ',')}`,
+                    amount: currentAmount, // CORREÇÃO: Usar a variável correta
+                    amountFormatted: `R$ ${(currentAmount / 100).toFixed(2).replace('.', ',')}`, // CORREÇÃO
                     expiresAt: data.data.expiresAt,
                     product: {
                         name: "Devocional Criativo para Mães",
@@ -1599,21 +1599,21 @@
                 console.error('Erro:', error);
                 
                 // Mensagens de erro mais específicas
-                let errorMessage = '❌ Erro ao gerar PIX. ';
+                let errorMessageText = '❌ Erro ao gerar PIX. ';
                 
                 if (error.message.includes('BACKEND_NOT_CONFIGURED')) {
-                    errorMessage = '⚙️ Sistema em configuração. Entre em contato para finalizar sua compra via WhatsApp: (11) 99999-9999';
+                    errorMessageText = '⚙️ Sistema em configuração. Entre em contato para finalizar sua compra via WhatsApp: (11) 99999-9999';
                 } else if (error.message.includes('Failed to fetch') || error.message.includes('NetworkError')) {
-                    errorMessage += 'Verifique sua conexão com a internet e tente novamente.';
+                    errorMessageText += 'Verifique sua conexão com a internet e tente novamente.';
                 } else if (error.message.includes('500')) {
-                    errorMessage += 'Erro interno do servidor. Tente novamente em alguns minutos.';
+                    errorMessageText += 'Erro interno do servidor. Tente novamente em alguns minutos.';
                 } else if (error.message.includes('400')) {
-                    errorMessage += 'Dados inválidos. Verifique suas informações.';
+                    errorMessageText += 'Dados inválidos. Verifique suas informações.';
                 } else {
-                    errorMessage += error.message;
+                    errorMessageText += error.message;
                 }
                 
-                showError(errorMessage + (error.message.includes('BACKEND_NOT_CONFIGURED') ? '' : ' Se o problema persistir, entre em contato conosco.'));
+                showError(errorMessageText + (error.message.includes('BACKEND_NOT_CONFIGURED') ? '' : ' Se o problema persistir, entre em contato conosco.'));
             } finally {
                 showLoading(false);
             }
@@ -1625,7 +1625,7 @@
             pixCode.textContent = pixData.brCode;
             
             // Atualizar valor nas instruções
-            const paymentValue = hasUpsell ? 'R$ 41,00' : 'R$ 17,00';
+            const paymentValue = `R$ ${(currentAmount / 100).toFixed(2).replace('.', ',')}`;
             const instructionsList = document.querySelector('.payment-instructions ol');
             if (instructionsList) {
                 const valueInstruction = instructionsList.children[4]; // 5º item da lista
