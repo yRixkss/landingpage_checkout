@@ -1,0 +1,1188 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Checkout Seguro - Devocional Criativo para Mães</title>
+    <meta name="description" content="Finalize sua compra de forma segura. 4 livros de colorir bíblicos + bônus por apenas R$ 17,00 via PIX.">
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary-coral: #FF7A7A;
+            --soft-peach: #FFB4A2;
+            --sage-green: #9CAF88;
+            --warm-beige: #F7F3E9;
+            --text-dark: #2C3E50;
+            --text-light: #5D6D7E;
+            --white: #FFFFFF;
+            --light-gray: #F8F9FA;
+            --success-green: #27AE60;
+            --gold-accent: #F39C12;
+            --urgency-red: #E74C3C;
+        }
+
+        body {
+            font-family: 'Georgia', 'Times New Roman', serif;
+            line-height: 1.6;
+            color: var(--text-dark);
+            background: var(--warm-beige);
+            min-height: 100vh;
+        }
+
+        /* Security Header */
+        .security-header {
+            background: linear-gradient(135deg, var(--sage-green) 0%, #7a9968 100%);
+            color: white;
+            text-align: center;
+            padding: 12px 0;
+            font-size: 0.9rem;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 40px 20px;
+            display: grid;
+            grid-template-columns: 1fr 400px;
+            gap: 40px;
+            align-items: start;
+        }
+
+        /* Left Column - Product Summary */
+        .product-summary {
+            background: white;
+            padding: 30px;
+            border-radius: 20px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 80px;
+        }
+
+        .product-header {
+            text-align: center;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 2px dashed var(--primary-coral);
+        }
+
+        .product-title {
+            font-size: 1.4rem;
+            color: var(--text-dark);
+            margin-bottom: 10px;
+            font-weight: bold;
+        }
+
+        .product-subtitle {
+            color: var(--text-light);
+            font-size: 1rem;
+        }
+
+        .included-items {
+            margin: 20px 0;
+        }
+
+        .included-items h4 {
+            color: var(--text-dark);
+            margin-bottom: 15px;
+            font-size: 1.1rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .item {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            margin-bottom: 12px;
+            padding: 12px;
+            background: var(--light-gray);
+            border-radius: 10px;
+        }
+
+        .item-icon {
+            background: var(--sage-green);
+            color: white;
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            margin-top: 2px;
+            flex-shrink: 0;
+        }
+
+        .item-text {
+            color: var(--text-dark);
+            font-size: 0.95rem;
+            line-height: 1.4;
+        }
+
+        .bonus-badge {
+            background: var(--gold-accent);
+            color: white;
+            padding: 4px 8px;
+            border-radius: 15px;
+            font-size: 0.7rem;
+            font-weight: bold;
+            margin-left: 8px;
+        }
+
+        .price-summary {
+            background: var(--light-gray);
+            padding: 20px;
+            border-radius: 15px;
+            margin: 20px 0;
+            text-align: center;
+        }
+
+        .original-price {
+            text-decoration: line-through;
+            color: var(--text-light);
+            font-size: 1rem;
+            margin-bottom: 5px;
+        }
+
+        .current-price {
+            font-size: 2.2rem;
+            font-weight: bold;
+            color: var(--primary-coral);
+            margin-bottom: 5px;
+        }
+
+        .payment-method {
+            color: var(--text-light);
+            font-size: 0.9rem;
+        }
+
+        .guarantee-badge {
+            background: linear-gradient(135deg, var(--success-green) 0%, #1e8449 100%);
+            color: white;
+            padding: 15px;
+            border-radius: 15px;
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .guarantee-title {
+            font-weight: bold;
+            font-size: 1rem;
+            margin-bottom: 5px;
+        }
+
+        .guarantee-text {
+            font-size: 0.85rem;
+            opacity: 0.95;
+        }
+
+        /* Right Column - Checkout Form */
+        .checkout-form {
+            background: white;
+            padding: 30px;
+            border-radius: 20px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+        }
+
+        .form-header {
+            text-align: center;
+            margin-bottom: 25px;
+        }
+
+        .form-title {
+            font-size: 1.6rem;
+            color: var(--text-dark);
+            margin-bottom: 8px;
+            font-weight: bold;
+        }
+
+        .form-subtitle {
+            color: var(--text-light);
+            font-size: 0.95rem;
+        }
+
+        .security-indicators {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin: 20px 0;
+            flex-wrap: wrap;
+        }
+
+        .security-badge {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            background: var(--light-gray);
+            padding: 8px 12px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            color: var(--text-dark);
+        }
+
+        .form-section {
+            margin-bottom: 25px;
+        }
+
+        .section-title {
+            font-size: 1.1rem;
+            color: var(--text-dark);
+            margin-bottom: 15px;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            font-weight: 600;
+            color: var(--text-dark);
+            margin-bottom: 8px;
+            font-size: 0.95rem;
+        }
+
+        .required {
+            color: var(--primary-coral);
+        }
+
+        input {
+            width: 100%;
+            padding: 15px;
+            border: 2px solid #e1e1e1;
+            border-radius: 10px;
+            font-size: 16px;
+            transition: all 0.3s ease;
+            background: var(--light-gray);
+            font-family: inherit;
+        }
+
+        input:focus {
+            outline: none;
+            border-color: var(--sage-green);
+            background: white;
+            box-shadow: 0 0 0 3px rgba(156, 175, 136, 0.1);
+        }
+
+        input.valid {
+            border-color: var(--success-green) !important;
+            background: #f0fff4 !important;
+        }
+
+        input.invalid {
+            border-color: var(--urgency-red) !important;
+            background: #fff5f5 !important;
+        }
+
+        .help-text {
+            font-size: 0.8rem;
+            color: var(--text-light);
+            margin-top: 5px;
+        }
+
+        .delivery-info {
+            background: #e7f3ff;
+            border: 1px solid #b3d9ff;
+            padding: 15px;
+            border-radius: 10px;
+            margin: 20px 0;
+        }
+
+        .delivery-info h4 {
+            color: #0066cc;
+            margin-bottom: 8px;
+            font-size: 0.95rem;
+        }
+
+        .delivery-info p {
+            color: var(--text-dark);
+            font-size: 0.9rem;
+            line-height: 1.4;
+        }
+
+        .generate-btn {
+            width: 100%;
+            padding: 18px;
+            background: linear-gradient(135deg, var(--primary-coral) 0%, var(--soft-peach) 100%);
+            color: white;
+            border: none;
+            border-radius: 15px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 8px 30px rgba(255, 122, 122, 0.3);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-family: inherit;
+        }
+
+        .generate-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 12px 40px rgba(255, 122, 122, 0.4);
+        }
+
+        .generate-btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: 0 8px 30px rgba(255, 122, 122, 0.3);
+        }
+
+        .trust-signals {
+            text-align: center;
+            margin-top: 20px;
+            padding-top: 20px;
+            border-top: 1px solid #e1e1e1;
+        }
+
+        .trust-signals p {
+            color: var(--text-light);
+            font-size: 0.85rem;
+            margin-bottom: 8px;
+        }
+
+        /* Loading State */
+        .loading {
+            display: none;
+            text-align: center;
+            padding: 30px;
+        }
+
+        .spinner {
+            border: 3px solid #f3f3f3;
+            border-top: 3px solid var(--sage-green);
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 15px;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .loading-text {
+            color: var(--text-light);
+            font-size: 1rem;
+        }
+
+        /* PIX Section */
+        .pix-section {
+            display: none;
+            text-align: center;
+            animation: fadeIn 0.5s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .pix-header {
+            background: linear-gradient(135deg, var(--success-green) 0%, #1e8449 100%);
+            color: white;
+            padding: 20px;
+            border-radius: 15px;
+            margin-bottom: 25px;
+        }
+
+        .pix-header h3 {
+            font-size: 1.3rem;
+            margin-bottom: 8px;
+        }
+
+        .pix-header p {
+            opacity: 0.95;
+            font-size: 0.95rem;
+        }
+
+        .qr-container {
+            background: white;
+            padding: 25px;
+            border-radius: 15px;
+            border: 2px solid var(--success-green);
+            margin: 20px 0;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+        }
+
+        .qr-code img {
+            max-width: 200px;
+            height: auto;
+            border-radius: 10px;
+        }
+
+        .pix-code {
+            background: var(--light-gray);
+            padding: 15px;
+            border-radius: 10px;
+            border: 2px dashed var(--success-green);
+            margin: 20px 0;
+            word-break: break-all;
+            font-family: 'Courier New', monospace;
+            font-size: 11px;
+            color: var(--text-dark);
+            line-height: 1.4;
+        }
+
+        .copy-btn {
+            background: linear-gradient(135deg, #007bff 0%, #0056b3 100%);
+            color: white;
+            padding: 12px 25px;
+            border: none;
+            border-radius: 25px;
+            font-size: 0.9rem;
+            font-weight: bold;
+            cursor: pointer;
+            margin-top: 10px;
+            transition: all 0.3s ease;
+            font-family: inherit;
+        }
+
+        .copy-btn:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 5px 15px rgba(0, 123, 255, 0.3);
+        }
+
+        .payment-instructions {
+            background: #fff3cd;
+            border: 1px solid #ffeaa7;
+            padding: 20px;
+            border-radius: 15px;
+            margin-top: 25px;
+            text-align: left;
+        }
+
+        .payment-instructions h4 {
+            color: #8f5d00;
+            margin-bottom: 15px;
+            font-size: 1rem;
+            text-align: center;
+        }
+
+        .payment-instructions ol {
+            margin-left: 20px;
+            color: var(--text-dark);
+        }
+
+        .payment-instructions li {
+            margin-bottom: 8px;
+            font-size: 0.9rem;
+            line-height: 1.4;
+        }
+
+        .expiry-warning {
+            background: #f8d7da;
+            border: 1px solid #f5c6cb;
+            color: #721c24;
+            padding: 15px;
+            border-radius: 10px;
+            margin-top: 15px;
+            text-align: center;
+            font-size: 0.9rem;
+            font-weight: bold;
+        }
+
+        /* Messages */
+        .success-message, .error-message {
+            padding: 15px;
+            border-radius: 10px;
+            margin-top: 15px;
+            display: none;
+            font-size: 0.9rem;
+        }
+
+        .success-message {
+            background: #d4edda;
+            border: 1px solid #c3e6cb;
+            color: #155724;
+        }
+
+        .error-message {
+            background: #f8d7da;
+            border: 1px solid #f5c6cb;
+            color: #721c24;
+        }
+
+        /* Mobile Responsive */
+        @media (max-width: 768px) {
+            .container {
+                grid-template-columns: 1fr;
+                gap: 20px;
+                padding: 20px 15px;
+            }
+
+            .product-summary {
+                position: static;
+                order: 2;
+                margin-top: 20px;
+            }
+
+            .checkout-form {
+                order: 1;
+            }
+
+            .security-indicators {
+                gap: 8px;
+            }
+
+            .security-badge {
+                padding: 6px 10px;
+                font-size: 0.75rem;
+            }
+
+            .form-title {
+                font-size: 1.4rem;
+            }
+
+            .current-price {
+                font-size: 1.8rem;
+            }
+
+            .generate-btn {
+                padding: 16px;
+                font-size: 1rem;
+            }
+        }
+
+        /* Animations */
+        .slide-in {
+            animation: slideIn 0.6s ease-out;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Security Header -->
+    <div class="security-header">
+        🔒 <strong>Compra 100% Segura</strong> • Pagamento via PIX • Entrega Imediata • Garantia de 30 Dias
+    </div>
+
+    <div class="container">
+        <!-- Left Column - Product Summary -->
+        <div class="product-summary slide-in">
+            <div class="product-header">
+                <h2 class="product-title">🥑 Devocional Criativo para Mães</h2>
+                <p class="product-subtitle">Sua paz interior em 15 minutos diários</p>
+            </div>
+
+            <div class="included-items">
+                <h4>📦 O que você vai receber:</h4>
+                
+                <div class="item">
+                    <div class="item-icon">📖</div>
+                    <div class="item-text">
+                        <strong>Livro 1:</strong> Heróis do Antigo Testamento<br>
+                        <small>30+ páginas de colorir inspiradoras</small>
+                    </div>
+                </div>
+
+                <div class="item">
+                    <div class="item-icon">📖</div>
+                    <div class="item-text">
+                        <strong>Livro 2:</strong> As Parábolas de Jesus<br>
+                        <small>30+ páginas para meditação criativa</small>
+                    </div>
+                </div>
+
+                <div class="item">
+                    <div class="item-icon">📖</div>
+                    <div class="item-text">
+                        <strong>Livro 3:</strong> Os Milagres de Cristo<br>
+                        <small>30+ páginas de poder e fé</small>
+                    </div>
+                </div>
+
+                <div class="item">
+                    <div class="item-icon">🎁</div>
+                    <div class="item-text">
+                        <strong>BÔNUS:</strong> Mulheres de Fé
+                        <span class="bonus-badge">GRÁTIS</span><br>
+                        <small>Edição especial sobre mulheres bíblicas</small>
+                    </div>
+                </div>
+            </div>
+
+            <div class="price-summary">
+                <div class="original-price">De R$ 81,00 por:</div>
+                <div class="current-price">R$ 17,00</div>
+                <div class="payment-method">Pagamento único via PIX</div>
+            </div>
+
+            <div class="guarantee-badge">
+                <div class="guarantee-title">🛡️ Garantia Cristã</div>
+                <div class="guarantee-text">30 dias para testar. Se não trouxer paz para seus dias, devolvemos 100% do valor.</div>
+            </div>
+        </div>
+
+        <!-- Right Column - Checkout Form -->
+        <div class="checkout-form slide-in">
+            <div class="form-header">
+                <h3 class="form-title">Finalize Sua Compra</h3>
+                <p class="form-subtitle">Preencha seus dados para receber instantaneamente</p>
+            </div>
+
+            <div class="security-indicators">
+                <div class="security-badge">
+                    🔒 SSL Seguro
+                </div>
+                <div class="security-badge">
+                    ⚡ Entrega Imediata
+                </div>
+                <div class="security-badge">
+                    🛡️ Dados Protegidos
+                </div>
+                <div class="security-badge">
+                    ✝️ Site Cristão
+                </div>
+            </div>
+
+            <form id="checkoutForm">
+                <div class="form-section">
+                    <h4 class="section-title">👤 Seus Dados</h4>
+                    
+                    <div class="form-group">
+                        <label for="name">Nome Completo <span class="required">*</span></label>
+                        <input type="text" id="name" name="name" required placeholder="Como posso te chamar?">
+                        <div class="help-text">Seu nome aparecerá na confirmação do pedido</div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="whatsapp">WhatsApp com DDD <span class="required">*</span></label>
+                        <input type="tel" id="whatsapp" name="whatsapp" required placeholder="+55 (11) 99999-9999" maxlength="19">
+                        <div class="help-text" id="whatsappHelp">
+                            <strong>Formato obrigatório:</strong> +55 (DDD) 9XXXX-XXXX<br>
+                            <span id="whatsappStatus">Digite seu número com DDD. Ex: +55 (11) 99999-9999</span><br>
+                            Onde você receberá seus livros em PDF instantaneamente
+                        </div>
+                    </div>
+                </div>
+
+                <div class="delivery-info">
+                    <h4>📱 Como funciona a entrega:</h4>
+                    <p>Assim que o pagamento for confirmado, você receberá todos os 4 livros em PDF diretamente no seu WhatsApp. Pode imprimir quantas vezes quiser!</p>
+                </div>
+
+                <button type="submit" class="generate-btn" id="generatePixBtn">
+                    🚀 GERAR PIX E FINALIZAR COMPRA
+                </button>
+
+                <div class="trust-signals">
+                    <p>🔒 Seus dados estão protegidos e não serão compartilhados</p>
+                    <p>⚡ Acesso liberado em até 2 minutos após o pagamento</p>
+                    <p>✝️ Empresa cristã comprometida com valores bíblicos</p>
+                </div>
+            </form>
+
+            <!-- Loading State -->
+            <div class="loading" id="loading">
+                <div class="spinner"></div>
+                <div class="loading-text">🙏 Preparando seu PIX com carinho...</div>
+            </div>
+
+            <!-- PIX Section -->
+            <div class="pix-section" id="pixSection">
+                <div class="pix-header">
+                    <h3>🎯 Seu PIX está pronto!</h3>
+                    <p>Escaneie o código ou copie a chave abaixo</p>
+                </div>
+
+                <div class="qr-container">
+                    <img id="qrCodeImage" src="" alt="QR Code PIX">
+                    <p style="margin-top: 10px; color: var(--text-light); font-size: 0.9rem;">
+                        Escaneie com a câmera do seu banco
+                    </p>
+                </div>
+
+                <div class="pix-code" id="pixCode">
+                    <!-- Código PIX será inserido aqui -->
+                </div>
+
+                <button class="copy-btn" id="copyBtn">
+                    📋 Copiar Código PIX
+                </button>
+
+                <div class="payment-instructions">
+                    <h4>📱 Como pagar com PIX:</h4>
+                    <ol>
+                        <li>Abra o aplicativo do seu banco</li>
+                        <li>Acesse a área <strong>PIX</strong></li>
+                        <li><strong>OPÇÃO 1:</strong> Escaneie o QR Code acima</li>
+                        <li><strong>OPÇÃO 2:</strong> Selecione "Pix Copia e Cola" e cole o código</li>
+                        <li>Confirme o pagamento de <strong>R$ 17,00</strong></li>
+                        <li>Aguarde a confirmação no seu WhatsApp!</li>
+                    </ol>
+                </div>
+
+                <div class="expiry-warning">
+                    ⏰ Este PIX expira em 1 hora. Não perca sua oportunidade!
+                </div>
+            </div>
+
+            <!-- Messages -->
+            <div id="successMessage" class="success-message"></div>
+            <div id="errorMessage" class="error-message"></div>
+        </div>
+    </div>
+
+    <script>
+        // Configurações da API AbacatePay
+        const API_CONFIG = {
+            baseURL: 'https://api.abacatepay.com',
+            token: 'SEU_TOKEN_ABACATEPAY_AQUI', // ⚠️ IMPORTANTE: Substitua pelo seu token real
+            webhookURL: 'https://seu-webhook.com/endpoint' // ⚠️ IMPORTANTE: Substitua pela URL do seu webhook
+        };
+
+        // Valor do produto em centavos (R$ 17,00 = 1700 centavos)
+        const PRODUCT_AMOUNT = 1700;
+
+        // Elementos do DOM
+        const form = document.getElementById('checkoutForm');
+        const loading = document.getElementById('loading');
+        const pixSection = document.getElementById('pixSection');
+        const qrCodeImage = document.getElementById('qrCodeImage');
+        const pixCode = document.getElementById('pixCode');
+        const copyBtn = document.getElementById('copyBtn');
+        const successMessage = document.getElementById('successMessage');
+        const errorMessage = document.getElementById('errorMessage');
+        const generateBtn = document.getElementById('generatePixBtn');
+
+        // Formatação e validação do WhatsApp com DDI
+        document.getElementById('whatsapp').addEventListener('input', function(e) {
+            let value = e.target.value.replace(/\D/g, '');
+            
+            // Se não começar com 55 (Brasil), adiciona automaticamente
+            if (value.length > 0 && !value.startsWith('55')) {
+                if (value.length <= 2) {
+                    // Se digitou apenas DDD, adiciona o 55 na frente
+                    value = '55' + value;
+                } else if (value.length >= 10) {
+                    // Se digitou um número completo sem o 55, adiciona
+                    value = '55' + value;
+                }
+            }
+            
+            // Formatação com máscara: +55 (XX) 9XXXX-XXXX
+            if (value.length >= 2) {
+                // Remove o 55 do Brasil para formatar apenas DDD + número
+                let withoutCountryCode = value.substring(2);
+                let formattedNumber = '+55';
+                
+                if (withoutCountryCode.length > 0) {
+                    // Adiciona DDD
+                    if (withoutCountryCode.length <= 2) {
+                        formattedNumber += ` (${withoutCountryCode}`;
+                    } else {
+                        formattedNumber += ` (${withoutCountryCode.substring(0, 2)})`;
+                        
+                        // Adiciona o número
+                        let phoneNumber = withoutCountryCode.substring(2);
+                        if (phoneNumber.length > 0) {
+                            if (phoneNumber.length <= 5) {
+                                formattedNumber += ` ${phoneNumber}`;
+                            } else {
+                                formattedNumber += ` ${phoneNumber.substring(0, 5)}-${phoneNumber.substring(5, 9)}`;
+                            }
+                        }
+                    }
+                    
+                    if (withoutCountryCode.length <= 2 && withoutCountryCode.length > 0) {
+                        formattedNumber += ')';
+                    }
+                }
+                
+                e.target.value = formattedNumber;
+            } else {
+                e.target.value = value ? '+55' : '';
+            }
+            
+            // Validação visual em tempo real
+            validateWhatsApp(e.target);
+        });
+
+        // Função para validar WhatsApp
+        function validateWhatsApp(input) {
+            const value = input.value.replace(/\D/g, '');
+            const statusElement = document.getElementById('whatsappStatus');
+            const isValid = value.length === 13 && value.startsWith('55');
+            
+            if (isValid) {
+                input.style.borderColor = 'var(--success-green)';
+                input.style.backgroundColor = '#f0fff4';
+                statusElement.textContent = '✅ Número válido! Você receberá os livros neste WhatsApp.';
+                statusElement.style.color = 'var(--success-green)';
+            } else if (value.length > 0) {
+                input.style.borderColor = 'var(--urgency-red)';
+                input.style.backgroundColor = '#fff5f5';
+                
+                if (value.length < 13) {
+                    statusElement.textContent = `⚠️ Digite mais ${13 - value.length} dígitos. Ex: +55 (11) 99999-9999`;
+                } else if (!value.startsWith('55')) {
+                    statusElement.textContent = '⚠️ Número deve começar com +55 (Brasil)';
+                } else {
+                    statusElement.textContent = '⚠️ Formato inválido. Use: +55 (DDD) 9XXXX-XXXX';
+                }
+                statusElement.style.color = 'var(--urgency-red)';
+            } else {
+                input.style.borderColor = '#e1e1e1';
+                input.style.backgroundColor = 'var(--light-gray)';
+                statusElement.textContent = 'Digite seu número com DDD. Ex: +55 (11) 99999-9999';
+                statusElement.style.color = 'var(--text-light)';
+            }
+            
+            return isValid;
+        }
+
+        // Auto-completar com +55 quando campo recebe foco
+        document.getElementById('whatsapp').addEventListener('focus', function(e) {
+            if (e.target.value === '') {
+                e.target.value = '+55 ';
+            }
+        });
+
+        // Tratar quando o usuário cola um número completo
+        document.getElementById('whatsapp').addEventListener('paste', function(e) {
+            setTimeout(() => {
+                let value = e.target.value.replace(/\D/g, '');
+                
+                // Se colou um número sem o DDI brasileiro
+                if (value.length >= 10 && !value.startsWith('55')) {
+                    value = '55' + value;
+                }
+                
+                // Se colou apenas números, reformata
+                if (value.length >= 11) {
+                    e.target.value = value;
+                    e.target.dispatchEvent(new Event('input'));
+                }
+            }, 10);
+        });
+
+        // Validação em tempo real
+        function validateForm() {
+            const name = document.getElementById('name').value.trim();
+            const whatsappInput = document.getElementById('whatsapp');
+            const whatsapp = whatsappInput.value.replace(/\D/g, '');
+            
+            const nameValid = name.length >= 2;
+            const whatsappValid = whatsapp.length === 13 && whatsapp.startsWith('55');
+            
+            const isValid = nameValid && whatsappValid;
+            generateBtn.disabled = !isValid;
+            
+            // Feedback visual para o nome
+            const nameInput = document.getElementById('name');
+            if (nameValid || name.length === 0) {
+                nameInput.style.borderColor = '#e1e1e1';
+                nameInput.style.backgroundColor = name.length > 0 ? '#f0fff4' : 'var(--light-gray)';
+            } else {
+                nameInput.style.borderColor = 'var(--urgency-red)';
+                nameInput.style.backgroundColor = '#fff5f5';
+            }
+            
+            return isValid;
+        }
+
+        // Adicionar validação em tempo real
+        document.getElementById('name').addEventListener('input', validateForm);
+        document.getElementById('whatsapp').addEventListener('input', validateForm);
+
+        // Submissão do formulário
+        form.addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            const name = document.getElementById('name').value.trim();
+            const whatsapp = document.getElementById('whatsapp').value.trim();
+
+            if (!validateForm()) {
+                showError('Por favor, preencha todos os campos corretamente.');
+                return;
+            }
+
+            // Validação adicional do WhatsApp
+            const whatsappNumbers = whatsapp.replace(/\D/g, '');
+            if (whatsappNumbers.length !== 13 || !whatsappNumbers.startsWith('55')) {
+                showError('Por favor, insira um WhatsApp válido no formato: +55 (DDD) 9XXXX-XXXX');
+                return;
+            }
+
+            // Validação do DDD brasileiro
+            const ddd = whatsappNumbers.substring(2, 4);
+            const validDDDs = ['11', '12', '13', '14', '15', '16', '17', '18', '19', '21', '22', '24', '27', '28', '31', '32', '33', '34', '35', '37', '38', '41', '42', '43', '44', '45', '46', '47', '48', '49', '51', '53', '54', '55', '61', '62', '63', '64', '65', '66', '67', '68', '69', '71', '73', '74', '75', '77', '79', '81', '82', '83', '84', '85', '86', '87', '88', '89', '91', '92', '93', '94', '95', '96', '97', '98', '99'];
+            
+            if (!validDDDs.includes(ddd)) {
+                showError('Por favor, insira um DDD válido do Brasil.');
+                return;
+            }
+
+            // Validação do número (deve começar com 9 para celular)
+            const phoneNumber = whatsappNumbers.substring(4);
+            if (!phoneNumber.startsWith('9') || phoneNumber.length !== 9) {
+                showError('Por favor, insira um número de celular válido (deve começar com 9).');
+                return;
+            }
+
+            await generatePix(name, whatsapp);
+        });
+
+        // Função para gerar PIX
+        async function generatePix(name, whatsapp) {
+            try {
+                showLoading(true);
+                hideMessages();
+
+                const requestBody = {
+                    amount: PRODUCT_AMOUNT,
+                    expiresIn: 3600, // 1 hora
+                    description: "Devocional Criativo para Mães - 4 Livros + Bônus",
+                    customer: {
+                        name: name,
+                        cellphone: whatsapp, // Formato completo: +55 (11) 99999-9999
+                        email: `${whatsapp.replace(/\D/g, '')}@temp.com`, // Email temporário para dev mode
+                        taxId: "000.000.000-00" // CPF temporário para dev mode
+                    },
+                    metadata: {
+                        customerName: name,
+                        customerWhatsapp: whatsapp,
+                        customerWhatsappNumbers: whatsapp.replace(/\D/g, ''), // Apenas números: 5511999999999
+                        product: "devocional_criativo_maes",
+                        source: "checkout_page",
+                        books: "4_livros_colorir_biblicos_bonus"
+                    }
+                };
+
+                const response = await fetch(`${API_CONFIG.baseURL}/v1/pixQrCode/create`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${API_CONFIG.token}`,
+                        'Accept': 'application/json'
+                    },
+                    body: JSON.stringify(requestBody)
+                });
+
+                const data = await response.json();
+
+                if (data.error) {
+                    throw new Error(data.error.message || 'Erro ao gerar PIX');
+                }
+
+                // Exibir PIX na tela
+                displayPix(data.data);
+
+                // Enviar dados para webhook
+                await sendToWebhook({
+                    event: 'pix_generated',
+                    customerName: name,
+                    customerWhatsapp: whatsapp, // Formato: +55 (11) 99999-9999
+                    customerWhatsappNumbers: whatsapp.replace(/\D/g, ''), // Formato: 5511999999999
+                    customerDDD: whatsapp.replace(/\D/g, '').substring(2, 4), // Ex: 11
+                    customerPhone: whatsapp.replace(/\D/g, '').substring(4), // Ex: 999999999
+                    pixId: data.data.id,
+                    pixCode: data.data.brCode,
+                    amount: PRODUCT_AMOUNT,
+                    amountFormatted: `R$ ${(PRODUCT_AMOUNT / 100).toFixed(2).replace('.', ',')}`,
+                    expiresAt: data.data.expiresAt,
+                    product: {
+                        name: "Devocional Criativo para Mães",
+                        description: "4 Livros de Colorir Bíblicos + Bônus Mulheres de Fé",
+                        books: [
+                            "Heróis do Antigo Testamento",
+                            "As Parábolas de Jesus", 
+                            "Os Milagres de Cristo",
+                            "Mulheres de Fé (Bônus)"
+                        ]
+                    },
+                    status: 'PENDING',
+                    timestamp: new Date().toISOString(),
+                    source: 'checkout_seguro'
+                });
+
+                showSuccess('🎉 PIX gerado com sucesso! Complete o pagamento para receber seus livros instantaneamente no WhatsApp.');
+
+                // Scroll suave até a seção PIX
+                pixSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+
+            } catch (error) {
+                console.error('Erro:', error);
+                showError(`❌ Erro ao gerar PIX: ${error.message}. Tente novamente ou entre em contato conosco.`);
+            } finally {
+                showLoading(false);
+            }
+        }
+
+        // Função para exibir o PIX
+        function displayPix(pixData) {
+            qrCodeImage.src = pixData.brCodeBase64;
+            pixCode.textContent = pixData.brCode;
+            
+            pixSection.style.display = 'block';
+            form.style.display = 'none';
+
+            // Configurar botão de copiar
+            copyBtn.onclick = function() {
+                copyPixCode(pixData.brCode);
+            };
+        }
+
+        // Função para copiar código PIX
+        async function copyPixCode(code) {
+            try {
+                await navigator.clipboard.writeText(code);
+                
+                copyBtn.textContent = '✅ Código Copiado!';
+                copyBtn.style.background = 'linear-gradient(135deg, var(--success-green) 0%, #1e8449 100%)';
+                
+                setTimeout(() => {
+                    copyBtn.textContent = '📋 Copiar Código PIX';
+                    copyBtn.style.background = 'linear-gradient(135deg, #007bff 0%, #0056b3 100%)';
+                }, 2000);
+                
+                // Track copy action
+                trackEvent('pix_code_copied');
+                
+            } catch (err) {
+                // Fallback para browsers mais antigos
+                const textArea = document.createElement('textarea');
+                textArea.value = code;
+                textArea.style.position = 'fixed';
+                textArea.style.left = '-999999px';
+                textArea.style.top = '-999999px';
+                document.body.appendChild(textArea);
+                textArea.focus();
+                textArea.select();
+                
+                try {
+                    document.execCommand('copy');
+                    copyBtn.textContent = '✅ Código Copiado!';
+                    copyBtn.style.background = 'linear-gradient(135deg, var(--success-green) 0%, #1e8449 100%)';
+                    
+                    setTimeout(() => {
+                        copyBtn.textContent = '📋 Copiar Código PIX';
+                        copyBtn.style.background = 'linear-gradient(135deg, #007bff 0%, #0056b3 100%)';
+                    }, 2000);
+                } catch (copyErr) {
+                    showError('Não foi possível copiar automaticamente. Selecione e copie o código manualmente.');
+                }
+                
+                document.body.removeChild(textArea);
+            }
+        }
+
+        // Função para enviar dados para webhook
+        async function sendToWebhook(data) {
+            try {
+                const response = await fetch(API_CONFIG.webhookURL, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(data)
+                });
+
+                if (!response.ok) {
+                    console.warn('Webhook response not ok:', response.status);
+                }
+            } catch (error) {
+                console.warn('Erro ao enviar para webhook:', error);
+                // Não exibir erro para o usuário, pois é um processo interno
+            }
+        }
+
+        // Função para tracking de eventos
+        function trackEvent(eventName, data = {}) {
+            // Google Analytics 4
+            if (typeof gtag !== 'undefined') {
+                gtag('event', eventName, {
+                    event_category: 'checkout',
+                    event_label: 'devocional_criativo',
+                    ...data
+                });
+            }
+            
+            // Facebook Pixel
+            if (typeof fbq !== 'undefined') {
+                switch(eventName) {
+                    case 'pix_generated':
+                        fbq('track', 'InitiateCheckout', {
+                            content_name: 'Devocional Criativo para Mães',
+                            value: 17.00,
+                            currency: 'BRL'
+                        });
+                        break;
+                    case 'pix_code_copied':
+                        fbq('track', 'AddPaymentInfo', {
+                            content_name: 'PIX Code Copied'
+                        });
+                        break;
+                }
+            }
+            
+            console.log('Event tracked:', eventName, data);
+        }
+
+        // Funções de UI
+        function showLoading(show) {
+            loading.style.display = show ? 'block' : 'none';
+            form.style.display = show ? 'none' : 'block';
+        }
+
+        function showSuccess(message) {
+            successMessage.textContent = message;
+            successMessage.style.display = 'block';
+            errorMessage.style.display = 'none';
+        }
+
+        function showError(message) {
+            errorMessage.textContent = message;
+            errorMessage.style.display = 'block';
+            successMessage.style.display = 'none';
+        }
+
+        function hideMessages() {
+            successMessage.style.display = 'none';
+            errorMessage.style.display = 'none';
+        }
+
+        // Inicialização
+        document.addEventListener('DOMContentLoaded', function() {
+            validateForm(); // Validação inicial
+            
+            // Track page load
+            trackEvent('checkout_page_loaded');
+            
+            console.log('🥑 Checkout Devocional Criativo carregado com sucesso!');
+        });
+
+        // Auto-focus no primeiro campo
+        document.getElementById('name').focus();
+    </script>
+</body>
+</html>

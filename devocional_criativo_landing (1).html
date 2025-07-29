@@ -1,0 +1,1259 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Devocional Criativo para Mães - Encontre Paz no Caos do Dia a Dia</title>
+    <meta name="description" content="Transforme 15 minutos de meditação criativa em momentos de paz e conexão com Deus. Livros de colorir bíblicos para mães ocupadas.">
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary-coral: #FF7A7A;
+            --soft-peach: #FFB4A2;
+            --sage-green: #9CAF88;
+            --warm-beige: #F7F3E9;
+            --text-dark: #2C3E50;
+            --text-light: #5D6D7E;
+            --white: #FFFFFF;
+            --light-gray: #F8F9FA;
+            --success-green: #27AE60;
+            --gold-accent: #F39C12;
+            --urgency-red: #E74C3C;
+        }
+
+        body {
+            font-family: 'Georgia', 'Times New Roman', serif;
+            line-height: 1.6;
+            color: var(--text-dark);
+            overflow-x: hidden;
+            background: var(--warm-beige);
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Urgency Header */
+        .urgency-header {
+            background: linear-gradient(135deg, var(--urgency-red) 0%, #c0392b 100%);
+            color: white;
+            text-align: center;
+            padding: 12px 0;
+            font-weight: bold;
+            font-size: 0.95rem;
+            animation: pulse-bg 3s ease-in-out infinite;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+        }
+
+        @keyframes pulse-bg {
+            0%, 100% { background: linear-gradient(135deg, var(--urgency-red) 0%, #c0392b 100%); }
+            50% { background: linear-gradient(135deg, #c0392b 0%, var(--urgency-red) 100%); }
+        }
+
+        /* Hero Section */
+        .hero {
+            background: linear-gradient(135deg, var(--warm-beige) 0%, #f9f6f0 100%);
+            padding: 80px 0;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* Removed gentle-float animation to improve LCP performance */
+
+        .hero-content {
+            position: relative;
+            z-index: 2;
+        }
+
+        .hero h1 {
+            font-size: clamp(2.2rem, 6vw, 4rem);
+            font-weight: normal;
+            color: var(--text-dark);
+            line-height: 1.2;
+            margin-bottom: 25px;
+            font-family: 'Georgia', serif;
+        }
+
+        .hero h2 {
+            font-size: clamp(1.1rem, 3vw, 1.4rem);
+            color: var(--text-light);
+            max-width: 900px;
+            margin: 0 auto 40px;
+            line-height: 1.5;
+            font-weight: normal;
+        }
+
+        .hero-cta {
+            background: linear-gradient(135deg, var(--primary-coral) 0%, var(--soft-peach) 100%);
+            color: white;
+            padding: 20px 40px;
+            font-size: 1.2rem;
+            font-weight: bold;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-block;
+            transition: all 0.3s ease;
+            box-shadow: 0 8px 30px rgba(255, 122, 122, 0.3);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .hero-cta:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 40px rgba(255, 122, 122, 0.4);
+        }
+
+        /* Image Carousel */
+        .image-carousel {
+            margin-top: 50px;
+            position: relative;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .carousel-container {
+            overflow: hidden;
+            border-radius: 20px;
+            box-shadow: 0 15px 50px rgba(0,0,0,0.15);
+            background: white;
+            padding: 20px;
+        }
+
+        .carousel-track {
+            display: flex;
+            transition: transform 0.5s ease;
+            gap: 20px;
+        }
+
+        .carousel-slide {
+            min-width: 200px;
+            height: 280px;
+            background: linear-gradient(45deg, #f8f6f3, #ede9e3);
+            border-radius: 15px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-light);
+            font-size: 0.9rem;
+            text-align: center;
+            padding: 20px;
+            border: 2px dashed var(--primary-coral);
+            position: relative;
+            flex-shrink: 0;
+        }
+
+        .carousel-slide::before {
+            content: '🎨';
+            font-size: 2rem;
+            margin-bottom: 10px;
+        }
+
+        .carousel-controls {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-top: 20px;
+        }
+
+        .carousel-btn {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: var(--text-light);
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .carousel-btn.active {
+            background: var(--primary-coral);
+            transform: scale(1.2);
+        }
+
+        .carousel-info {
+            text-align: center;
+            margin-top: 15px;
+            color: var(--text-light);
+            font-size: 0.95rem;
+        }
+
+        /* Problem Section */
+        .problem-section {
+            background: white;
+            padding: 80px 0;
+        }
+
+        .problem-headline {
+            font-size: clamp(2rem, 5vw, 3rem);
+            color: var(--text-dark);
+            text-align: center;
+            margin-bottom: 40px;
+            font-weight: normal;
+            font-style: italic;
+        }
+
+        .problem-content {
+            max-width: 800px;
+            margin: 0 auto;
+            text-align: center;
+            font-size: clamp(1.1rem, 2.5vw, 1.3rem);
+            line-height: 1.8;
+            color: var(--text-light);
+        }
+
+        .problem-image {
+            margin-top: 40px;
+            text-align: center;
+        }
+
+        .problem-image-placeholder {
+            width: 100%;
+            max-width: 500px;
+            height: 300px;
+            background: linear-gradient(45deg, #f8f6f3, #ede9e3);
+            border-radius: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-light);
+            font-size: 1rem;
+            margin: 0 auto;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.08);
+        }
+
+        /* Results Section */
+        .results-section {
+            background: linear-gradient(135deg, var(--sage-green) 0%, #7a9968 100%);
+            color: white;
+            padding: 60px 0;
+            text-align: center;
+        }
+
+        .results-headline {
+            font-size: clamp(1.8rem, 4vw, 2.5rem);
+            margin-bottom: 40px;
+            font-weight: normal;
+        }
+
+        .results-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 30px;
+            margin: 30px 0;
+        }
+
+        .result-item {
+            background: rgba(255,255,255,0.15);
+            padding: 25px;
+            border-radius: 15px;
+            backdrop-filter: blur(10px);
+        }
+
+        .result-number {
+            font-size: 2.5rem;
+            font-weight: bold;
+            margin-bottom: 10px;
+            color: var(--gold-accent);
+        }
+
+        .result-text {
+            font-size: 1rem;
+            opacity: 0.95;
+        }
+
+        /* Solution Section */
+        .solution-section {
+            background: linear-gradient(135deg, var(--sage-green) 0%, #7a9968 100%);
+            color: white;
+            padding: 80px 0;
+            text-align: center;
+        }
+
+        .solution-headline {
+            font-size: clamp(1.8rem, 4vw, 2.8rem);
+            margin-bottom: 30px;
+            font-weight: normal;
+            line-height: 1.3;
+        }
+
+        .solution-content {
+            max-width: 800px;
+            margin: 0 auto 50px;
+            font-size: clamp(1.1rem, 2.5vw, 1.3rem);
+            line-height: 1.7;
+            opacity: 0.95;
+        }
+
+        .solution-video {
+            margin-top: 40px;
+        }
+
+        .solution-video-placeholder {
+            width: 100%;
+            max-width: 600px;
+            height: 350px;
+            background: rgba(255,255,255,0.2);
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.1rem;
+            margin: 0 auto;
+            backdrop-filter: blur(10px);
+            border: 2px dashed rgba(255,255,255,0.5);
+        }
+
+        /* Offer Section */
+        .offer-section {
+            background: var(--warm-beige);
+            padding: 80px 0;
+        }
+
+        .offer-headline {
+            font-size: clamp(1.8rem, 4vw, 2.5rem);
+            color: var(--text-dark);
+            text-align: center;
+            margin-bottom: 50px;
+            font-weight: normal;
+        }
+
+        .books-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 30px;
+            margin-bottom: 50px;
+        }
+
+        .book-card {
+            background: white;
+            padding: 30px;
+            border-radius: 20px;
+            text-align: center;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease;
+            border-top: 4px solid var(--primary-coral);
+        }
+
+        .book-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .book-card.bonus {
+            border-top: 4px solid var(--gold-accent);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .book-card.bonus::before {
+            content: 'BÔNUS GRÁTIS';
+            position: absolute;
+            top: 20px;
+            right: -30px;
+            background: var(--gold-accent);
+            color: white;
+            padding: 8px 45px;
+            font-size: 0.75rem;
+            font-weight: bold;
+            transform: rotate(45deg);
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+        }
+
+        .book-number {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: var(--primary-coral);
+            margin-bottom: 15px;
+        }
+
+        .book-title {
+            font-size: 1.3rem;
+            font-weight: bold;
+            color: var(--text-dark);
+            margin-bottom: 15px;
+        }
+
+        .book-description {
+            color: var(--text-light);
+            font-size: 1rem;
+            line-height: 1.6;
+        }
+
+        .features-box {
+            background: white;
+            padding: 40px;
+            border-radius: 20px;
+            margin-top: 40px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+        }
+
+        .features-title {
+            font-size: 1.4rem;
+            color: var(--text-dark);
+            margin-bottom: 25px;
+            text-align: center;
+            font-weight: bold;
+        }
+
+        .features-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+        }
+
+        .feature-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 15px;
+        }
+
+        .feature-icon {
+            background: var(--sage-green);
+            color: white;
+            width: 25px;
+            height: 25px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+            margin-top: 2px;
+            flex-shrink: 0;
+        }
+
+        .feature-text {
+            color: var(--text-dark);
+            font-size: 1rem;
+            line-height: 1.5;
+        }
+
+        /* Social Proof Section */
+        .social-proof-section {
+            background: white;
+            padding: 80px 0;
+        }
+
+        .social-proof-headline {
+            font-size: clamp(1.8rem, 4vw, 2.5rem);
+            color: var(--text-dark);
+            text-align: center;
+            margin-bottom: 50px;
+            font-weight: normal;
+        }
+
+        .testimonials {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 40px;
+        }
+
+        .testimonial {
+            background: var(--light-gray);
+            padding: 35px;
+            border-radius: 20px;
+            position: relative;
+            box-shadow: 0 8px 30px rgba(0,0,0,0.08);
+        }
+
+        .testimonial::before {
+            content: '"';
+            font-size: 4rem;
+            color: var(--primary-coral);
+            position: absolute;
+            top: -10px;
+            left: 25px;
+            font-family: Georgia, serif;
+        }
+
+        .testimonial-text {
+            font-style: italic;
+            font-size: 1.1rem;
+            line-height: 1.6;
+            color: var(--text-light);
+            margin-bottom: 20px;
+            padding-top: 15px;
+        }
+
+        .testimonial-author {
+            font-weight: bold;
+            color: var(--text-dark);
+            font-size: 1rem;
+        }
+
+        /* CTA Final Section */
+        .cta-final-section {
+            background: linear-gradient(135deg, var(--primary-coral) 0%, var(--soft-peach) 100%);
+            color: white;
+            padding: 80px 0;
+            text-align: center;
+        }
+
+        .cta-final-headline {
+            font-size: clamp(1.8rem, 4vw, 2.8rem);
+            margin-bottom: 30px;
+            font-weight: normal;
+            line-height: 1.3;
+        }
+
+        .price-box {
+            background: rgba(255,255,255,0.2);
+            padding: 40px;
+            border-radius: 20px;
+            margin: 40px auto;
+            max-width: 500px;
+            backdrop-filter: blur(10px);
+        }
+
+        .price-anchor {
+            text-decoration: line-through;
+            font-size: 1.2rem;
+            opacity: 0.8;
+            margin-bottom: 10px;
+        }
+
+        .current-price {
+            font-size: 3rem;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .installments {
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+
+        .main-cta {
+            background: white;
+            color: var(--primary-coral);
+            padding: 25px 30px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-block;
+            transition: all 0.3s ease;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+            margin: 30px 0;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            text-align: center;
+        }
+
+        .main-cta:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 50px rgba(0,0,0,0.3);
+        }
+
+        .microcopy {
+            font-size: 0.9rem;
+            opacity: 0.8;
+            margin-top: 15px;
+        }
+
+        .guarantee-box {
+            background: rgba(255,255,255,0.15);
+            padding: 30px;
+            border-radius: 15px;
+            margin-top: 40px;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .guarantee-title {
+            font-size: 1.3rem;
+            font-weight: bold;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .guarantee-text {
+            font-size: 1rem;
+            line-height: 1.6;
+            opacity: 0.95;
+        }
+
+        /* FAQ Section */
+        .faq-section {
+            background: var(--warm-beige);
+            padding: 80px 0;
+        }
+
+        .faq-headline {
+            font-size: clamp(1.8rem, 4vw, 2.5rem);
+            color: var(--text-dark);
+            text-align: center;
+            margin-bottom: 50px;
+            font-weight: normal;
+        }
+
+        .faq-item {
+            background: white;
+            margin: 20px 0;
+            border-radius: 15px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.08);
+            overflow: hidden;
+        }
+
+        .faq-question {
+            background: var(--light-gray);
+            padding: 25px;
+            font-weight: bold;
+            color: var(--text-dark);
+            cursor: pointer;
+            border: none;
+            width: 100%;
+            text-align: left;
+            font-size: 1.1rem;
+            transition: background 0.3s ease;
+            font-family: inherit;
+        }
+
+        .faq-question:hover {
+            background: #f0f0f0;
+        }
+
+        .faq-answer {
+            padding: 25px;
+            display: none;
+            color: var(--text-light);
+            line-height: 1.6;
+        }
+
+        .faq-answer.active {
+            display: block;
+        }
+
+        /* Mobile Optimizations */
+        @media (max-width: 768px) {
+            .container {
+                padding: 0 15px;
+            }
+
+            .hero {
+                padding: 60px 0;
+            }
+
+            .hero h1 {
+                font-size: 2.2rem;
+            }
+
+            .hero-cta, .main-cta {
+                width: 95%;
+                max-width: 400px;
+                padding: 20px 25px;
+                font-size: 1rem;
+                line-height: 1.2;
+            }
+
+            .problem-section, .solution-section, .offer-section, .social-proof-section, .cta-final-section, .faq-section {
+                padding: 60px 0;
+            }
+
+            .books-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .testimonials {
+                grid-template-columns: 1fr;
+            }
+
+            .features-list {
+                grid-template-columns: 1fr;
+            }
+
+            .results-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .carousel-slide {
+                min-width: 160px;
+                height: 220px;
+                font-size: 0.8rem;
+            }
+
+            .urgency-header {
+                font-size: 0.85rem;
+                padding: 10px 0;
+            }
+        }
+
+        /* Sticky CTA */
+        .sticky-cta {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: var(--primary-coral);
+            padding: 15px;
+            z-index: 1000;
+            box-shadow: 0 -5px 20px rgba(0,0,0,0.2);
+            display: none;
+        }
+
+        .sticky-cta.show {
+            display: block;
+        }
+
+        .sticky-cta-button {
+            background: white;
+            color: var(--primary-coral);
+            border: none;
+            padding: 15px;
+            width: 100%;
+            border-radius: 25px;
+            font-weight: bold;
+            font-size: 0.9rem;
+            cursor: pointer;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            line-height: 1.2;
+        }
+
+        @media (max-width: 768px) {
+            .sticky-cta {
+                display: block;
+            }
+        }
+
+        /* Animations */
+        .fade-in {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.6s ease;
+        }
+
+        .fade-in.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    </style>
+</head>
+<body>
+    <!-- Urgency Header -->
+    <div class="urgency-header">
+        ⏰ <strong>OFERTA ESPECIAL:</strong> Apenas até domingo + Bônus exclusivos | Últimas 73 cópias disponíveis
+    </div>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="container">
+            <div class="hero-content">
+                <h1>REVELADO: Como 3.247 Mães Cristãs Transformaram 15 Minutos de Caos em Paz Profunda (Com 90+ Páginas de Colorir Bíblicas Exclusivas)</h1>
+                <h2>Método comprovado e aprovado por psicólogas cristãs: 4 livros de colorir bíblicos + bônus exclusivo que garantem seu momento diário de paz (mesmo com crianças correndo pela casa)</h2>
+                <a href="#oferta" class="hero-cta">🚀 QUERO MEUS 4 LIVROS + BÔNUS (73 vagas restantes)</a>
+                
+                <!-- Image Carousel -->
+                <div class="image-carousel">
+                    <div class="carousel-container">
+                        <div class="carousel-track" id="carouselTrack">
+                            <div class="carousel-slide">
+                                <strong>Página do Livro 1</strong><br>
+                                "Davi e Golias"<br>
+                                Desenho detalhado para colorir
+                            </div>
+                            <div class="carousel-slide">
+                                <strong>Página do Livro 2</strong><br>
+                                "Parábola do Bom Samaritano"<br>
+                                Ilustração envolvente
+                            </div>
+                            <div class="carousel-slide">
+                                <strong>Página do Livro 3</strong><br>
+                                "Jesus acalma a tempestade"<br>
+                                Cena inspiradora
+                            </div>
+                            <div class="carousel-slide">
+                                <strong>Página do Livro 4</strong><br>
+                                "Ester diante do rei"<br>
+                                Mulher de fé e coragem
+                            </div>
+                            <div class="carousel-slide">
+                                <strong>Página de Versículo</strong><br>
+                                "Salmos 23:1"<br>
+                                Design meditativo
+                            </div>
+                            <div class="carousel-slide">
+                                <strong>Página Especial</strong><br>
+                                "Oração da mãe cristã"<br>
+                                Arte exclusiva
+                            </div>
+                        </div>
+                    </div>
+                    <div class="carousel-controls">
+                        <button class="carousel-btn active" onclick="goToSlide(0)"></button>
+                        <button class="carousel-btn" onclick="goToSlide(1)"></button>
+                        <button class="carousel-btn" onclick="goToSlide(2)"></button>
+                        <button class="carousel-btn" onclick="goToSlide(3)"></button>
+                        <button class="carousel-btn" onclick="goToSlide(4)"></button>
+                        <button class="carousel-btn" onclick="goToSlide(5)"></button>
+                    </div>
+                    <div class="carousel-info">
+                        📖 <strong>Prévia das 90+ páginas</strong> que você receberá instantaneamente
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Results Section -->
+    <section class="results-section">
+        <div class="container">
+            <h2 class="results-headline fade-in">📊 Resultados Comprovados em 30 Dias:</h2>
+            <div class="results-grid">
+                <div class="result-item fade-in">
+                    <div class="result-number">94%</div>
+                    <div class="result-text">das mães relatam<br><strong>maior paz diária</strong></div>
+                </div>
+                <div class="result-item fade-in">
+                    <div class="result-number">89%</div>
+                    <div class="result-text">conseguem manter<br><strong>rotina devocional</strong></div>
+                </div>
+                <div class="result-item fade-in">
+                    <div class="result-number">3.247</div>
+                    <div class="result-text">famílias já<br><strong>transformadas</strong></div>
+                </div>
+                <div class="result-item fade-in">
+                    <div class="result-number">⭐ 4.9</div>
+                    <div class="result-text">de 5 estrelas<br><strong>de satisfação</strong></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Problem Section -->
+    <section class="problem-section">
+        <div class="container">
+            <h2 class="problem-headline fade-in">O dia te engoliu de novo?</h2>
+            <div class="problem-content fade-in">
+                <p>A lista de tarefas parece infinita. A louça se multiplica na pia, as roupas esperam para serem dobradas e sua mente não para um segundo. Você ama sua família mais do que tudo, mas em meio ao barulho e às demandas, uma pergunta ecoa no silêncio do seu coração:</p>
+                <br>
+                <p><strong>"Quando foi a última vez que eu consegui, de fato, ouvir a voz de Deus?"</strong></p>
+                <br>
+                <p>A culpa por não conseguir fazer um devocional "perfeito" só aumenta o peso nos seus ombros.</p>
+            </div>
+            <div class="problem-image fade-in">
+                <div class="problem-image-placeholder">
+                    📚 Imagem: Uma pilha de brinquedos, agenda lotada, representando a correria do dia a dia<br>
+                    <small>Formato: WebP otimizado (&lt;100kb) | Dimensões: 500x300px</small>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Solution Section -->
+    <section class="solution-section">
+        <div class="container">
+            <h2 class="solution-headline fade-in">E se o seu devocional pudesse ser o momento mais relaxante (e colorido) do seu dia?</h2>
+            <div class="solution-content fade-in">
+                <p>Imagine um devocional que não exige silêncio absoluto ou uma hora de estudo profundo. Imagine um momento só seu, onde você pode simplesmente respirar, escolher suas cores favoritas e meditar na Palavra de Deus de forma leve, criativa e restauradora.</p>
+                <br>
+                <p>Nossos livros de colorir bíblicos foram criados para isso: <strong>acalmar sua mente ansiosa, ocupar suas mãos e abrir espaço para que sua alma se reconecte com o Criador.</strong></p>
+            </div>
+            <div class="solution-video fade-in">
+                <div class="solution-video-placeholder">
+                    🎥 Vídeo/GIF: Close-up de uma mão colorindo uma das páginas<br>
+                    Formato: WebP animado ou MP4 otimizado (&lt;2MB)<br>
+                    Dimensões: 600x350px | Auto-play silencioso
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Offer Section -->
+    <section class="offer-section" id="oferta">
+        <div class="container">
+            <h2 class="offer-headline fade-in">Aqui está o arsenal de bênçãos que você receberá instantaneamente:</h2>
+            <p style="text-align: center; font-size: 1.2rem; color: var(--text-light); margin-bottom: 50px;" class="fade-in">
+                Ao clicar no botão abaixo, você garante acesso imediato e vitalício a um tesouro de conteúdo que vai edificar sua fé e trazer mais cor aos seus dias:
+            </p>
+
+            <div class="books-grid">
+                <div class="book-card fade-in">
+                    <div class="book-number">LIVRO 1</div>
+                    <h3 class="book-title">Heróis do Antigo Testamento</h3>
+                    <p class="book-description">30+ Desenhos inspiradores. Deixe-se inspirar pela coragem de Davi, a fé de Abraão e a sabedoria de Salomão.</p>
+                </div>
+
+                <div class="book-card fade-in">
+                    <div class="book-number">LIVRO 2</div>
+                    <h3 class="book-title">As Parábolas de Jesus</h3>
+                    <p class="book-description">30+ Desenhos meditativos. Medite nas lições mais profundas do Mestre de uma forma que acalma a mente e fala ao coração.</p>
+                </div>
+
+                <div class="book-card fade-in">
+                    <div class="book-number">LIVRO 3</div>
+                    <h3 class="book-title">Os Milagres de Cristo</h3>
+                    <p class="book-description">30+ Desenhos poderosos. Visualize o poder de Jesus e fortaleça sua fé ao colorir as manifestações do Seu amor e soberania.</p>
+                </div>
+
+                <div class="book-card bonus fade-in">
+                    <div class="book-number" style="color: var(--gold-accent);">BÔNUS</div>
+                    <h3 class="book-title">Mulheres de Fé</h3>
+                    <p class="book-description">Valor: R$27, para você sai GRÁTIS! Inspire-se com a força de Ester, a lealdade de Rute e a coragem de Maria. Um presente para te lembrar do poder que Deus colocou em você.</p>
+                </div>
+            </div>
+
+            <div class="features-box fade-in">
+                <h3 class="features-title">Recursos Que Fazem a Diferença:</h3>
+                <div class="features-list">
+                    <div class="feature-item">
+                        <div class="feature-icon">✓</div>
+                        <div class="feature-text"><strong>Entrega Imediata via WhatsApp:</strong> Receba todos os arquivos PDF diretamente no seu WhatsApp assim que o pagamento for confirmado. Praticidade total!</div>
+                    </div>
+                    <div class="feature-item">
+                        <div class="feature-icon">✓</div>
+                        <div class="feature-text"><strong>Imprima Quantas Vezes Quiser:</strong> Quer colorir seu versículo favorito de novo? O filho quis participar? Sem problemas. O material é seu para sempre.</div>
+                    </div>
+                    <div class="feature-item">
+                        <div class="feature-icon">✓</div>
+                        <div class="feature-text"><strong>Mais de 90 Desenhos Únicos:</strong> Variedade para meses de devocionais criativos e momentos de paz.</div>
+                    </div>
+                    <div class="feature-item">
+                        <div class="feature-icon">✓</div>
+                        <div class="feature-text"><strong>Qualidade Profissional:</strong> Impressão perfeita em papel A4 comum ou especial, como preferir.</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Social Proof Section -->
+    <section class="social-proof-section">
+        <div class="container">
+            <h2 class="social-proof-headline fade-in">Junte-se a milhares de mulheres que transformaram seus momentos com Deus:</h2>
+            
+            <div class="testimonials">
+                <div class="testimonial fade-in">
+                    <div class="testimonial-text">
+                        "Eu não conseguia me concentrar por 5 minutos para ler a Bíblia. Com os desenhos, o tempo voa e quando vejo, passei 20 minutos meditando em um único versículo. Encontrei a paz que tanto buscava."
+                    </div>
+                    <div class="testimonial-author">— Amanda S., Mãe de 2, São Paulo</div>
+                </div>
+
+                <div class="testimonial fade-in">
+                    <div class="testimonial-text">
+                        "Receber no WhatsApp foi genial! Baixei na hora e imprimi no mesmo dia. É a única coisa 'só minha' que consegui encaixar na rotina com as crianças. Meus 15 minutos sagrados!"
+                    </div>
+                    <div class="testimonial-author">— Carla M., Mãe de 3, Rio de Janeiro</div>
+                </div>
+
+                <div class="testimonial fade-in">
+                    <div class="testimonial-text">
+                        "Nunca pensei que colorir pudesse ser tão espiritual. Agora é meu momento favorito do dia. Me sinto mais conectada com Deus e mais calma para enfrentar a rotina."
+                    </div>
+                    <div class="testimonial-author">— Priscila R., Mãe de 1, Belo Horizonte</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Final Section -->
+    <section class="cta-final-section">
+        <div class="container">
+            <h2 class="cta-final-headline fade-in">Pronta para trocar a ansiedade pela paz e a correria pela conexão? (Últimas 73 vagas)</h2>
+            
+            <div class="price-box fade-in">
+                <div class="price-anchor">Valor total dos produtos: R$ 81,00</div>
+                <div style="font-size: 1.3rem; margin-bottom: 15px;">HOJE por apenas:</div>
+                <div class="current-price">R$ 17,00</div>
+                <div class="installments">Pagamento único via PIX</div>
+            </div>
+
+            <a href="#" class="main-cta" onclick="redirectToCheckout()">
+                🚀 SIM! QUERO MEUS 4 LIVROS + BÔNUS AGORA (Últimas 73 vagas)
+            </a>
+            
+            <div class="microcopy">Pagamento 100% seguro via PIX. Acesso liberado via WhatsApp.</div>
+
+            <div class="guarantee-box fade-in">
+                <div class="guarantee-title">
+                    🛡️ Garantia Cristã de 30 Dias
+                </div>
+                <div class="guarantee-text">
+                    "Como cristãs, nossa palavra é nosso compromisso. Se em 30 dias você não sentir sua alma mais tranquila e seu relacionamento com Deus mais profundo, devolvemos 100% do seu investimento. É nossa promessa de irmã para irmã."
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FAQ Section -->
+    <section class="faq-section">
+        <div class="container">
+            <h2 class="faq-headline fade-in">Perguntas Frequentes</h2>
+            
+            <div class="faq-item fade-in">
+                <button class="faq-question" onclick="toggleFAQ(this)">
+                    Como vou receber os livros?
+                </button>
+                <div class="faq-answer">
+                    Imediatamente após a confirmação do pagamento via PIX, você receberá todos os arquivos em PDF diretamente no seu WhatsApp, prontos para baixar e imprimir. É prático e você tem tudo sempre à mão!
+                </div>
+            </div>
+
+            <div class="faq-item fade-in">
+                <button class="faq-question" onclick="toggleFAQ(this)">
+                    Preciso de uma impressora especial?
+                </button>
+                <div class="faq-answer">
+                    Não! Você pode imprimir em qualquer impressora caseira, em papel sulfite comum (A4). Para uma experiência ainda melhor, recomendamos papéis com uma gramatura um pouco maior.
+                </div>
+            </div>
+
+            <div class="faq-item fade-in">
+                <button class="faq-question" onclick="toggleFAQ(this)">
+                    O pagamento é único ou mensalidade?
+                </button>
+                <div class="faq-answer">
+                    É um pagamento único via PIX! Você paga uma vez e tem acesso aos materiais para sempre. Sem taxas escondidas, sem cobranças recorrentes.
+                </div>
+            </div>
+
+            <div class="faq-item fade-in">
+                <button class="faq-question" onclick="toggleFAQ(this)">
+                    São realmente 90+ páginas para colorir?
+                </button>
+                <div class="faq-answer">
+                    Sim! São mais de 90 páginas exclusivas distribuídas em 4 livros temáticos: Heróis do Antigo Testamento (30+ páginas), Parábolas de Jesus (30+ páginas), Milagres de Cristo (30+ páginas) e o bônus Mulheres de Fé. Conteúdo para meses de devocionais!
+                </div>
+            </div>
+
+            <div class="faq-item fade-in">
+                <button class="faq-question" onclick="toggleFAQ(this)">
+                    Como funciona o pagamento via PIX?
+                </button>
+                <div class="faq-answer">
+                    Após clicar no botão, você será direcionado para uma página segura onde poderá gerar o QR Code ou copiar a chave PIX. O pagamento é instantâneo e você recebe os materiais imediatamente.
+                </div>
+            </div>
+
+            <div class="faq-item fade-in">
+                <button class="faq-question" onclick="toggleFAQ(this)">
+                    Posso usar os livros com meus filhos?
+                </button>
+                <div class="faq-answer">
+                    Claro! Muitas mães usam os livros como uma atividade familiar. É uma ótima forma de ensinar valores cristãos enquanto passam tempo de qualidade juntos.
+                </div>
+            </div>
+
+            <div class="faq-item fade-in">
+                <button class="faq-question" onclick="toggleFAQ(this)">
+                    Quanto tempo demora para ver resultados?
+                </button>
+                <div class="faq-answer">
+                    Muitas mulheres relatam sentir mais paz e tranquilidade já nos primeiros dias de uso. O importante é criar o hábito de reservar esses 15 minutos para você e para Deus.
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Sticky CTA -->
+    <div class="sticky-cta show">
+        <button class="sticky-cta-button" onclick="redirectToCheckout()">
+            🚀 QUERO MEUS 4 LIVROS - R$ 17 VIA PIX (73 vagas restantes)
+        </button>
+    </div>
+
+    <script>
+        // Carousel functionality
+        let currentSlide = 0;
+        const totalSlides = 6;
+        
+        function goToSlide(slideIndex) {
+            currentSlide = slideIndex;
+            const track = document.getElementById('carouselTrack');
+            const isMobile = window.innerWidth <= 768;
+            const slideWidth = isMobile ? 180 : 220; // 160px + 20px gap for mobile, 200px + 20px for desktop
+            track.style.transform = `translateX(-${slideIndex * slideWidth}px)`;
+            
+            // Update active button
+            document.querySelectorAll('.carousel-btn').forEach((btn, index) => {
+                btn.classList.toggle('active', index === slideIndex);
+            });
+        }
+
+        // Auto-advance carousel
+        function autoAdvanceCarousel() {
+            currentSlide = (currentSlide + 1) % totalSlides;
+            goToSlide(currentSlide);
+        }
+
+        // Start auto-advance after page load
+        window.addEventListener('load', function() {
+            setInterval(autoAdvanceCarousel, 4000); // Change slide every 4 seconds
+            trackMicroConversion('page_loaded');
+        });
+
+        // Responsive carousel on resize
+        window.addEventListener('resize', function() {
+            goToSlide(currentSlide); // Recalculate position
+        });
+
+        // Checkout Redirect Function
+        function redirectToCheckout() {
+            // Track conversion attempt
+            trackMicroConversion('cta_click');
+            
+            // TODO: Replace with your actual checkout page URL
+            const checkoutURL = "https://seudominio.com/checkout"; 
+            
+            // Redirect to checkout page
+            window.location.href = checkoutURL;
+        }
+
+        // Micro-conversion Tracking (Optimized - only significant events)
+        function trackMicroConversion(action) {
+            // Google Analytics 4 tracking
+            if (typeof gtag !== 'undefined') {
+                gtag('event', action, {
+                    event_category: 'engagement',
+                    event_label: 'devocional_criativo',
+                    value: 0
+                });
+            }
+            
+            // Facebook Pixel tracking
+            if (typeof fbq !== 'undefined') {
+                switch(action) {
+                    case 'cta_click':
+                        fbq('track', 'InitiateCheckout', {
+                            content_name: 'Devocional Criativo',
+                            value: 17.00,
+                            currency: 'BRL'
+                        });
+                        break;
+                    case 'scroll_50_percent':
+                        fbq('track', 'ViewContent', {
+                            content_name: 'Landing Page 50%'
+                        });
+                        break;
+                    case 'faq_interaction':
+                        fbq('track', 'Search', {
+                            search_string: 'FAQ'
+                        });
+                        break;
+                    case 'exit_intent':
+                        fbq('track', 'Lead', {
+                            content_name: 'Exit Intent'
+                        });
+                        break;
+                    default:
+                        fbq('track', 'Lead', {
+                            content_name: action
+                        });
+                }
+            }
+            
+            console.log('Micro-conversion tracked:', action);
+        }
+
+        // FAQ Toggle Function
+        function toggleFAQ(button) {
+            const answer = button.nextElementSibling;
+            const isActive = answer.classList.contains('active');
+            
+            // Track FAQ interaction
+            trackMicroConversion('faq_interaction');
+            
+            // Close all FAQ answers
+            document.querySelectorAll('.faq-answer').forEach(faq => {
+                faq.classList.remove('active');
+            });
+            
+            // Open clicked FAQ if it wasn't active
+            if (!isActive) {
+                answer.classList.add('active');
+            }
+        }
+
+        // Smooth scrolling for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // Scroll animations
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.fade-in').forEach(el => {
+            observer.observe(el);
+        });
+
+        // Sticky CTA behavior
+        let scrollTracked = false;
+        window.addEventListener('scroll', function() {
+            const stickyCTA = document.querySelector('.sticky-cta');
+            const ctaSection = document.querySelector('.cta-final-section');
+            const scrollPosition = window.pageYOffset;
+            const ctaSectionTop = ctaSection.offsetTop;
+            const documentHeight = document.documentElement.scrollHeight;
+            const scrollPercentage = (scrollPosition / (documentHeight - window.innerHeight)) * 100;
+            
+            // Track 50% scroll
+            if (scrollPercentage > 50 && !scrollTracked) {
+                trackMicroConversion('scroll_50_percent');
+                scrollTracked = true;
+            }
+            
+            if (scrollPosition > 800 && scrollPosition < ctaSectionTop - 100) {
+                stickyCTA.classList.add('show');
+            } else {
+                stickyCTA.classList.remove('show');
+            }
+        });
+
+        // Track testimonial interactions
+        document.querySelectorAll('.testimonial').forEach(testimonial => {
+            testimonial.addEventListener('click', function() {
+                trackMicroConversion('testimonial_click');
+            });
+        });
+
+        // Track page exit intent (when mouse leaves the page area)
+        document.addEventListener('mouseleave', function(e) {
+            if (e.clientY <= 0) {
+                trackMicroConversion('exit_intent');
+            }
+        });
+    </script>
+</body>
+</html>
