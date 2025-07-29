@@ -6,68 +6,36 @@
     <title>Devocional Criativo para Mães - Encontre Paz no Caos do Dia a Dia</title>
     <meta name="description" content="Transforme 15 minutos de meditação criativa em momentos de paz e conexão com Deus. Livros de colorir bíblicos para mães ocupadas.">
     
-    <!-- 
-    ==========================================
-    INSTRUÇÕES PARA ADICIONAR SUAS IMAGENS:
-    ==========================================
-    
-    1. CARROSSEL (6 imagens):
-       - Encontre: src="https://via.placeholder.com/200x280..."
-       - Substitua por: src="SUA_URL_AQUI"
-       - Formato recomendado: WebP (<50kb cada)
-       - Dimensões: 200x280px
-    
-    2. IMAGEM DO PROBLEMA:
-       - Encontre: src="https://via.placeholder.com/500x300..."
-       - Substitua por: src="SUA_IMAGEM_MAE_ESTRESSADA"
-       - Formato: WebP (<100kb)
-       - Dimensões: 500x300px
-    
-    3. VÍDEO DA SOLUÇÃO:
-       - Encontre: src="https://via.placeholder.com/600x350.mp4"
-       - Substitua por: src="SEU_VIDEO.mp4"
-       - Formato: MP4 otimizado (<2MB)
-       - Dimensões: 600x350px
-    
-    4. URL DE CHECKOUT:
-       - Encontre: const checkoutURL = "https://seudominio.com/checkout";
-       - Substitua por: const checkoutURL = "SUA_URL_DE_CHECKOUT";
-    
-    ==========================================
-    -->
-    
     <!-- Performance Optimization -->
-        
-    <!-- 
-    ==========================================
-    ✅ PROBLEMAS CORRIGIDOS NESTA VERSÃO:
-    ==========================================
+    <link rel="preconnect" href="https://www.googletagmanager.com">
+    <link rel="preconnect" href="https://connect.facebook.net">
+    <link rel="dns-prefetch" href="//fonts.googleapis.com">
     
-    1. CARROSSEL DE IMAGENS:
-       - Tamanhos consistentes (200x280px desktop, 160x220px mobile)
-       - JavaScript com cálculos corretos de slideWidth
-       - Hover effects adicionados
-       - Debug console para troubleshooting
-    
-    2. VÍDEO MOBILE:
-       - Atributo playsinline adicionado (essencial para iOS)
-       - Botão de play manual para quando autoplay falhar
-       - Event listeners para play/pause
-       - Fallback para navegadores sem suporte a vídeo
-       - Debug console para troubleshooting
-    
-    3. PERFORMANCE:
-       - Lazy loading nas imagens
-       - Preconnect para recursos externos
-       - Tracking otimizado (apenas eventos significativos)
-    
-    4. RESPONSIVIDADE:
-       - Orientationchange listener
-       - Redimensionamento do vídeo no mobile
-       - Botão de play redimensionado para mobile
-    
-    ==========================================
-    -->
+    <!-- Google Analytics 4 -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-07XMDKPW1B"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'G-07XMDKPW1B');
+    </script>
+
+    <!-- Facebook Pixel -->
+    <script>
+        !function(f,b,e,v,n,t,s)
+        {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+        n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+        if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+        n.queue=[];t=b.createElement(e);t.async=!0;
+        t.src=v;s=b.getElementsByTagName(e)[0];
+        s.parentNode.insertBefore(t,s)}(window, document,'script',
+        'https://connect.facebook.net/en_US/fbevents.js');
+        fbq('init', '752052097213780');
+        fbq('track', 'PageView');
+    </script>
+    <noscript><img height="1" width="1" style="display:none"
+        src="https://www.facebook.com/tr?id=752052097213780&ev=PageView&noscript=1"
+    /></noscript>
     
     <style>
         * {
@@ -133,15 +101,13 @@
             overflow: hidden;
         }
 
-        /* Removed gentle-float animation to improve LCP performance */
-
         .hero-content {
             position: relative;
             z-index: 2;
         }
 
         .hero h1 {
-            font-size: clamp(2.2rem, 6vw, 4rem);
+            font-size: clamp(1.8rem, 6vw, 3.5rem);
             font-weight: normal;
             color: var(--text-dark);
             line-height: 1.2;
@@ -201,31 +167,28 @@
             display: flex;
             transition: transform 0.5s ease;
             gap: 20px;
-            width: max-content; /* Garante que o track seja largo o suficiente */
+            width: max-content;
         }
 
         .carousel-slide {
             min-width: 200px;
+            width: 200px;
             height: 280px;
-            background: linear-gradient(45deg, #f8f6f3, #ede9e3);
-            border-radius: 15px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            color: var(--text-light);
-            font-size: 0.9rem;
-            text-align: center;
-            padding: 20px;
-            border: 2px dashed var(--primary-coral);
-            position: relative;
             flex-shrink: 0;
+            position: relative;
         }
 
-        .carousel-slide::before {
-            content: '🎨';
-            font-size: 2rem;
-            margin-bottom: 10px;
+        .carousel-slide img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease;
+        }
+
+        .carousel-slide img:hover {
+            transform: scale(1.05);
         }
 
         .carousel-controls {
@@ -255,50 +218,6 @@
             margin-top: 15px;
             color: var(--text-light);
             font-size: 0.95rem;
-        }
-
-        /* Problem Section */
-        .problem-section {
-            background: white;
-            padding: 80px 0;
-        }
-
-        .problem-headline {
-            font-size: clamp(2rem, 5vw, 3rem);
-            color: var(--text-dark);
-            text-align: center;
-            margin-bottom: 40px;
-            font-weight: normal;
-            font-style: italic;
-        }
-
-        .problem-content {
-            max-width: 800px;
-            margin: 0 auto;
-            text-align: center;
-            font-size: clamp(1.1rem, 2.5vw, 1.3rem);
-            line-height: 1.8;
-            color: var(--text-light);
-        }
-
-        .problem-image {
-            margin-top: 40px;
-            text-align: center;
-        }
-
-        .problem-image-placeholder {
-            width: 100%;
-            max-width: 500px;
-            height: 300px;
-            background: linear-gradient(45deg, #f8f6f3, #ede9e3);
-            border-radius: 15px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: var(--text-light);
-            font-size: 1rem;
-            margin: 0 auto;
-            box-shadow: 0 5px 20px rgba(0,0,0,0.08);
         }
 
         /* Results Section */
@@ -341,6 +260,35 @@
             opacity: 0.95;
         }
 
+        /* Problem Section */
+        .problem-section {
+            background: white;
+            padding: 80px 0;
+        }
+
+        .problem-headline {
+            font-size: clamp(2rem, 5vw, 3rem);
+            color: var(--text-dark);
+            text-align: center;
+            margin-bottom: 40px;
+            font-weight: normal;
+            font-style: italic;
+        }
+
+        .problem-content {
+            max-width: 800px;
+            margin: 0 auto;
+            text-align: center;
+            font-size: clamp(1.1rem, 2.5vw, 1.3rem);
+            line-height: 1.8;
+            color: var(--text-light);
+        }
+
+        .problem-image {
+            margin-top: 40px;
+            text-align: center;
+        }
+
         /* Solution Section */
         .solution-section {
             background: linear-gradient(135deg, var(--sage-green) 0%, #7a9968 100%);
@@ -366,22 +314,6 @@
 
         .solution-video {
             margin-top: 40px;
-        }
-
-        .solution-video-placeholder {
-            width: 100%;
-            max-width: 600px;
-            height: 350px;
-            background: rgba(255,255,255,0.2);
-            border-radius: 20px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            font-size: 1.1rem;
-            margin: 0 auto;
-            backdrop-filter: blur(10px);
-            border: 2px dashed rgba(255,255,255,0.5);
         }
 
         /* Offer Section */
@@ -854,47 +786,35 @@
                     <div class="carousel-container">
                         <div class="carousel-track" id="carouselTrack">
                             <div class="carousel-slide">
-                                <strong>Página do Livro 1</strong><br>
-                                "Davi e Golias"<br>
-                                Desenho detalhado para colorir
+                                <img src="Imagem do WhatsApp de 2025-07-29 à(s) 14.29.31_9134c7d4.webp" alt="Desenho de Jesus para colorir" loading="lazy">
                             </div>
                             <div class="carousel-slide">
-                                <strong>Página do Livro 2</strong><br>
-                                "Parábola do Bom Samaritano"<br>
-                                Ilustração envolvente
+                                <img src="Imagem do WhatsApp de 2025-07-29 à(s) 14.29.40_81baa0aa.webp" alt="Desenho de Moisés para colorir" loading="lazy">
                             </div>
                             <div class="carousel-slide">
-                                <strong>Página do Livro 3</strong><br>
-                                "Jesus acalma a tempestade"<br>
-                                Cena inspiradora
+                                <img src="Imagem do WhatsApp de 2025-07-29 à(s) 14.29.49_f2ffdef8.webp" alt="Desenho de Sansão para colorir" loading="lazy">
                             </div>
                             <div class="carousel-slide">
-                                <strong>Página do Livro 4</strong><br>
-                                "Ester diante do rei"<br>
-                                Mulher de fé e coragem
+                                <img src="Imagem do WhatsApp de 2025-07-29 à(s) 14.30.06_427d32b3.webp" alt="Desenho de Daniel para colorir" loading="lazy">
                             </div>
                             <div class="carousel-slide">
-                                <strong>Página de Versículo</strong><br>
-                                "Salmos 23:1"<br>
-                                Design meditativo
+                                <img src="Imagem do WhatsApp de 2025-07-29 à(s) 14.32.20_b207788c.webp" alt="Desenho de Mateus capítulo 3 para colorir" loading="lazy">
                             </div>
                             <div class="carousel-slide">
-                                <strong>Página Especial</strong><br>
-                                "Oração da mãe cristã"<br>
-                                Arte exclusiva
+                                <img src="Imagem do WhatsApp de 2025-07-29 à(s) 14.32.31_e3deb40b.webp" alt="Desenho de Mateus capítulo 14 para colorir" loading="lazy">
                             </div>
                         </div>
-                    </div>
-                    <div class="carousel-controls">
-                        <button class="carousel-btn active" onclick="goToSlide(0)"></button>
-                        <button class="carousel-btn" onclick="goToSlide(1)"></button>
-                        <button class="carousel-btn" onclick="goToSlide(2)"></button>
-                        <button class="carousel-btn" onclick="goToSlide(3)"></button>
-                        <button class="carousel-btn" onclick="goToSlide(4)"></button>
-                        <button class="carousel-btn" onclick="goToSlide(5)"></button>
-                    </div>
-                    <div class="carousel-info">
-                        📖 <strong>Prévia das 90+ páginas</strong> que você receberá instantaneamente
+                        <div class="carousel-controls">
+                            <button class="carousel-btn active" onclick="goToSlide(0)"></button>
+                            <button class="carousel-btn" onclick="goToSlide(1)"></button>
+                            <button class="carousel-btn" onclick="goToSlide(2)"></button>
+                            <button class="carousel-btn" onclick="goToSlide(3)"></button>
+                            <button class="carousel-btn" onclick="goToSlide(4)"></button>
+                            <button class="carousel-btn" onclick="goToSlide(5)"></button>
+                        </div>
+                        <div class="carousel-info">
+                            📖 <strong>Prévia das 90+ páginas</strong> que você receberá instantaneamente
+                        </div>
                     </div>
                 </div>
             </div>
@@ -938,14 +858,10 @@
                 <p>A culpa por não conseguir fazer um devocional "perfeito" só aumenta o peso nos seus ombros.</p>
             </div>
             <div class="problem-image fade-in">
-                <!-- SUBSTITUA A URL ABAIXO PELA SUA IMAGEM -->
-                <img src="https://via.placeholder.com/500x300/F8F6F3/2C3E50?text=Mae+Estressada+Rotina" 
+                <img src="download-_5_.webp" 
                      alt="Mãe estressada com rotina corrida"
                      loading="lazy"
                      style="width: 100%; max-width: 500px; height: 300px; object-fit: cover; border-radius: 15px; box-shadow: 0 5px 20px rgba(0,0,0,0.1); margin: 0 auto; display: block;">
-                <div style="text-align: center; margin-top: 15px; color: var(--text-light); font-size: 0.9rem;">
-                    <small>Imagem: Mãe em momento de stress com agenda lotada (WebP otimizado &lt;100kb)</small>
-                </div>
             </div>
         </div>
     </section>
@@ -960,23 +876,32 @@
                 <p>Nossos livros de colorir bíblicos foram criados para isso: <strong>acalmar sua mente ansiosa, ocupar suas mãos e abrir espaço para que sua alma se reconecte com o Criador.</strong></p>
             </div>
             <div class="solution-video fade-in">
-                <!-- OPÇÃO 1: VÍDEO (RECOMENDADO) -->
-                <!-- SUBSTITUA A URL ABAIXO PELO SEU VÍDEO -->
-                <video autoplay muted loop playsinline 
-                       style="width: 100%; max-width: 600px; height: 350px; border-radius: 20px; box-shadow: 0 10px 40px rgba(0,0,0,0.15); object-fit: cover; margin: 0 auto; display: block;">
-                    <source src="https://via.placeholder.com/600x350.mp4" type="video/mp4">
-                    <!-- Fallback para imagem se vídeo não carregar -->
-                    <img src="https://via.placeholder.com/600x350/9CAF88/FFFFFF?text=Video+Colorindo" 
-                         alt="Vídeo de mão colorindo página bíblica"
-                         style="width: 100%; height: 350px; object-fit: cover; border-radius: 20px;">
-                </video>
-                
-                <!-- OPÇÃO 2: GIF ANIMADO (ALTERNATIVA) -->
-                <!-- <img src="sua-animacao.gif" alt="Animação colorindo" 
-                     style="width: 100%; max-width: 600px; border-radius: 20px;"> -->
+                <div style="position: relative; max-width: 600px; margin: 0 auto;">
+                    <!-- Vídeo principal com fallbacks -->
+                    <video 
+                        id="solutionVideo"
+                        autoplay 
+                        muted 
+                        loop 
+                        playsinline
+                        oncanplay="handleVideoLoad()"
+                        onerror="handleVideoError()"
+                        style="width: 100%; max-width: 600px; height: 350px; object-fit: cover; border-radius: 20px; box-shadow: 0 10px 40px rgba(0,0,0,0.15); display: block;">
+                        <source src="video_acelerado (1).mp4" type="video/mp4">
+                        <!-- Fallback para navegadores que não suportam vídeo -->
+                        Seu navegador não suporta vídeo HTML5.
+                    </video>
+                    
+                    <!-- Botão de play para mobile (aparece se autoplay falhar) -->
+                    <button id="videoPlayBtn" 
+                            onclick="playVideo()" 
+                            style="display: none; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); background: rgba(255,255,255,0.9); border: none; border-radius: 50%; width: 70px; height: 70px; cursor: pointer; box-shadow: 0 5px 20px rgba(0,0,0,0.3); z-index: 10;">
+                        <span style="font-size: 24px; margin-left: 3px;">▶️</span>
+                    </button>
+                </div>
                 
                 <div style="text-align: center; margin-top: 15px; color: rgba(255,255,255,0.8); font-size: 0.9rem;">
-                    <small>🎥 Vídeo: Close-up mão colorindo (MP4 otimizado &lt;2MB | Autoplay silencioso)</small>
+                    <small>🎥 Vídeo: Close-up mão colorindo página bíblica (Toque para reproduzir em dispositivos móveis)</small>
                 </div>
             </div>
         </div>
@@ -1285,7 +1210,7 @@
             // ==========================================
             // ⚠️  ALTERE A URL ABAIXO PARA SUA PÁGINA DE CHECKOUT:
             // ==========================================
-            const checkoutURL = "https://seudominio.com/checkout"; 
+            const checkoutURL = "https://landingpage-checkout.vercel.app/checkout.html"; 
             // EXEMPLO: const checkoutURL = "https://meusite.com/comprar";
             
             // Redirect to checkout page
