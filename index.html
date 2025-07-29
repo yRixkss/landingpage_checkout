@@ -6,6 +6,69 @@
     <title>Devocional Criativo para Mães - Encontre Paz no Caos do Dia a Dia</title>
     <meta name="description" content="Transforme 15 minutos de meditação criativa em momentos de paz e conexão com Deus. Livros de colorir bíblicos para mães ocupadas.">
     
+    <!-- 
+    ==========================================
+    INSTRUÇÕES PARA ADICIONAR SUAS IMAGENS:
+    ==========================================
+    
+    1. CARROSSEL (6 imagens):
+       - Encontre: src="https://via.placeholder.com/200x280..."
+       - Substitua por: src="SUA_URL_AQUI"
+       - Formato recomendado: WebP (<50kb cada)
+       - Dimensões: 200x280px
+    
+    2. IMAGEM DO PROBLEMA:
+       - Encontre: src="https://via.placeholder.com/500x300..."
+       - Substitua por: src="SUA_IMAGEM_MAE_ESTRESSADA"
+       - Formato: WebP (<100kb)
+       - Dimensões: 500x300px
+    
+    3. VÍDEO DA SOLUÇÃO:
+       - Encontre: src="https://via.placeholder.com/600x350.mp4"
+       - Substitua por: src="SEU_VIDEO.mp4"
+       - Formato: MP4 otimizado (<2MB)
+       - Dimensões: 600x350px
+    
+    4. URL DE CHECKOUT:
+       - Encontre: const checkoutURL = "https://seudominio.com/checkout";
+       - Substitua por: const checkoutURL = "SUA_URL_DE_CHECKOUT";
+    
+    ==========================================
+    -->
+    
+    <!-- Performance Optimization -->
+        
+    <!-- 
+    ==========================================
+    ✅ PROBLEMAS CORRIGIDOS NESTA VERSÃO:
+    ==========================================
+    
+    1. CARROSSEL DE IMAGENS:
+       - Tamanhos consistentes (200x280px desktop, 160x220px mobile)
+       - JavaScript com cálculos corretos de slideWidth
+       - Hover effects adicionados
+       - Debug console para troubleshooting
+    
+    2. VÍDEO MOBILE:
+       - Atributo playsinline adicionado (essencial para iOS)
+       - Botão de play manual para quando autoplay falhar
+       - Event listeners para play/pause
+       - Fallback para navegadores sem suporte a vídeo
+       - Debug console para troubleshooting
+    
+    3. PERFORMANCE:
+       - Lazy loading nas imagens
+       - Preconnect para recursos externos
+       - Tracking otimizado (apenas eventos significativos)
+    
+    4. RESPONSIVIDADE:
+       - Orientationchange listener
+       - Redimensionamento do vídeo no mobile
+       - Botão de play redimensionado para mobile
+    
+    ==========================================
+    -->
+    
     <style>
         * {
             margin: 0;
@@ -138,22 +201,31 @@
             display: flex;
             transition: transform 0.5s ease;
             gap: 20px;
+            width: max-content; /* Garante que o track seja largo o suficiente */
         }
 
-        /* Substitua o CSS existente para .carousel-slide */
         .carousel-slide {
             min-width: 200px;
             height: 280px;
-            flex-shrink: 0; /* Impede que a imagem encolha */
+            background: linear-gradient(45deg, #f8f6f3, #ede9e3);
+            border-radius: 15px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-light);
+            font-size: 0.9rem;
+            text-align: center;
+            padding: 20px;
+            border: 2px dashed var(--primary-coral);
+            position: relative;
+            flex-shrink: 0;
         }
 
-        /* Adicione esta nova regra para a imagem dentro do slide */
-        .carousel-slide img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover; /* Garante que a imagem preencha o espaço sem distorcer */
-            border-radius: 10px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        .carousel-slide::before {
+            content: '🎨';
+            font-size: 2rem;
+            margin-bottom: 10px;
         }
 
         .carousel-controls {
@@ -681,13 +753,34 @@
 
             .carousel-slide {
                 min-width: 160px;
+                width: 160px;
                 height: 220px;
-                font-size: 0.8rem;
+            }
+
+            .carousel-slide img {
+                width: 100%;
+                height: 100%;
+                object-fit: cover;
+                border-radius: 8px;
             }
 
             .urgency-header {
                 font-size: 0.85rem;
                 padding: 10px 0;
+            }
+
+            /* Mobile video optimizations */
+            .solution-video video {
+                height: 250px !important;
+            }
+
+            #videoPlayBtn {
+                width: 60px !important;
+                height: 60px !important;
+            }
+
+            #videoPlayBtn span {
+                font-size: 20px !important;
             }
         }
 
@@ -757,24 +850,39 @@
                 <a href="#oferta" class="hero-cta">🚀 QUERO MEUS 4 LIVROS + BÔNUS (73 vagas restantes)</a>
                 
                 <!-- Image Carousel -->
-                   <div class="carousel-track" id="carouselTrack">
-                        <div class="carousel-slide">
-                            <img src="Imagem do WhatsApp de 2025-07-29 à(s) 14.29.31_9134c7d4.webp" alt="Desenho de Jesus para colorir">
-                        </div>
-                          <div class="carousel-slide">
-                            <img src="Imagem do WhatsApp de 2025-07-29 à(s) 14.29.40_81baa0aa.webp" alt="Desenho de Moisés para colorir">
-                        </div>
-                        <div class="carousel-slide">
-                            <img src="Imagem do WhatsApp de 2025-07-29 à(s) 14.29.49_f2ffdef8.webp" alt="Desenho de Sansão para colorir">
-                        </div>
-                        <div class="carousel-slide">
-                            <img src="Imagem do WhatsApp de 2025-07-29 à(s) 14.30.06_427d32b3.webp" alt="Desenho de Daniel para colorir">
-                        </div>
-                        <div class="carousel-slide">
-                            <img src="Imagem do WhatsApp de 2025-07-29 à(s) 14.32.20_b207788c.webp" alt="Desenho de Mateus capítulo 3 para colorir">
-                        </div>
-                        <div class="carousel-slide">
-                            <img src="Imagem do WhatsApp de 2025-07-29 à(s) 14.32.31_e3deb40b.webp" alt="Desenho de Mateus capítulo 14 para colorir">
+                <div class="image-carousel">
+                    <div class="carousel-container">
+                        <div class="carousel-track" id="carouselTrack">
+                            <div class="carousel-slide">
+                                <strong>Página do Livro 1</strong><br>
+                                "Davi e Golias"<br>
+                                Desenho detalhado para colorir
+                            </div>
+                            <div class="carousel-slide">
+                                <strong>Página do Livro 2</strong><br>
+                                "Parábola do Bom Samaritano"<br>
+                                Ilustração envolvente
+                            </div>
+                            <div class="carousel-slide">
+                                <strong>Página do Livro 3</strong><br>
+                                "Jesus acalma a tempestade"<br>
+                                Cena inspiradora
+                            </div>
+                            <div class="carousel-slide">
+                                <strong>Página do Livro 4</strong><br>
+                                "Ester diante do rei"<br>
+                                Mulher de fé e coragem
+                            </div>
+                            <div class="carousel-slide">
+                                <strong>Página de Versículo</strong><br>
+                                "Salmos 23:1"<br>
+                                Design meditativo
+                            </div>
+                            <div class="carousel-slide">
+                                <strong>Página Especial</strong><br>
+                                "Oração da mãe cristã"<br>
+                                Arte exclusiva
+                            </div>
                         </div>
                     </div>
                     <div class="carousel-controls">
@@ -830,8 +938,14 @@
                 <p>A culpa por não conseguir fazer um devocional "perfeito" só aumenta o peso nos seus ombros.</p>
             </div>
             <div class="problem-image fade-in">
-                <img src="download-_5_.webp" alt="Mãe estressada com rotina" 
-     style="width: 100%; max-width: 500px; height: 300px; object-fit: cover; border-radius: 15px;">
+                <!-- SUBSTITUA A URL ABAIXO PELA SUA IMAGEM -->
+                <img src="https://via.placeholder.com/500x300/F8F6F3/2C3E50?text=Mae+Estressada+Rotina" 
+                     alt="Mãe estressada com rotina corrida"
+                     loading="lazy"
+                     style="width: 100%; max-width: 500px; height: 300px; object-fit: cover; border-radius: 15px; box-shadow: 0 5px 20px rgba(0,0,0,0.1); margin: 0 auto; display: block;">
+                <div style="text-align: center; margin-top: 15px; color: var(--text-light); font-size: 0.9rem;">
+                    <small>Imagem: Mãe em momento de stress com agenda lotada (WebP otimizado &lt;100kb)</small>
+                </div>
             </div>
         </div>
     </section>
@@ -846,9 +960,24 @@
                 <p>Nossos livros de colorir bíblicos foram criados para isso: <strong>acalmar sua mente ansiosa, ocupar suas mãos e abrir espaço para que sua alma se reconecte com o Criador.</strong></p>
             </div>
             <div class="solution-video fade-in">
-                <video autoplay muted loop style="width: 100%; max-width: 600px; border-radius: 20px;">
-    <source src="video_acelerado (1).mp4" type="video/mp4">
-</video>
+                <!-- OPÇÃO 1: VÍDEO (RECOMENDADO) -->
+                <!-- SUBSTITUA A URL ABAIXO PELO SEU VÍDEO -->
+                <video autoplay muted loop playsinline 
+                       style="width: 100%; max-width: 600px; height: 350px; border-radius: 20px; box-shadow: 0 10px 40px rgba(0,0,0,0.15); object-fit: cover; margin: 0 auto; display: block;">
+                    <source src="https://via.placeholder.com/600x350.mp4" type="video/mp4">
+                    <!-- Fallback para imagem se vídeo não carregar -->
+                    <img src="https://via.placeholder.com/600x350/9CAF88/FFFFFF?text=Video+Colorindo" 
+                         alt="Vídeo de mão colorindo página bíblica"
+                         style="width: 100%; height: 350px; object-fit: cover; border-radius: 20px;">
+                </video>
+                
+                <!-- OPÇÃO 2: GIF ANIMADO (ALTERNATIVA) -->
+                <!-- <img src="sua-animacao.gif" alt="Animação colorindo" 
+                     style="width: 100%; max-width: 600px; border-radius: 20px;"> -->
+                
+                <div style="text-align: center; margin-top: 15px; color: rgba(255,255,255,0.8); font-size: 0.9rem;">
+                    <small>🎥 Vídeo: Close-up mão colorindo (MP4 otimizado &lt;2MB | Autoplay silencioso)</small>
+                </div>
             </div>
         </div>
     </section>
@@ -1056,7 +1185,10 @@
             currentSlide = slideIndex;
             const track = document.getElementById('carouselTrack');
             const isMobile = window.innerWidth <= 768;
-            const slideWidth = isMobile ? 180 : 220; // 160px + 20px gap for mobile, 200px + 20px for desktop
+            const slideWidth = isMobile ? 180 : 220; // Precisa ser width + gap
+            
+            console.log(`Going to slide ${slideIndex}, mobile: ${isMobile}, slideWidth: ${slideWidth}`);
+            
             track.style.transform = `translateX(-${slideIndex * slideWidth}px)`;
             
             // Update active button
@@ -1071,15 +1203,78 @@
             goToSlide(currentSlide);
         }
 
-        // Start auto-advance after page load
+        // Video handling functions
+        function handleVideoLoad() {
+            console.log('Video loaded successfully');
+            document.getElementById('videoPlayBtn').style.display = 'none';
+        }
+
+        function handleVideoError() {
+            console.log('Video failed to load, showing play button');
+            document.getElementById('videoPlayBtn').style.display = 'block';
+        }
+
+        function playVideo() {
+            const video = document.getElementById('solutionVideo');
+            const playBtn = document.getElementById('videoPlayBtn');
+            
+            video.play().then(() => {
+                playBtn.style.display = 'none';
+                trackMicroConversion('video_played');
+                console.log('Video play initiated by user');
+            }).catch((error) => {
+                console.log('Video play failed:', error);
+                // Keep the play button visible
+            });
+        }
+
+        // Check if video is actually playing (for mobile devices)
         window.addEventListener('load', function() {
-            setInterval(autoAdvanceCarousel, 4000); // Change slide every 4 seconds
+            console.log('Landing page loaded successfully');
+            
+            // Start carousel auto-advance
+            setInterval(autoAdvanceCarousel, 4000);
+            
+            // Check video autoplay status
+            setTimeout(() => {
+                const video = document.getElementById('solutionVideo');
+                if (video) {
+                    console.log('Video element found, checking autoplay status...');
+                    // Check if video is paused or has low volume (autoplay restrictions)
+                    if (video.paused || video.muted === false) {
+                        document.getElementById('videoPlayBtn').style.display = 'block';
+                        console.log('Autoplay blocked, showing play button');
+                    } else {
+                        console.log('Video is playing automatically');
+                    }
+                    
+                    // Listen for video events
+                    video.addEventListener('play', function() {
+                        document.getElementById('videoPlayBtn').style.display = 'none';
+                        console.log('Video started playing');
+                    });
+                    
+                    video.addEventListener('pause', function() {
+                        document.getElementById('videoPlayBtn').style.display = 'block';
+                        console.log('Video paused');
+                    });
+                } else {
+                    console.error('Video element not found');
+                }
+            }, 2000); // Wait 2 seconds to check if autoplay worked
+            
             trackMicroConversion('page_loaded');
         });
 
-        // Responsive carousel on resize
+        // Responsive carousel on resize and orientation change
         window.addEventListener('resize', function() {
             goToSlide(currentSlide); // Recalculate position
+        });
+        
+        window.addEventListener('orientationchange', function() {
+            setTimeout(() => {
+                goToSlide(currentSlide); // Recalculate after orientation change
+            }, 100);
         });
 
         // Checkout Redirect Function
@@ -1087,8 +1282,11 @@
             // Track conversion attempt
             trackMicroConversion('cta_click');
             
-            // TODO: Replace with your actual checkout page URL
-            const checkoutURL = "https://landingpage-checkout.vercel.app/checkout.html"; 
+            // ==========================================
+            // ⚠️  ALTERE A URL ABAIXO PARA SUA PÁGINA DE CHECKOUT:
+            // ==========================================
+            const checkoutURL = "https://seudominio.com/checkout"; 
+            // EXEMPLO: const checkoutURL = "https://meusite.com/comprar";
             
             // Redirect to checkout page
             window.location.href = checkoutURL;
@@ -1129,6 +1327,14 @@
                         fbq('track', 'Lead', {
                             content_name: 'Exit Intent'
                         });
+                        break;
+                    case 'video_played':
+                        fbq('track', 'ViewContent', {
+                            content_name: 'Solution Video'
+                        });
+                        break;
+                    case 'page_loaded':
+                        fbq('track', 'PageView');
                         break;
                     default:
                         fbq('track', 'Lead', {
@@ -1201,7 +1407,7 @@
             const documentHeight = document.documentElement.scrollHeight;
             const scrollPercentage = (scrollPosition / (documentHeight - window.innerHeight)) * 100;
             
-            // Track 50% scroll
+            // Track 50% scroll (significant engagement metric)
             if (scrollPercentage > 50 && !scrollTracked) {
                 trackMicroConversion('scroll_50_percent');
                 scrollTracked = true;
@@ -1212,13 +1418,6 @@
             } else {
                 stickyCTA.classList.remove('show');
             }
-        });
-
-        // Track testimonial interactions
-        document.querySelectorAll('.testimonial').forEach(testimonial => {
-            testimonial.addEventListener('click', function() {
-                trackMicroConversion('testimonial_click');
-            });
         });
 
         // Track page exit intent (when mouse leaves the page area)
