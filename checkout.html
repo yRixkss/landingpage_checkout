@@ -754,11 +754,8 @@
 
     <script>
         // Configurações da API AbacatePay
-        const API_CONFIG = {
-            baseURL: 'https://api.abacatepay.com',
-            token: 'abc_dev_mN322qJLnj2gPNaA3TXwHR5c', // ⚠️ IMPORTANTE: Substitua pelo seu token real
-            webhookURL: 'https://dinastia-n8n-webhook.0grcvg.easypanel.host/webhook/checkout' // ⚠️ IMPORTANTE: Substitua pela URL do seu webhook
-        };
+        // ADICIONE ISSO:
+        const N8N_WEBHOOK_URL = 'https://dinastia-n8n-webhook.0grcvg.easypanel.host/webhook/checkout'; 
 
         // Valor do produto em centavos (R$ 17,00 = 1700 centavos)
         const PRODUCT_AMOUNT = 1700;
@@ -953,90 +950,50 @@
         });
 
         // Função para gerar PIX
-        async function generatePix(name, whatsapp) {
-            try {
-                showLoading(true);
-                hideMessages();
+        // SUBSTITUA A FUNÇÃO ANTIGA POR ESTA NOVA VERSÃO
+async function generatePix(name, whatsapp) {
+    try {
+        showLoading(true);
+        hideMessages();
 
-                const requestBody = {
-                    amount: PRODUCT_AMOUNT,
-                    expiresIn: 3600, // 1 hora
-                    description: "Devocional Criativo para Mães - 4 Livros + Bônus",
-                    customer: {
-                        name: name,
-                        cellphone: whatsapp, // Formato completo: +55 (11) 99999-9999
-                        email: `${whatsapp.replace(/\D/g, '')}@temp.com`, // Email temporário para dev mode
-                        taxId: "000.000.000-00" // CPF temporário para dev mode
-                    },
-                    metadata: {
-                        customerName: name,
-                        customerWhatsapp: whatsapp,
-                        customerWhatsappNumbers: whatsapp.replace(/\D/g, ''), // Apenas números: 5511999999999
-                        product: "devocional_criativo_maes",
-                        source: "checkout_page",
-                        books: "4_livros_colorir_biblicos_bonus"
-                    }
-                };
+        // Corpo da requisição que será enviado para o n8n
+        const requestBody = {
+            name: name,
+            whatsapp: whatsapp
+        };
 
-                const response = await fetch(`${API_CONFIG.baseURL}/v1/pixQrCode/create`, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Authorization': `Bearer ${API_CONFIG.token}`,
-                        'Accept': 'application/json'
-                    },
-                    body: JSON.stringify(requestBody)
-                });
+        // A mágica acontece aqui: chamamos o n8n, não a AbacatePay
+        const response = await fetch(N8N_WEBHOOK_URL, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(requestBody)
+        });
 
-                const data = await response.json();
+        const data = await response.json();
 
-                if (data.error) {
-                    throw new Error(data.error.message || 'Erro ao gerar PIX');
-                }
-
-                // Exibir PIX na tela
-                displayPix(data.data);
-
-                // Enviar dados para webhook
-                await sendToWebhook({
-                    event: 'pix_generated',
-                    customerName: name,
-                    customerWhatsapp: whatsapp, // Formato: +55 (11) 99999-9999
-                    customerWhatsappNumbers: whatsapp.replace(/\D/g, ''), // Formato: 5511999999999
-                    customerDDD: whatsapp.replace(/\D/g, '').substring(2, 4), // Ex: 11
-                    customerPhone: whatsapp.replace(/\D/g, '').substring(4), // Ex: 999999999
-                    pixId: data.data.id,
-                    pixCode: data.data.brCode,
-                    amount: PRODUCT_AMOUNT,
-                    amountFormatted: `R$ ${(PRODUCT_AMOUNT / 100).toFixed(2).replace('.', ',')}`,
-                    expiresAt: data.data.expiresAt,
-                    product: {
-                        name: "Devocional Criativo para Mães",
-                        description: "4 Livros de Colorir Bíblicos + Bônus Mulheres de Fé",
-                        books: [
-                            "Heróis do Antigo Testamento",
-                            "As Parábolas de Jesus", 
-                            "Os Milagres de Cristo",
-                            "Mulheres de Fé (Bônus)"
-                        ]
-                    },
-                    status: 'PENDING',
-                    timestamp: new Date().toISOString(),
-                    source: 'checkout_seguro'
-                });
-
-                showSuccess('🎉 PIX gerado com sucesso! Complete o pagamento para receber seus livros instantaneamente no WhatsApp.');
-
-                // Scroll suave até a seção PIX
-                pixSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
-
-            } catch (error) {
-                console.error('Erro:', error);
-                showError(`❌ Erro ao gerar PIX: ${error.message}. Tente novamente ou entre em contato conosco.`);
-            } finally {
-                showLoading(false);
-            }
+        // O n8n nos devolve a resposta da AbacatePay.
+        // Verificamos se há um erro vindo da API.
+        if (data.error || !data.data) {
+            throw new Error(data.error?.message || 'Erro ao gerar PIX retornado pelo servidor.');
         }
+
+        // Exibir PIX na tela usando a resposta do n8n
+        // A estrutura `data.data` é o que a AbacatePay retorna.
+        displayPix(data.data);
+
+        showSuccess('🎉 PIX gerado com sucesso! Complete o pagamento para receber seus livros instantaneamente no WhatsApp.');
+
+        pixSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+
+    } catch (error) {
+        console.error('Erro:', error);
+        showError(`❌ Erro ao se comunicar com nosso servidor: ${error.message}. Tente novamente.`);
+    } finally {
+        showLoading(false);
+    }
+}
 
         // Função para exibir o PIX
         function displayPix(pixData) {
