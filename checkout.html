@@ -1133,7 +1133,8 @@
         
         // Configurações da API - Agora usando seu backend
         const API_CONFIG = {
-            webhookURL: 'https://dinastia-n8n-webhook.0grcvg.easypanel.host/webhook/checkout' // ⚠️ IMPORTANTE: Substitua pela URL do seu webhook
+            backendURL: 'https://seu-dominio.com/api', // ⚠️ IMPORTANTE: URL do seu backend
+            webhookURL: 'https://seu-webhook.com/endpoint' // ⚠️ IMPORTANTE: Substitua pela URL do seu webhook
         };
 
         // Valor do produto em centavos
@@ -1530,7 +1531,7 @@
                 const requestBody = {
                     name: name,
                     whatsapp: whatsapp,
-                    amount: currentAmount, // CORREÇÃO: Usar a variável correta
+                    amount: PRODUCT_AMOUNT,
                     product: "devocional_criativo_maes"
                 };
 
@@ -1571,8 +1572,8 @@
                     customerPhone: whatsapp.replace(/\D/g, '').substring(4),
                     pixId: data.data.id,
                     pixCode: data.data.brCode,
-                    amount: currentAmount, // CORREÇÃO: Usar a variável correta
-                    amountFormatted: `R$ ${(currentAmount / 100).toFixed(2).replace('.', ',')}`, // CORREÇÃO
+                    amount: PRODUCT_AMOUNT,
+                    amountFormatted: `R$ ${(PRODUCT_AMOUNT / 100).toFixed(2).replace('.', ',')}`,
                     expiresAt: data.data.expiresAt,
                     product: {
                         name: "Devocional Criativo para Mães",
@@ -1598,21 +1599,21 @@
                 console.error('Erro:', error);
                 
                 // Mensagens de erro mais específicas
-                let errorMessageText = '❌ Erro ao gerar PIX. ';
+                let errorMessage = '❌ Erro ao gerar PIX. ';
                 
                 if (error.message.includes('BACKEND_NOT_CONFIGURED')) {
-                    errorMessageText = '⚙️ Sistema em configuração. Entre em contato para finalizar sua compra via WhatsApp: (11) 99999-9999';
+                    errorMessage = '⚙️ Sistema em configuração. Entre em contato para finalizar sua compra via WhatsApp: (11) 99999-9999';
                 } else if (error.message.includes('Failed to fetch') || error.message.includes('NetworkError')) {
-                    errorMessageText += 'Verifique sua conexão com a internet e tente novamente.';
+                    errorMessage += 'Verifique sua conexão com a internet e tente novamente.';
                 } else if (error.message.includes('500')) {
-                    errorMessageText += 'Erro interno do servidor. Tente novamente em alguns minutos.';
+                    errorMessage += 'Erro interno do servidor. Tente novamente em alguns minutos.';
                 } else if (error.message.includes('400')) {
-                    errorMessageText += 'Dados inválidos. Verifique suas informações.';
+                    errorMessage += 'Dados inválidos. Verifique suas informações.';
                 } else {
-                    errorMessageText += error.message;
+                    errorMessage += error.message;
                 }
                 
-                showError(errorMessageText + (error.message.includes('BACKEND_NOT_CONFIGURED') ? '' : ' Se o problema persistir, entre em contato conosco.'));
+                showError(errorMessage + (error.message.includes('BACKEND_NOT_CONFIGURED') ? '' : ' Se o problema persistir, entre em contato conosco.'));
             } finally {
                 showLoading(false);
             }
@@ -1624,7 +1625,7 @@
             pixCode.textContent = pixData.brCode;
             
             // Atualizar valor nas instruções
-            const paymentValue = `R$ ${(currentAmount / 100).toFixed(2).replace('.', ',')}`;
+            const paymentValue = hasUpsell ? 'R$ 41,00' : 'R$ 17,00';
             const instructionsList = document.querySelector('.payment-instructions ol');
             if (instructionsList) {
                 const valueInstruction = instructionsList.children[4]; // 5º item da lista
