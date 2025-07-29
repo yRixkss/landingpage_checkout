@@ -140,22 +140,20 @@
             gap: 20px;
         }
 
+        /* Substitua o CSS existente para .carousel-slide */
         .carousel-slide {
             min-width: 200px;
             height: 280px;
-            background: linear-gradient(45deg, #f8f6f3, #ede9e3);
-            border-radius: 15px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            color: var(--text-light);
-            font-size: 0.9rem;
-            text-align: center;
-            padding: 20px;
-            border: 2px dashed var(--primary-coral);
-            position: relative;
-            flex-shrink: 0;
+            flex-shrink: 0; /* Impede que a imagem encolha */
+        }
+
+        /* Adicione esta nova regra para a imagem dentro do slide */
+        .carousel-slide img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover; /* Garante que a imagem preencha o espaço sem distorcer */
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
         }
 
         .carousel-slide::before {
@@ -774,22 +772,22 @@
                             </div>
                             <div class="carousel-slide">
                                 <!-- TROQUE 'nome-da-sua-imagem-1.jpg' PELO NOME REAL DO ARQUIVO -->
-                                <img src="Imagem do WhatsApp de 2025-07-29 à(s) 14.29.31_9134c7d4.webp" alt="moises
+                                <img src="Imagem do WhatsApp de 2025-07-29 à(s) 14.29.40_81baa0aa.webp" alt="moises
                             <div class="carousel-slide">
                                 <!-- TROQUE 'nome-da-sua-imagem-1.jpg' PELO NOME REAL DO ARQUIVO -->
-                                <img src="Imagem do WhatsApp de 2025-07-29 à(s) 14.29.31_9134c7d4.webp" alt="sansao">
+                                <img src="Imagem do WhatsApp de 2025-07-29 à(s) 14.29.49_f2ffdef8.webp" alt="sansao">
                             </div>
                             <div class="carousel-slide">
                                 <!-- TROQUE 'nome-da-sua-imagem-1.jpg' PELO NOME REAL DO ARQUIVO -->
-                                <img src="Imagem do WhatsApp de 2025-07-29 à(s) 14.29.31_9134c7d4.webp" alt="daniel">
+                                <img src="Imagem do WhatsApp de 2025-07-29 à(s) 14.30.06_427d32b3.webp" alt="daniel">
                             </div>
                             <div class="carousel-slide">
                                 <!-- TROQUE 'nome-da-sua-imagem-1.jpg' PELO NOME REAL DO ARQUIVO -->
-                                <img src="Imagem do WhatsApp de 2025-07-29 à(s) 14.29.31_9134c7d4.webp" alt="mateus3">
+                                <img src="Imagem do WhatsApp de 2025-07-29 à(s) 14.32.20_b207788c.webp" alt="mateus3">
                             </div>
                             <div class="carousel-slide">
                                 <!-- TROQUE 'nome-da-sua-imagem-1.jpg' PELO NOME REAL DO ARQUIVO -->
-                                <img src="Imagem do WhatsApp de 2025-07-29 à(s) 14.29.31_9134c7d4.webp" alt="mateus14">
+                                <img src="Imagem do WhatsApp de 2025-07-29 à(s) 14.32.31_e3deb40b.webp" alt="mateus14">
                             </div>
                         </div>
                     </div>
