@@ -1101,8 +1101,8 @@
             BASE_AMOUNT: 1700,      // Produto base: R$ 17,00
             UPSELL_AMOUNT: 2400,    // Upsell: R$ 24,00
             
-            // URL do seu backend - SUBSTITUA pela URL real do seu servidor
-            BACKEND_URL: 'https://dinastia-n8n-webhook.0grcvg.easypanel.host/webhook/checkout',
+            // URL do seu webhook n8n
+            BACKEND_URL: 'https://dinastipan-webhook.n8n.app/webhook/devocional-checkout-vercel.app',
             
             // Configurações do produto
             PRODUCT: {
@@ -1511,12 +1511,14 @@
                     throw new Error('BACKEND_NOT_CONFIGURED: Configure a URL do seu backend na variável CONFIG.BACKEND_URL');
                 }
 
-                // ✅ Requisição para SEU backend (não diretamente para AbacatePay)
-                const response = await fetch(`${CONFIG.BACKEND_URL}/create-pix`, {
+                // ✅ Requisição para SEU webhook n8n com headers CORS
+                const response = await fetch(CONFIG.BACKEND_URL, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
+                        'Accept': 'application/json'
                     },
+                    mode: 'cors', // Explicitamente permitir CORS
                     body: JSON.stringify(requestBody)
                 });
 
