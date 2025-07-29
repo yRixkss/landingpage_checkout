@@ -1078,7 +1078,7 @@
                         <li>Acesse a área <strong>PIX</strong></li>
                         <li><strong>OPÇÃO 1:</strong> Escaneie o QR Code acima</li>
                         <li><strong>OPÇÃO 2:</strong> Selecione "Pix Copia e Cola" e cole o código</li>
-                        <li>Confirme o pagamento de <strong>R$ 17,00</strong></li>
+                        <li>Confirme o pagamento de <strong id="paymentValue">R$ 17,00</strong></li>
                         <li>Aguarde a confirmação no seu WhatsApp!</li>
                     </ol>
                 </div>
@@ -1095,35 +1095,26 @@
     </div>
 
     <script>
-        /* 
-        🔍 TRACKING COMPLETO IMPLEMENTADO
-        
-        Este checkout possui tracking avançado para GA4 e Facebook Pixel:
-        
-        EVENTOS RASTREADOS:
-        • checkout_page_loaded - Carregamento da página
-        • form_field_completed - Preenchimento de cada campo (nome, CPF, WhatsApp)
-        • form_completed - Todos os campos válidos
-        • form_validation_error - Erros de validação
-        • form_submission_attempt - Tentativa de envio do formulário
-        • upsell_viewed - Visualização da oferta upsell
-        • upsell_selected/deselected - Seleção do upsell
-        • pix_generated - PIX criado com sucesso
-        • pix_generation_error - Erro na criação do PIX
-        • pix_code_copied - Código PIX copiado
-        • pix_copy_failed - Falha ao copiar código
-        
-        DADOS ENVIADOS:
-        • Valores monetários • Tempo de interação • Localização (DDD)
-        • Detalhes do produto • Erros específicos • Método de cópia
-        
-        Para análise de funil AD > LP > CHECKOUT complete!
-        */
+        // ✅ CONFIGURAÇÃO CORRIGIDA - Variáveis definidas adequadamente
+        const CONFIG = {
+            // Valores em centavos (R$ 17,00 = 1700 centavos)
+            BASE_AMOUNT: 1700,      // Produto base: R$ 17,00
+            UPSELL_AMOUNT: 2400,    // Upsell: R$ 24,00
+            
+            // URL do seu backend - SUBSTITUA pela URL real do seu servidor
+            BACKEND_URL: 'https://dinastia-n8n-webhook.0grcvg.easypanel.host/webhook/checkout',
+            
+            // Configurações do produto
+            PRODUCT: {
+                id: 'devocional_criativo_maes',
+                name: 'Devocional Criativo para Mães',
+                description: '4 Livros de Colorir Bíblicos + Bônus'
+            }
+        };
 
-        // Valor do produto em centavos
-        const BASE_AMOUNT = 1700; // R$ 17,00
-        const UPSELL_AMOUNT = 2400; // R$ 24,00
-        let currentAmount = BASE_AMOUNT;
+        // Estado atual do checkout
+        let currentAmount = CONFIG.BASE_AMOUNT;
+        let hasUpsell = false;
 
         // Elementos do DOM
         const form = document.getElementById('checkoutForm');
@@ -1405,11 +1396,11 @@
         const totalBooksElement = document.getElementById('totalBooks');
 
         upsellCheckbox.addEventListener('change', function() {
-            const isUpsellSelected = this.checked;
-            updatePricing(isUpsellSelected);
+            hasUpsell = this.checked;
+            updatePricing(hasUpsell);
             
             // Track upsell interaction
-            if (isUpsellSelected) {
+            if (hasUpsell) {
                 trackEvent('upsell_selected', { 
                     value: 24.00,
                     new_total: currentAmount / 100,
@@ -1417,7 +1408,7 @@
                 });
             } else {
                 trackEvent('upsell_deselected', {
-                    old_total: (currentAmount + UPSELL_AMOUNT) / 100,
+                    old_total: (CONFIG.BASE_AMOUNT + CONFIG.UPSELL_AMOUNT) / 100,
                     new_total: currentAmount / 100
                 });
             }
@@ -1425,14 +1416,14 @@
 
         function updatePricing(includeUpsell) {
             if (includeUpsell) {
-                currentAmount = BASE_AMOUNT + UPSELL_AMOUNT; // R$ 41,00
+                currentAmount = CONFIG.BASE_AMOUNT + CONFIG.UPSELL_AMOUNT; // R$ 41,00
                 currentPriceElement.textContent = 'R$ 41,00';
                 originalPriceElement.textContent = 'De R$ 148,00 por:'; // Valor original dos 14 livros
                 finalPriceElement.textContent = 'R$ 41,00';
                 upsellInfoElement.style.display = 'block';
                 totalBooksElement.textContent = '14'; // 4 principais + 10 extras
             } else {
-                currentAmount = BASE_AMOUNT; // R$ 17,00
+                currentAmount = CONFIG.BASE_AMOUNT; // R$ 17,00
                 currentPriceElement.textContent = 'R$ 17,00';
                 originalPriceElement.textContent = 'De R$ 81,00 por:';
                 finalPriceElement.textContent = 'R$ 17,00';
@@ -1441,16 +1432,9 @@
             }
         }
 
-        // Submissão do formulário
+        // ✅ Submissão do formulário CORRIGIDA
         form.addEventListener('submit', async function(e) {
             e.preventDefault();
-            
-            // Verificação de sanidade das variáveis
-            if (typeof BASE_AMOUNT === 'undefined' || typeof UPSELL_AMOUNT === 'undefined' || typeof currentAmount === 'undefined') {
-                console.error('❌ Variáveis não definidas:', { BASE_AMOUNT, UPSELL_AMOUNT, currentAmount });
-                showError('Erro interno do sistema. Recarregue a página e tente novamente.');
-                return;
-            }
             
             const name = document.getElementById('name').value.trim();
             const cpf = document.getElementById('cpf').value.trim();
@@ -1497,34 +1481,38 @@
 
             // Track form submission attempt
             trackEvent('form_submission_attempt', {
-                has_upsell: document.getElementById('upsellCheckbox').checked,
+                has_upsell: hasUpsell,
                 total_value: currentAmount / 100
             });
 
-            await generatePix(name, cpf, whatsapp);
+            await generatePix(name, cpfNumbers, whatsappNumbers);
         });
 
-        // Função para gerar PIX via backend
-        async function generatePix(name, whatsapp) {
+        // ✅ Função para gerar PIX CORRIGIDA
+        async function generatePix(name, cpf, whatsapp) {
             try {
                 showLoading(true);
                 hideMessages();
 
-                // Dados enviados para seu backend
+                // ✅ Dados corretos enviados para seu backend
                 const requestBody = {
                     name: name,
+                    cpf: cpf,
                     whatsapp: whatsapp,
-                    amount: PRODUCT_AMOUNT,
-                    product: "devocional_criativo_maes"
+                    amount: currentAmount, // Valor correto em centavos
+                    product: CONFIG.PRODUCT.id,
+                    hasUpsell: hasUpsell
                 };
 
-                // Verificação se backend está configurado
-                if (API_CONFIG.backendURL.includes('seu-dominio.com')) {
-                    throw new Error('BACKEND_NOT_CONFIGURED: Configure a URL do seu backend na variável API_CONFIG.backendURL');
+                console.log('📤 Enviando dados para backend:', requestBody);
+
+                // ✅ Verificação se backend está configurado
+                if (CONFIG.BACKEND_URL.includes('seu-backend.com')) {
+                    throw new Error('BACKEND_NOT_CONFIGURED: Configure a URL do seu backend na variável CONFIG.BACKEND_URL');
                 }
 
-                // Requisição para SEU backend (não diretamente para AbacatePay)
-                const response = await fetch(`${API_CONFIG.backendURL}/create-pix`, {
+                // ✅ Requisição para SEU backend (não diretamente para AbacatePay)
+                const response = await fetch(`${CONFIG.BACKEND_URL}/create-pix`, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
@@ -1537,40 +1525,20 @@
                 }
 
                 const data = await response.json();
+                console.log('📥 Resposta do backend:', data);
 
                 if (data.error) {
                     throw new Error(data.error.message || 'Erro ao gerar PIX');
                 }
 
-                // Exibir PIX na tela
+                // ✅ Exibir PIX na tela
                 displayPix(data.data);
 
-                // Enviar dados para webhook
-                await sendToWebhook({
-                    event: 'pix_generated',
-                    customerName: name,
-                    customerWhatsapp: whatsapp,
-                    customerWhatsappNumbers: whatsapp.replace(/\D/g, ''),
-                    customerDDD: whatsapp.replace(/\D/g, '').substring(2, 4),
-                    customerPhone: whatsapp.replace(/\D/g, '').substring(4),
-                    pixId: data.data.id,
-                    pixCode: data.data.brCode,
-                    amount: PRODUCT_AMOUNT,
-                    amountFormatted: `R$ ${(PRODUCT_AMOUNT / 100).toFixed(2).replace('.', ',')}`,
-                    expiresAt: data.data.expiresAt,
-                    product: {
-                        name: "Devocional Criativo para Mães",
-                        description: "4 Livros de Colorir Bíblicos + Bônus Criação do Mundo",
-                        books: [
-                            "Heróis da Fé",
-                            "Mulheres da Bíblia", 
-                            "A Vida de Jesus",
-                            "Criação do Mundo (Bônus)"
-                        ]
-                    },
-                    status: 'PENDING',
-                    timestamp: new Date().toISOString(),
-                    source: 'checkout_seguro'
+                // ✅ Track successful PIX generation
+                trackEvent('pix_generated', {
+                    value: currentAmount / 100,
+                    has_upsell: hasUpsell,
+                    total_books: hasUpsell ? 14 : 4
                 });
 
                 showSuccess('🎉 PIX gerado com sucesso! Complete o pagamento para receber seus livros instantaneamente no WhatsApp.');
@@ -1579,7 +1547,13 @@
                 pixSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
 
             } catch (error) {
-                console.error('Erro:', error);
+                console.error('❌ Erro:', error);
+                
+                // Track PIX generation error
+                trackEvent('pix_generation_error', {
+                    error: error.message,
+                    value: currentAmount / 100
+                });
                 
                 // Mensagens de erro mais específicas
                 let errorMessage = '❌ Erro ao gerar PIX. ';
@@ -1602,20 +1576,14 @@
             }
         }
 
-        // Função para exibir o PIX
-        function displayPix(pixData, hasUpsell = false) {
+        // ✅ Função para exibir o PIX CORRIGIDA
+        function displayPix(pixData) {
             qrCodeImage.src = pixData.brCodeBase64;
             pixCode.textContent = pixData.brCode;
             
-            // Atualizar valor nas instruções
+            // ✅ Atualizar valor nas instruções
             const paymentValue = hasUpsell ? 'R$ 41,00' : 'R$ 17,00';
-            const instructionsList = document.querySelector('.payment-instructions ol');
-            if (instructionsList) {
-                const valueInstruction = instructionsList.children[4]; // 5º item da lista
-                if (valueInstruction) {
-                    valueInstruction.innerHTML = `Confirme o pagamento de <strong>${paymentValue}</strong>`;
-                }
-            }
+            document.getElementById('paymentValue').textContent = paymentValue;
             
             pixSection.style.display = 'block';
             form.style.display = 'none';
@@ -1734,7 +1702,7 @@
                             content_name: 'Devocional Criativo para Mães',
                             value: (data.value || 17.00),
                             currency: 'BRL',
-                            num_items: data.totalBooks || 4
+                            num_items: data.total_books || 4
                         });
                         break;
                     case 'pix_code_copied':
@@ -1755,7 +1723,7 @@
                 }
             }
             
-            console.log('Event tracked:', eventName, data);
+            console.log('📊 Event tracked:', eventName, data);
         }
 
         // Funções de UI
@@ -1781,7 +1749,7 @@
             errorMessage.style.display = 'none';
         }
 
-        // Inicialização
+        // ✅ Inicialização CORRIGIDA
         document.addEventListener('DOMContentLoaded', function() {
             // Marcar tempo de início da sessão
             window.checkoutStartTime = Date.now();
@@ -1815,6 +1783,7 @@
             });
             
             console.log('🥑 Checkout Devocional Criativo carregado com sucesso!');
+            console.log('⚙️ Configuração:', CONFIG);
         });
 
         // Auto-focus no primeiro campo
