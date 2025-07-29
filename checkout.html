@@ -922,6 +922,15 @@
                     </div>
 
                     <div class="form-group">
+                        <label for="cpf">CPF <span class="required">*</span></label>
+                        <input type="text" id="cpf" name="cpf" required placeholder="000.000.000-00" maxlength="14">
+                        <div class="help-text" id="cpfHelp">
+                            <span id="cpfStatus">Digite seu CPF. Ex: 123.456.789-00</span><br>
+                            <small>Necessário para emissão da nota fiscal</small>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
                         <label for="whatsapp">WhatsApp com DDD <span class="required">*</span></label>
                         <input type="tel" id="whatsapp" name="whatsapp" required placeholder="+55 (11) 99999-9999" maxlength="19">
                         <div class="help-text" id="whatsappHelp">
@@ -956,7 +965,7 @@
                             </div>
                             
                             <div class="upsell-price">
-                                <span class="upsell-discount">Seu desconto: R$ 67,00</span>
+                                <span class="upsell-discount">Seu desconto: R$ 43,00</span>
                                 <span class="upsell-final-price">Por apenas: R$ 24,00 extras</span>
                             </div>
                         </div>
@@ -1092,6 +1101,93 @@
         const errorMessage = document.getElementById('errorMessage');
         const generateBtn = document.getElementById('generatePixBtn');
 
+        // Formatação e validação do CPF
+        document.getElementById('cpf').addEventListener('input', function(e) {
+            let value = e.target.value.replace(/\D/g, ''); // Remove todos os caracteres não numéricos
+            
+            // Aplica a máscara: XXX.XXX.XXX-XX
+            if (value.length > 0) {
+                value = value.replace(/(\d{3})(\d)/, '$1.$2');
+                value = value.replace(/(\d{3})(\d)/, '$1.$2');
+                value = value.replace(/(\d{3})(\d{1,2})$/, '$1-$2');
+            }
+            
+            e.target.value = value;
+            
+            // Validação visual em tempo real
+            validateCPF(e.target);
+        });
+
+        // Função para validar CPF
+        function validateCPF(input) {
+            const cpf = input.value.replace(/\D/g, '');
+            const statusElement = document.getElementById('cpfStatus');
+            
+            if (cpf.length === 0) {
+                input.style.borderColor = '#e1e1e1';
+                input.style.backgroundColor = 'var(--light-gray)';
+                statusElement.textContent = 'Digite seu CPF. Ex: 123.456.789-00';
+                statusElement.style.color = 'var(--text-light)';
+                return false;
+            }
+            
+            if (cpf.length < 11) {
+                input.style.borderColor = 'var(--urgency-red)';
+                input.style.backgroundColor = '#fff5f5';
+                statusElement.textContent = `⚠️ Digite mais ${11 - cpf.length} dígitos`;
+                statusElement.style.color = 'var(--urgency-red)';
+                return false;
+            }
+            
+            const isValid = isValidCPF(cpf);
+            
+            if (isValid) {
+                input.style.borderColor = 'var(--success-green)';
+                input.style.backgroundColor = '#f0fff4';
+                statusElement.textContent = '✅ CPF válido!';
+                statusElement.style.color = 'var(--success-green)';
+            } else {
+                input.style.borderColor = 'var(--urgency-red)';
+                input.style.backgroundColor = '#fff5f5';
+                statusElement.textContent = '❌ CPF inválido. Verifique os números digitados';
+                statusElement.style.color = 'var(--urgency-red)';
+            }
+            
+            return isValid;
+        }
+
+        // Algoritmo de validação de CPF
+        function isValidCPF(cpf) {
+            // Remove caracteres não numéricos
+            cpf = cpf.replace(/\D/g, '');
+            
+            // Verifica se tem 11 dígitos
+            if (cpf.length !== 11) return false;
+            
+            // Verifica se todos os dígitos são iguais (CPFs inválidos conhecidos)
+            if (/^(\d)\1+$/.test(cpf)) return false;
+            
+            // Validação do primeiro dígito verificador
+            let sum = 0;
+            for (let i = 0; i < 9; i++) {
+                sum += parseInt(cpf.charAt(i)) * (10 - i);
+            }
+            let digit1 = 11 - (sum % 11);
+            if (digit1 > 9) digit1 = 0;
+            if (parseInt(cpf.charAt(9)) !== digit1) return false;
+            
+            // Validação do segundo dígito verificador
+            sum = 0;
+            for (let i = 0; i < 10; i++) {
+                sum += parseInt(cpf.charAt(i)) * (11 - i);
+            }
+            let digit2 = 11 - (sum % 11);
+            if (digit2 > 9) digit2 = 0;
+            if (parseInt(cpf.charAt(10)) !== digit2) return false;
+            
+            return true;
+        }
+
         // Formatação e validação do WhatsApp com DDI
         document.getElementById('whatsapp').addEventListener('input', function(e) {
             let value = e.target.value.replace(/\D/g, '');
@@ -1206,13 +1302,15 @@
         // Validação em tempo real
         function validateForm() {
             const name = document.getElementById('name').value.trim();
+            const cpf = document.getElementById('cpf').value.replace(/\D/g, '');
             const whatsappInput = document.getElementById('whatsapp');
             const whatsapp = whatsappInput.value.replace(/\D/g, '');
             
             const nameValid = name.length >= 2;
+            const cpfValid = cpf.length === 11 && isValidCPF(cpf);
             const whatsappValid = whatsapp.length === 13 && whatsapp.startsWith('55');
             
-            const isValid = nameValid && whatsappValid;
+            const isValid = nameValid && cpfValid && whatsappValid;
             generateBtn.disabled = !isValid;
             
             // Feedback visual para o nome
@@ -1230,6 +1328,7 @@
 
         // Adicionar validação em tempo real
         document.getElementById('name').addEventListener('input', validateForm);
+        document.getElementById('cpf').addEventListener('input', validateForm);
         document.getElementById('whatsapp').addEventListener('input', validateForm);
 
         // Upsell functionality
@@ -1275,10 +1374,18 @@
             e.preventDefault();
             
             const name = document.getElementById('name').value.trim();
+            const cpf = document.getElementById('cpf').value.trim();
             const whatsapp = document.getElementById('whatsapp').value.trim();
 
             if (!validateForm()) {
                 showError('Por favor, preencha todos os campos corretamente.');
+                return;
+            }
+
+            // Validação adicional do CPF
+            const cpfNumbers = cpf.replace(/\D/g, '');
+            if (cpfNumbers.length !== 11 || !isValidCPF(cpfNumbers)) {
+                showError('Por favor, insira um CPF válido.');
                 return;
             }
 
@@ -1305,7 +1412,7 @@
                 return;
             }
 
-            await generatePix(name, whatsapp);
+            await generatePix(name, cpf, whatsapp);
         });
 
         // Função para gerar PIX via backend
