@@ -1102,6 +1102,117 @@
     </div>
 
     <script>
+        // ✅ EVENTOS PADRÃO LIMPOS - Disparar apenas no carregamento da página
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('Landing page loaded successfully');
+            
+            // 🔵 META PIXEL - Evento padrão único ViewContent
+            if (typeof fbq !== 'undefined') {
+                fbq('track', 'ViewContent', {
+                    content_name: 'Devocional Criativo - Landing Page',
+                    content_category: 'Digital Product',
+                    currency: 'BRL',
+                    value: 17.00
+                });
+                console.log('✅ Meta Pixel: ViewContent disparado');
+            }
+            
+            // 🟢 GA4 - Evento estrutural único
+            if (typeof gtag !== 'undefined') {
+                gtag('event', 'view_item', {
+                    currency: 'BRL',
+                    value: 17.00,
+                    items: [{
+                        item_id: 'devocional-criativo',
+                        item_name: 'Devocional Criativo 4 Livros',
+                        category: 'Digital Products',
+                        quantity: 1,
+                        price: 17.00
+                    }]
+                });
+                console.log('✅ GA4: view_item disparado');
+            }
+            
+            // Start carousel auto-advance
+            setInterval(autoAdvanceCarousel, 4000);
+            
+            // Check video autoplay status
+            setTimeout(() => {
+                const video = document.getElementById('solutionVideo');
+                if (video) {
+                    console.log('Video element found, checking autoplay status...');
+                    if (video.paused || video.muted === false) {
+                        document.getElementById('videoPlayBtn').style.display = 'block';
+                        console.log('Autoplay blocked, showing play button');
+                    } else {
+                        console.log('Video is playing automatically');
+                    }
+                    
+                    video.addEventListener('play', function() {
+                        document.getElementById('videoPlayBtn').style.display = 'none';
+                        console.log('Video started playing');
+                    });
+                    
+                    video.addEventListener('pause', function() {
+                        document.getElementById('videoPlayBtn').style.display = 'block';
+                        console.log('Video paused');
+                    });
+                } else {
+                    console.error('Video element not found');
+                }
+            }, 2000);
+        });
+
+        // ✅ MICRO-INTERAÇÕES - Apenas eventos customizados (SEM eventos padrão)
+        function trackEngagement(action, data = {}) {
+            console.log('🔄 Tracking engagement:', action);
+            
+            // 🔵 Meta Pixel - Apenas eventos customizados
+            if (typeof fbq !== 'undefined') {
+                switch(action) {
+                    case 'cta_click':
+                        fbq('trackCustom', 'CTAClicked', {
+                            button_location: data.location || 'unknown',
+                            content_name: 'Devocional Criativo'
+                        });
+                        break;
+                    case 'scroll_50_percent':
+                        fbq('trackCustom', 'ScrolledHalfway', {
+                            page_type: 'landing_page'
+                        });
+                        break;
+                    case 'video_played':
+                        fbq('trackCustom', 'VideoPlayed', {
+                            video_name: 'solution_video'
+                        });
+                        break;
+                    case 'faq_interaction':
+                        fbq('trackCustom', 'FAQClicked', {
+                            interaction_type: 'faq_expand'
+                        });
+                        break;
+                    case 'exit_intent':
+                        fbq('trackCustom', 'ExitIntent', {
+                            page_type: 'landing_page'
+                        });
+                        break;
+                    default:
+                        fbq('trackCustom', 'PageEngagement', {
+                            action: action
+                        });
+                }
+            }
+            
+            // 🟢 GA4 - Eventos de engajamento
+            if (typeof gtag !== 'undefined') {
+                gtag('event', 'engagement', {
+                    action: action,
+                    engagement_time_msec: data.time || 100,
+                    event_category: 'user_interaction'
+                });
+            }
+        }
+
         // Carousel functionality
         let currentSlide = 0;
         const totalSlides = 6;
@@ -1110,7 +1221,7 @@
             currentSlide = slideIndex;
             const track = document.getElementById('carouselTrack');
             const isMobile = window.innerWidth <= 768;
-            const slideWidth = isMobile ? 180 : 220; // Precisa ser width + gap
+            const slideWidth = isMobile ? 180 : 220;
             
             console.log(`Going to slide ${slideIndex}, mobile: ${isMobile}, slideWidth: ${slideWidth}`);
             
@@ -1145,130 +1256,33 @@
             
             video.play().then(() => {
                 playBtn.style.display = 'none';
-                trackMicroConversion('video_played');
+                trackEngagement('video_played', { initiated_by: 'user' });
                 console.log('Video play initiated by user');
             }).catch((error) => {
                 console.log('Video play failed:', error);
-                // Keep the play button visible
             });
         }
 
-        // Check if video is actually playing (for mobile devices)
-        window.addEventListener('load', function() {
-            console.log('Landing page loaded successfully');
-            
-            // Start carousel auto-advance
-            setInterval(autoAdvanceCarousel, 4000);
-            
-            // Check video autoplay status
-            setTimeout(() => {
-                const video = document.getElementById('solutionVideo');
-                if (video) {
-                    console.log('Video element found, checking autoplay status...');
-                    // Check if video is paused or has low volume (autoplay restrictions)
-                    if (video.paused || video.muted === false) {
-                        document.getElementById('videoPlayBtn').style.display = 'block';
-                        console.log('Autoplay blocked, showing play button');
-                    } else {
-                        console.log('Video is playing automatically');
-                    }
-                    
-                    // Listen for video events
-                    video.addEventListener('play', function() {
-                        document.getElementById('videoPlayBtn').style.display = 'none';
-                        console.log('Video started playing');
-                    });
-                    
-                    video.addEventListener('pause', function() {
-                        document.getElementById('videoPlayBtn').style.display = 'block';
-                        console.log('Video paused');
-                    });
-                } else {
-                    console.error('Video element not found');
-                }
-            }, 2000); // Wait 2 seconds to check if autoplay worked
-            
-            trackMicroConversion('page_loaded');
-        });
-
         // Responsive carousel on resize and orientation change
         window.addEventListener('resize', function() {
-            goToSlide(currentSlide); // Recalculate position
+            goToSlide(currentSlide);
         });
         
         window.addEventListener('orientationchange', function() {
             setTimeout(() => {
-                goToSlide(currentSlide); // Recalculate after orientation change
+                goToSlide(currentSlide);
             }, 100);
         });
 
-        // Checkout Redirect Function
+        // ✅ CHECKOUT REDIRECT - Apenas evento customizado
         function redirectToCheckout() {
-            // Track conversion attempt
-            trackMicroConversion('cta_click');
+            // Track conversion attempt with custom event
+            trackEngagement('cta_click', { location: 'main_cta' });
             
-            // ==========================================
-            // ⚠️  ALTERE A URL ABAIXO PARA SUA PÁGINA DE CHECKOUT:
-            // ==========================================
             const checkoutURL = "https://landingpage-checkout.vercel.app/checkout.html"; 
-            // EXEMPLO: const checkoutURL = "https://meusite.com/comprar";
             
             // Redirect to checkout page
             window.location.href = checkoutURL;
-        }
-
-        // Micro-conversion Tracking (Optimized - only significant events)
-        function trackMicroConversion(action) {
-            // Google Analytics 4 tracking
-            if (typeof gtag !== 'undefined') {
-                gtag('event', action, {
-                    event_category: 'engagement',
-                    event_label: 'devocional_criativo',
-                    value: 0
-                });
-            }
-            
-            // Facebook Pixel tracking
-            if (typeof fbq !== 'undefined') {
-                switch(action) {
-                    case 'cta_click':
-                        fbq('track', 'InitiateCheckout', {
-                            content_name: 'Devocional Criativo',
-                            value: 17.00,
-                            currency: 'BRL'
-                        });
-                        break;
-                    case 'scroll_50_percent':
-                        fbq('track', 'ViewContent', {
-                            content_name: 'Landing Page 50%'
-                        });
-                        break;
-                    case 'faq_interaction':
-                        fbq('track', 'Search', {
-                            search_string: 'FAQ'
-                        });
-                        break;
-                    case 'exit_intent':
-                        fbq('track', 'Lead', {
-                            content_name: 'Exit Intent'
-                        });
-                        break;
-                    case 'video_played':
-                        fbq('track', 'ViewContent', {
-                            content_name: 'Solution Video'
-                        });
-                        break;
-                    case 'page_loaded':
-                        fbq('track', 'PageView');
-                        break;
-                    default:
-                        fbq('track', 'Lead', {
-                            content_name: action
-                        });
-                }
-            }
-            
-            console.log('Micro-conversion tracked:', action);
         }
 
         // FAQ Toggle Function
@@ -1277,7 +1291,7 @@
             const isActive = answer.classList.contains('active');
             
             // Track FAQ interaction
-            trackMicroConversion('faq_interaction');
+            trackEngagement('faq_interaction', { question: button.textContent.trim() });
             
             // Close all FAQ answers
             document.querySelectorAll('.faq-answer').forEach(faq => {
@@ -1322,7 +1336,7 @@
             observer.observe(el);
         });
 
-        // Sticky CTA behavior
+        // ✅ SCROLL TRACKING - Apenas 50% scroll como evento customizado
         let scrollTracked = false;
         window.addEventListener('scroll', function() {
             const stickyCTA = document.querySelector('.sticky-cta');
@@ -1332,9 +1346,9 @@
             const documentHeight = document.documentElement.scrollHeight;
             const scrollPercentage = (scrollPosition / (documentHeight - window.innerHeight)) * 100;
             
-            // Track 50% scroll (significant engagement metric)
+            // Track 50% scroll (significant engagement metric) - CUSTOM EVENT
             if (scrollPercentage > 50 && !scrollTracked) {
-                trackMicroConversion('scroll_50_percent');
+                trackEngagement('scroll_50_percent', { percentage: Math.round(scrollPercentage) });
                 scrollTracked = true;
             }
             
@@ -1345,10 +1359,10 @@
             }
         });
 
-        // Track page exit intent (when mouse leaves the page area)
+        // ✅ EXIT INTENT - Evento customizado
         document.addEventListener('mouseleave', function(e) {
             if (e.clientY <= 0) {
-                trackMicroConversion('exit_intent');
+                trackEngagement('exit_intent', { triggered_at: Date.now() });
             }
         });
     </script>
