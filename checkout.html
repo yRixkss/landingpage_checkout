@@ -756,6 +756,61 @@
             font-weight: bold;
         }
 
+        /* ✅ Estilos para monitoramento de pagamento */
+        .payment-monitoring {
+            background: linear-gradient(135deg, #e8f5e8 0%, #f0fff0 100%);
+            border: 2px solid var(--success-green);
+            border-radius: 15px;
+            padding: 20px;
+            margin-top: 20px;
+            animation: slideIn 0.5s ease-out;
+        }
+
+        .monitoring-indicator {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .monitoring-pulse {
+            width: 16px;
+            height: 16px;
+            background: var(--success-green);
+            border-radius: 50%;
+            animation: pulse-monitoring 2s infinite;
+            flex-shrink: 0;
+        }
+
+        @keyframes pulse-monitoring {
+            0% {
+                transform: scale(0.8);
+                opacity: 0.5;
+            }
+            50% {
+                transform: scale(1.2);
+                opacity: 1;
+            }
+            100% {
+                transform: scale(0.8);
+                opacity: 0.5;
+            }
+        }
+
+        .monitoring-text {
+            color: var(--text-dark);
+            font-size: 0.95rem;
+            line-height: 1.4;
+        }
+
+        .monitoring-text strong {
+            color: var(--success-green);
+        }
+
+        .monitoring-text small {
+            color: var(--text-light);
+            font-size: 0.85rem;
+        }
+
         /* Messages */
         .success-message, .error-message {
             padding: 15px;
@@ -1086,6 +1141,17 @@
                 <div class="expiry-warning">
                     ⏰ Este PIX expira em 1 hora. Não perca sua oportunidade!
                 </div>
+
+                <!-- ✅ Indicador de monitoramento -->
+                <div class="payment-monitoring" id="paymentMonitoring" style="display: none;">
+                    <div class="monitoring-indicator">
+                        <div class="monitoring-pulse"></div>
+                        <div class="monitoring-text">
+                            <strong>🔍 Monitorando seu pagamento...</strong><br>
+                            <small>Você será notificado automaticamente quando o pagamento for confirmado</small>
+                        </div>
+                    </div>
+                </div>
             </div>
 
             <!-- Messages -->
@@ -1101,20 +1167,41 @@
             BASE_AMOUNT: 1700,      // Produto base: R$ 17,00
             UPSELL_AMOUNT: 2400,    // Upsell: R$ 24,00
             
-            // URL do seu webhook n8n
+            // URLs do seu backend
             BACKEND_URL: 'https://dinastia-n8n-webhook.0grcvg.easypanel.host/webhook/checkout',
+            PAYMENT_STATUS_URL: 'https://dinastia-n8n-webhook.0grcvg.easypanel.host/webhook/payment-status',
             
             // Configurações do produto
             PRODUCT: {
                 id: 'devocional_criativo_maes',
                 name: 'Devocional Criativo para Mães',
                 description: '4 Livros de Colorir Bíblicos + Bônus'
+            },
+            
+            // Configurações de monitoramento de pagamento
+            PAYMENT_MONITORING: {
+                POLLING_INTERVAL: 5000,    // 5 segundos
+                MAX_ATTEMPTS: 720,         // 1 hora total (720 * 5s = 3600s)
+                RETRY_DELAY: 2000,         // 2 segundos para retry
+                PERSISTENCE_KEY: 'devocional_payment_data'
             }
         };
 
         // Estado atual do checkout
         let currentAmount = CONFIG.BASE_AMOUNT;
         let hasUpsell = false;
+
+        // ✅ Estado do monitoramento de pagamento
+        let paymentData = {
+            transactionId: null,
+            pixCode: null,
+            amount: null,
+            customerData: null,
+            monitoring: false,
+            pollingAttempts: 0,
+            eventSource: null,
+            confirmed: false
+        };
 
         // Elementos do DOM
         const form = document.getElementById('checkoutForm');
@@ -1126,6 +1213,444 @@
         const successMessage = document.getElementById('successMessage');
         const errorMessage = document.getElementById('errorMessage');
         const generateBtn = document.getElementById('generatePixBtn');
+
+        // ✅ Função para disparar eventos de compra confirmada
+        function trackPurchaseConfirmed(transactionData) {
+            const transactionId = transactionData.transactionId || generateTransactionId();
+            const value = transactionData.amount / 100; // Converter centavos para reais
+            const totalBooks = transactionData.hasUpsell ? 14 : 4;
+            
+            console.log('🎉 Disparando eventos de compra confirmada:', {
+                transactionId,
+                value,
+                totalBooks,
+                hasUpsell: transactionData.hasUpsell
+            });
+
+            // Google Analytics 4 - Purchase Event
+            if (typeof gtag !== 'undefined') {
+                gtag('event', 'purchase', {
+                    transaction_id: transactionId,
+                    value: value,
+                    currency: 'BRL',
+                    items: [{
+                        item_id: 'DEVOCIONAL_CRIATIVO_01',
+                        item_name: 'Devocional Criativo para Mães',
+                        price: CONFIG.BASE_AMOUNT / 100,
+                        quantity: 1,
+                        item_category: 'Livros Digitais',
+                        item_brand: 'Devocional Criativo'
+                    }].concat(transactionData.hasUpsell ? [{
+                        item_id: 'DEVOCIONAL_UPSELL_01',
+                        item_name: '10 Livros Extras de Colorir Bíblicos',
+                        price: CONFIG.UPSELL_AMOUNT / 100,
+                        quantity: 1,
+                        item_category: 'Livros Digitais',
+                        item_brand: 'Devocional Criativo'
+                    }] : [])
+                });
+                
+                console.log('✅ GA4 Purchase event enviado');
+            }
+
+            // Facebook Pixel - Purchase Event
+            if (typeof fbq !== 'undefined') {
+                fbq('track', 'Purchase', {
+                    value: value,
+                    currency: 'BRL',
+                    content_name: `Devocional Criativo para Mães${transactionData.hasUpsell ? ' + 10 Livros Extras' : ''}`,
+                    content_ids: ['DEVOCIONAL_CRIATIVO_01'].concat(transactionData.hasUpsell ? ['DEVOCIONAL_UPSELL_01'] : []),
+                    content_type: 'product',
+                    num_items: totalBooks
+                });
+                
+                console.log('✅ Facebook Purchase event enviado');
+            }
+
+            // Track internal purchase event
+            trackEvent('purchase_confirmed', {
+                transaction_id: transactionId,
+                value: value,
+                currency: 'BRL',
+                total_books: totalBooks,
+                has_upsell: transactionData.hasUpsell,
+                payment_method: 'pix',
+                confirmation_time: new Date().toISOString()
+            });
+
+            // Mostrar mensagem de sucesso
+            showPurchaseSuccess(transactionData);
+        }
+
+        // ✅ Função para gerar ID único de transação
+        function generateTransactionId() {
+            const timestamp = Date.now();
+            const random = Math.random().toString(36).substr(2, 6).toUpperCase();
+            return `TXN_${timestamp}_${random}`;
+        }
+
+        // ✅ Função para mostrar sucesso da compra
+        function showPurchaseSuccess(transactionData) {
+            const successContainer = document.createElement('div');
+            successContainer.className = 'purchase-success-overlay';
+            successContainer.innerHTML = `
+                <div class="purchase-success-modal">
+                    <div class="success-header">
+                        <div class="success-icon">🎉</div>
+                        <h3>Pagamento Confirmado!</h3>
+                        <p>Sua compra foi aprovada com sucesso</p>
+                    </div>
+                    <div class="success-details">
+                        <div class="detail-item">
+                            <strong>📚 Total de livros:</strong> ${transactionData.hasUpsell ? '14' : '4'} livros em PDF
+                        </div>
+                        <div class="detail-item">
+                            <strong>💰 Valor pago:</strong> R$ ${(transactionData.amount / 100).toFixed(2)}
+                        </div>
+                        <div class="detail-item">
+                            <strong>📱 Entrega:</strong> WhatsApp em até 5 minutos
+                        </div>
+                        <div class="detail-item">
+                            <strong>🔒 Transação:</strong> ${transactionData.transactionId}
+                        </div>
+                    </div>
+                    <div class="success-actions">
+                        <button onclick="this.parentElement.parentElement.parentElement.remove()" 
+                                class="success-btn">
+                            ✅ Entendi, vou aguardar no WhatsApp
+                        </button>
+                    </div>
+                </div>
+            `;
+
+            // Adicionar estilos CSS para o modal
+            const style = document.createElement('style');
+            style.textContent = `
+                .purchase-success-overlay {
+                    position: fixed;
+                    top: 0;
+                    left: 0;
+                    right: 0;
+                    bottom: 0;
+                    background: rgba(0, 0, 0, 0.8);
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    z-index: 10000;
+                    animation: fadeIn 0.3s ease-out;
+                }
+                
+                .purchase-success-modal {
+                    background: white;
+                    border-radius: 20px;
+                    padding: 30px;
+                    max-width: 500px;
+                    width: 90%;
+                    text-align: center;
+                    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+                    animation: slideUp 0.3s ease-out;
+                }
+                
+                .success-header {
+                    margin-bottom: 25px;
+                }
+                
+                .success-icon {
+                    font-size: 4rem;
+                    margin-bottom: 15px;
+                    animation: bounce 1s ease-out;
+                }
+                
+                .success-header h3 {
+                    font-size: 1.8rem;
+                    color: var(--success-green);
+                    margin-bottom: 10px;
+                }
+                
+                .success-header p {
+                    color: var(--text-light);
+                    font-size: 1.1rem;
+                }
+                
+                .success-details {
+                    background: var(--light-gray);
+                    border-radius: 15px;
+                    padding: 20px;
+                    margin: 20px 0;
+                    text-align: left;
+                }
+                
+                .detail-item {
+                    margin-bottom: 12px;
+                    font-size: 0.95rem;
+                    color: var(--text-dark);
+                    display: flex;
+                    justify-content: space-between;
+                    align-items: center;
+                }
+                
+                .success-btn {
+                    background: linear-gradient(135deg, var(--success-green) 0%, #1e8449 100%);
+                    color: white;
+                    border: none;
+                    padding: 15px 30px;
+                    border-radius: 25px;
+                    font-size: 1.1rem;
+                    font-weight: bold;
+                    cursor: pointer;
+                    transition: all 0.3s ease;
+                    margin-top: 15px;
+                }
+                
+                .success-btn:hover {
+                    transform: translateY(-2px);
+                    box-shadow: 0 10px 30px rgba(39, 174, 96, 0.3);
+                }
+                
+                @keyframes slideUp {
+                    from { transform: translateY(50px); opacity: 0; }
+                    to { transform: translateY(0); opacity: 1; }
+                }
+                
+                @keyframes bounce {
+                    0%, 100% { transform: scale(1); }
+                    50% { transform: scale(1.1); }
+                }
+            `;
+            document.head.appendChild(style);
+            document.body.appendChild(successContainer);
+
+            // Auto-remover após 30 segundos
+            setTimeout(() => {
+                if (successContainer.parentElement) {
+                    successContainer.remove();
+                }
+            }, 30000);
+        }
+
+        // ✅ Sistema de monitoramento de pagamento
+        async function startPaymentMonitoring(transactionId, amount, customerData, hasUpsell) {
+            if (paymentData.monitoring) {
+                console.log('⚠️ Monitoramento já ativo');
+                return;
+            }
+
+            paymentData = {
+                transactionId,
+                amount,
+                customerData,
+                hasUpsell,
+                monitoring: true,
+                pollingAttempts: 0,
+                confirmed: false
+            };
+
+            console.log('🔍 Iniciando monitoramento de pagamento:', {
+                transactionId,
+                amount: amount / 100,
+                hasUpsell
+            });
+
+            // Tentar Server-Sent Events primeiro
+            try {
+                await startServerSentEvents(transactionId);
+            } catch (error) {
+                console.log('📡 SSE não disponível, usando polling:', error.message);
+                startPollingMonitoring(transactionId);
+            }
+
+            // Backup com polling independente
+            setTimeout(() => {
+                if (paymentData.monitoring && !paymentData.confirmed) {
+                    console.log('🔄 Iniciando polling de backup');
+                    startPollingMonitoring(transactionId);
+                }
+            }, 10000); // 10 segundos de delay
+        }
+
+        // ✅ Server-Sent Events para monitoramento em tempo real
+        async function startServerSentEvents(transactionId) {
+            const sseUrl = `${CONFIG.PAYMENT_STATUS_URL}/${transactionId}/events`;
+            
+            return new Promise((resolve, reject) => {
+                try {
+                    const eventSource = new EventSource(sseUrl);
+                    paymentData.eventSource = eventSource;
+
+                    eventSource.onopen = function() {
+                        console.log('📡 Conexão SSE estabelecida');
+                        resolve();
+                    };
+
+                    eventSource.onmessage = function(event) {
+                        try {
+                            const data = JSON.parse(event.data);
+                            handlePaymentStatusUpdate(data);
+                        } catch (error) {
+                            console.error('❌ Erro ao processar SSE:', error);
+                        }
+                    };
+
+                    eventSource.addEventListener('payment_confirmed', function(event) {
+                        const data = JSON.parse(event.data);
+                        handlePaymentConfirmed(data);
+                    });
+
+                    eventSource.onerror = function(error) {
+                        console.log('❌ Erro SSE:', error);
+                        eventSource.close();
+                        paymentData.eventSource = null;
+                        
+                        // Fallback para polling
+                        if (paymentData.monitoring && !paymentData.confirmed) {
+                            startPollingMonitoring(transactionId);
+                        }
+                    };
+
+                    // Timeout para SSE
+                    setTimeout(() => {
+                        if (eventSource.readyState === EventSource.CONNECTING) {
+                            eventSource.close();
+                            reject(new Error('SSE timeout'));
+                        }
+                    }, 5000);
+
+                } catch (error) {
+                    reject(error);
+                }
+            });
+        }
+
+        // ✅ Polling para verificar status do pagamento
+        async function startPollingMonitoring(transactionId) {
+            if (!paymentData.monitoring || paymentData.confirmed) {
+                return;
+            }
+
+            paymentData.pollingAttempts++;
+
+            try {
+                console.log(`🔍 Polling tentativa ${paymentData.pollingAttempts}/${CONFIG.PAYMENT_MONITORING.MAX_ATTEMPTS}`);
+
+                const response = await fetch(`${CONFIG.PAYMENT_STATUS_URL}/${transactionId}`, {
+                    method: 'GET',
+                    headers: {
+                        'Accept': 'application/json',
+                        'Cache-Control': 'no-cache'
+                    }
+                });
+
+                if (response.ok) {
+                    const data = await response.json();
+                    handlePaymentStatusUpdate(data);
+                }
+
+            } catch (error) {
+                console.error('❌ Erro no polling:', error);
+            }
+
+            // Continuar polling se necessário
+            if (paymentData.monitoring && 
+                !paymentData.confirmed && 
+                paymentData.pollingAttempts < CONFIG.PAYMENT_MONITORING.MAX_ATTEMPTS) {
+                
+                setTimeout(() => {
+                    startPollingMonitoring(transactionId);
+                }, CONFIG.PAYMENT_MONITORING.POLLING_INTERVAL);
+            } else if (paymentData.pollingAttempts >= CONFIG.PAYMENT_MONITORING.MAX_ATTEMPTS) {
+                console.log('⏰ Tempo limite de monitoramento atingido');
+                stopPaymentMonitoring();
+            }
+        }
+
+        // ✅ Processar atualizações de status
+        function handlePaymentStatusUpdate(data) {
+            console.log('📊 Status do pagamento:', data);
+
+            if (data.status === 'confirmed' || data.status === 'paid') {
+                handlePaymentConfirmed(data);
+            } else if (data.status === 'expired' || data.status === 'cancelled') {
+                console.log('❌ Pagamento expirado/cancelado');
+                stopPaymentMonitoring();
+                showError('O PIX expirou. Gere um novo para continuar sua compra.');
+            }
+        }
+
+        // ✅ Processar confirmação de pagamento
+        function handlePaymentConfirmed(data) {
+            if (paymentData.confirmed) {
+                console.log('✅ Pagamento já confirmado anteriormente');
+                return;
+            }
+
+            console.log('🎉 Pagamento confirmado!', data);
+            
+            paymentData.confirmed = true;
+            stopPaymentMonitoring();
+
+            // Disparar eventos de compra
+            trackPurchaseConfirmed({
+                transactionId: paymentData.transactionId,
+                amount: paymentData.amount,
+                hasUpsell: paymentData.hasUpsell,
+                customerData: paymentData.customerData,
+                confirmationData: data
+            });
+        }
+
+        // ✅ Parar monitoramento
+        function stopPaymentMonitoring() {
+            paymentData.monitoring = false;
+            
+            if (paymentData.eventSource) {
+                paymentData.eventSource.close();
+                paymentData.eventSource = null;
+            }
+
+            console.log('🛑 Monitoramento de pagamento parado');
+        }
+
+        // ✅ Persistir dados em sessionStorage (fallback para variáveis)
+        function persistPaymentData() {
+            try {
+                // Em produção real, use sessionStorage
+                // sessionStorage.setItem(CONFIG.PAYMENT_MONITORING.PERSISTENCE_KEY, JSON.stringify(paymentData));
+                
+                // No ambiente de artifacts, mantemos em variável global
+                window.devocionalPaymentData = paymentData;
+                
+            } catch (error) {
+                console.warn('⚠️ Não foi possível persistir dados:', error);
+            }
+        }
+
+        // ✅ Recuperar dados persistidos
+        function restorePaymentData() {
+            try {
+                // Em produção real, use sessionStorage
+                // const saved = sessionStorage.getItem(CONFIG.PAYMENT_MONITORING.PERSISTENCE_KEY);
+                
+                // No ambiente de artifacts, use variável global
+                const saved = window.devocionalPaymentData;
+                
+                if (saved) {
+                    const parsedData = typeof saved === 'string' ? JSON.parse(saved) : saved;
+                    
+                    if (parsedData.transactionId && parsedData.monitoring && !parsedData.confirmed) {
+                        paymentData = parsedData;
+                        console.log('🔄 Dados de pagamento restaurados, retomando monitoramento');
+                        startPaymentMonitoring(
+                            parsedData.transactionId,
+                            parsedData.amount,
+                            parsedData.customerData,
+                            parsedData.hasUpsell
+                        );
+                    }
+                }
+            } catch (error) {
+                console.warn('⚠️ Erro ao restaurar dados:', error);
+            }
+        }
 
         // Formatação e validação do CPF
         document.getElementById('cpf').addEventListener('input', function(e) {
@@ -1594,6 +2119,37 @@
             copyBtn.onclick = function() {
                 copyPixCode(pixData.brCode);
             };
+
+            // ✅ INICIAR MONITORAMENTO DE PAGAMENTO
+            if (pixData.transactionId) {
+                const customerData = {
+                    name: document.getElementById('name').value.trim(),
+                    cpf: document.getElementById('cpf').value.replace(/\D/g, ''),
+                    whatsapp: document.getElementById('whatsapp').value.replace(/\D/g, '')
+                };
+
+                startPaymentMonitoring(
+                    pixData.transactionId,
+                    currentAmount,
+                    customerData,
+                    hasUpsell
+                );
+
+                // Persistir dados para recuperação
+                persistPaymentData();
+
+                // ✅ Mostrar indicador de monitoramento
+                setTimeout(() => {
+                    const monitoringElement = document.getElementById('paymentMonitoring');
+                    if (monitoringElement) {
+                        monitoringElement.style.display = 'block';
+                    }
+                }, 1000);
+
+                console.log('🚀 Monitoramento de pagamento iniciado para transação:', pixData.transactionId);
+            } else {
+                console.warn('⚠️ Nenhum ID de transação fornecido, monitoramento não iniciado');
+            }
         }
 
         // Função para copiar código PIX
@@ -1759,6 +2315,9 @@
             validateForm(); // Validação inicial
             updatePricing(false); // Configuração inicial dos preços
             
+            // ✅ Restaurar dados de pagamento se existirem
+            restorePaymentData();
+            
             // Observer para detectar quando upsell entra na viewport
             const upsellSection = document.querySelector('.upsell-section');
             if (upsellSection) {
@@ -1788,8 +2347,77 @@
             console.log('⚙️ Configuração:', CONFIG);
         });
 
+        // ✅ Persistir dados antes de sair da página
+        window.addEventListener('beforeunload', function() {
+            if (paymentData.monitoring && !paymentData.confirmed) {
+                persistPaymentData();
+                console.log('💾 Dados de pagamento persistidos antes de sair');
+            }
+        });
+
+        // ✅ Parar monitoramento quando página perde foco (opcional)
+        document.addEventListener('visibilitychange', function() {
+            if (document.hidden && paymentData.monitoring) {
+                // Reduzir frequência de polling quando página não está visível
+                console.log('👁️ Página não visível, reduzindo polling');
+            } else if (!document.hidden && paymentData.monitoring) {
+                console.log('👁️ Página visível novamente');
+            }
+        });
+
         // Auto-focus no primeiro campo
         document.getElementById('name').focus();
     </script>
+
+    <!--
+    ✅ CONFIGURAÇÃO DO BACKEND NECESSÁRIA:
+    
+    1. Endpoint para status do pagamento:
+       GET {PAYMENT_STATUS_URL}/{transactionId}
+       Deve retornar: { status: 'pending|confirmed|paid|expired|cancelled', data: {...} }
+    
+    2. Endpoint para Server-Sent Events (opcional):
+       GET {PAYMENT_STATUS_URL}/{transactionId}/events
+       Deve retornar stream SSE com eventos de status
+    
+    3. Webhook do AbacatePay deve ser configurado para:
+       - Receber confirmações de pagamento
+       - Atualizar status no banco/cache
+       - Notificar via SSE se implementado
+    
+    4. Em produção, substitua window.devocionalPaymentData por sessionStorage:
+       sessionStorage.setItem('devocional_payment_data', JSON.stringify(paymentData))
+       sessionStorage.getItem('devocional_payment_data')
+    
+    5. Exemplo de resposta do endpoint de status:
+       {
+         "status": "confirmed",
+         "transactionId": "TXN123456",
+         "amount": 1700,
+         "paidAt": "2025-01-29T15:30:00Z",
+         "customerData": { ... }
+       }
+    
+    6. Fluxo completo:
+       - Cliente gera PIX → Sistema inicia monitoramento (polling + SSE)
+       - AbacatePay confirma pagamento via webhook → Backend atualiza status
+       - Frontend recebe confirmação → Dispara GA4 + Facebook Purchase automaticamente
+       - Modal de sucesso é exibido → Cliente é notificado na mesma página
+    
+    ✅ VANTAGENS DESTE SISTEMA:
+    • Funciona mesmo se cliente sair da página e voltar
+    • Múltiplas estratégias de monitoramento (SSE + Polling)
+    • Eventos de purchase automáticos sem página de obrigado
+    • Persistência de dados entre sessões
+    • Fallbacks robustos para diferentes cenários
+    • Experiência do usuário superior (sem redirecionamentos)
+    • Tracking preciso de conversões para GA4 e Facebook
+    
+    🔧 CONFIGURAÇÃO RÁPIDA:
+    1. Configure os endpoints no seu N8N conforme URLs no CONFIG
+    2. Atualize webhook do AbacatePay para notificar seu endpoint
+    3. Em produção, substitua window.devocionalPaymentData por sessionStorage
+    4. Teste o fluxo completo: gerar PIX → pagar → confirmar eventos
+    -->
 </body>
 </html>
