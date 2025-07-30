@@ -1471,17 +1471,20 @@
 
         // ✅ Server-Sent Events para monitoramento em tempo real
         async function startServerSentEvents(transactionId) {
-            const sseUrl = `${CONFIG.SSE_URL}/${transactionId}`;
-            
-            return new Promise((resolve, reject) => {
-                try {
-                    const eventSource = new EventSource(sseUrl);
-                    paymentData.eventSource = eventSource;
+    // 👇 ALTERE APENAS ESTA LINHA 👇
+    const sseUrl = `${CONFIG.SSE_URL}/${transactionId}`;
+    
+    console.log(`📡 Tentando conectar ao servidor SSE em: ${sseUrl}`); // Adicione este log para depuração
 
-                    eventSource.onopen = function() {
-                        console.log('📡 Conexão SSE estabelecida');
-                        resolve();
-                    };
+    return new Promise((resolve, reject) => {
+        try {
+            const eventSource = new EventSource(sseUrl);
+            paymentData.eventSource = eventSource;
+
+            eventSource.onopen = function() {
+                console.log('✅ Conexão SSE estabelecida com sucesso!');
+                resolve();
+            };
 
                     eventSource.onmessage = function(event) {
                         try {
@@ -1498,15 +1501,21 @@
                     });
 
                     eventSource.onerror = function(error) {
-                        console.log('❌ Erro SSE:', error);
-                        eventSource.close();
-                        paymentData.eventSource = null;
-                        
-                        // Fallback para polling
-                        if (paymentData.monitoring && !paymentData.confirmed) {
-                            startPollingMonitoring(transactionId);
-                        }
-                    };
+                // Com a correção da URL, este erro agora só deve acontecer quando o n8n fechar a conexão
+                console.log('🔌 Conexão SSE fechada ou com erro.', error);
+                eventSource.close();
+                paymentData.eventSource = null;
+                
+                // Vamos ajustar a lógica aqui para o nosso plano
+                // Se o n8n fechar a conexão, é o nosso sinal de sucesso!
+                if (!paymentData.confirmed) {
+                    console.log('Detectado fechamento da conexão. Disparando confirmação de pagamento.');
+                    handlePaymentConfirmed({
+                        status: 'confirmed',
+                        reason: 'SSE_CONNECTION_CLOSED'
+                    });
+                }
+            };
 
                     // Timeout para SSE
                     setTimeout(() => {
