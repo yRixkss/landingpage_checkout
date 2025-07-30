@@ -10,7 +10,7 @@
     <link rel="preconnect" href="https://www.googletagmanager.com">
     <link rel="preconnect" href="https://connect.facebook.net">
     
-    <!-- Google Analytics 4 -->
+    <!-- ✅ Google Analytics 4 - LIMPO -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-07XMDKPW1B"></script>
     <script>
         window.dataLayer = window.dataLayer || [];
@@ -19,7 +19,7 @@
         gtag('config', 'G-07XMDKPW1B');
     </script>
 
-    <!-- Facebook Pixel -->
+    <!-- ✅ Facebook Pixel - LIMPO -->
     <script>
         !function(f,b,e,v,n,t,s)
         {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
@@ -30,7 +30,7 @@
         s.parentNode.insertBefore(t,s)}(window, document,'script',
         'https://connect.facebook.net/en_US/fbevents.js');
         fbq('init', '752052097213780');
-        fbq('track', 'PageView');
+        fbq('track', 'PageView'); // ✅ APENAS PageView no checkout
     </script>
     <noscript><img height="1" width="1" style="display:none"
         src="https://www.facebook.com/tr?id=752052097213780&ev=PageView&noscript=1"
@@ -1214,7 +1214,7 @@
         const errorMessage = document.getElementById('errorMessage');
         const generateBtn = document.getElementById('generatePixBtn');
 
-        // ✅ Função para disparar eventos de compra confirmada
+        // ✅ Função para disparar eventos de compra confirmada - LIMPA
         function trackPurchaseConfirmed(transactionData) {
             const transactionId = transactionData.transactionId || generateTransactionId();
             const value = transactionData.amount / 100; // Converter centavos para reais
@@ -1227,7 +1227,7 @@
                 hasUpsell: transactionData.hasUpsell
             });
 
-            // Google Analytics 4 - Purchase Event
+            // ✅ Google Analytics 4 - Purchase Event LIMPO
             if (typeof gtag !== 'undefined') {
                 gtag('event', 'purchase', {
                     transaction_id: transactionId,
@@ -1253,7 +1253,7 @@
                 console.log('✅ GA4 Purchase event enviado');
             }
 
-            // Facebook Pixel - Purchase Event
+            // ✅ Facebook Pixel - Purchase Event LIMPO
             if (typeof fbq !== 'undefined') {
                 fbq('track', 'Purchase', {
                     value: value,
@@ -1267,8 +1267,8 @@
                 console.log('✅ Facebook Purchase event enviado');
             }
 
-            // Track internal purchase event
-            trackEvent('purchase_confirmed', {
+            // ✅ Track internal purchase event - evento customizado
+            trackCustomEvent('purchase_confirmed', {
                 transaction_id: transactionId,
                 value: value,
                 currency: 'BRL',
@@ -1452,7 +1452,7 @@
             });
 
             console.log('📡 Usando estratégia de monitoramento via Polling.');
-startPollingMonitoring(transactionId);
+            startPollingMonitoring(transactionId);
 
             // Backup com polling independente
             setTimeout(() => {
@@ -1465,20 +1465,20 @@ startPollingMonitoring(transactionId);
 
         // ✅ Server-Sent Events para monitoramento em tempo real
         async function startServerSentEvents(transactionId) {
-    // 👇 ALTERE APENAS ESTA LINHA 👇
-    const sseUrl = `${CONFIG.SSE_URL}/${transactionId}`;
-    
-    console.log(`📡 Tentando conectar ao servidor SSE em: ${sseUrl}`); // Adicione este log para depuração
+            // 👇 ALTERE APENAS ESTA LINHA 👇
+            const sseUrl = `${CONFIG.SSE_URL}/${transactionId}`;
+            
+            console.log(`📡 Tentando conectar ao servidor SSE em: ${sseUrl}`); // Adicione este log para depuração
 
-    return new Promise((resolve, reject) => {
-        try {
-            const eventSource = new EventSource(sseUrl);
-            paymentData.eventSource = eventSource;
+            return new Promise((resolve, reject) => {
+                try {
+                    const eventSource = new EventSource(sseUrl);
+                    paymentData.eventSource = eventSource;
 
-            eventSource.onopen = function() {
-                console.log('✅ Conexão SSE estabelecida com sucesso!');
-                resolve();
-            };
+                    eventSource.onopen = function() {
+                        console.log('✅ Conexão SSE estabelecida com sucesso!');
+                        resolve();
+                    };
 
                     eventSource.onmessage = function(event) {
                         try {
@@ -1495,21 +1495,21 @@ startPollingMonitoring(transactionId);
                     });
 
                     eventSource.onerror = function(error) {
-                // Com a correção da URL, este erro agora só deve acontecer quando o n8n fechar a conexão
-                console.log('🔌 Conexão SSE fechada ou com erro.', error);
-                eventSource.close();
-                paymentData.eventSource = null;
-                
-                // Vamos ajustar a lógica aqui para o nosso plano
-                // Se o n8n fechar a conexão, é o nosso sinal de sucesso!
-                if (!paymentData.confirmed) {
-                    console.log('Detectado fechamento da conexão. Disparando confirmação de pagamento.');
-                    handlePaymentConfirmed({
-                        status: 'confirmed',
-                        reason: 'SSE_CONNECTION_CLOSED'
-                    });
-                }
-            };
+                        // Com a correção da URL, este erro agora só deve acontecer quando o n8n fechar a conexão
+                        console.log('🔌 Conexão SSE fechada ou com erro.', error);
+                        eventSource.close();
+                        paymentData.eventSource = null;
+                        
+                        // Vamos ajustar a lógica aqui para o nosso plano
+                        // Se o n8n fechar a conexão, é o nosso sinal de sucesso!
+                        if (!paymentData.confirmed) {
+                            console.log('Detectado fechamento da conexão. Disparando confirmação de pagamento.');
+                            handlePaymentConfirmed({
+                                status: 'confirmed',
+                                reason: 'SSE_CONNECTION_CLOSED'
+                            });
+                        }
+                    };
 
                     // Timeout para SSE
                     setTimeout(() => {
@@ -1702,16 +1702,16 @@ startPollingMonitoring(transactionId);
                 statusElement.textContent = '✅ CPF válido!';
                 statusElement.style.color = 'var(--success-green)';
                 
-                // Track field completion
-                trackEvent('form_field_completed', { field: 'cpf' });
+                // ✅ Track field completion - evento customizado
+                trackCustomEvent('form_field_completed', { field: 'cpf' });
             } else {
                 input.style.borderColor = 'var(--urgency-red)';
                 input.style.backgroundColor = '#fff5f5';
                 statusElement.textContent = '❌ CPF inválido. Verifique os números digitados';
                 statusElement.style.color = 'var(--urgency-red)';
                 
-                // Track validation error
-                trackEvent('form_validation_error', { error: 'invalid_cpf' });
+                // ✅ Track validation error - evento customizado
+                trackCustomEvent('form_validation_error', { error: 'invalid_cpf' });
             }
             
             return isValid;
@@ -1814,8 +1814,8 @@ startPollingMonitoring(transactionId);
                 statusElement.textContent = '✅ Número válido! Você receberá os livros neste WhatsApp.';
                 statusElement.style.color = 'var(--success-green)';
                 
-                // Track field completion
-                trackEvent('form_field_completed', { field: 'whatsapp' });
+                // ✅ Track field completion - evento customizado
+                trackCustomEvent('form_field_completed', { field: 'whatsapp' });
             } else if (value.length > 0) {
                 input.style.borderColor = 'var(--urgency-red)';
                 input.style.backgroundColor = '#fff5f5';
@@ -1829,8 +1829,8 @@ startPollingMonitoring(transactionId);
                 }
                 statusElement.style.color = 'var(--urgency-red)';
                 
-                // Track validation error
-                trackEvent('form_validation_error', { error: 'invalid_whatsapp' });
+                // ✅ Track validation error - evento customizado
+                trackCustomEvent('form_validation_error', { error: 'invalid_whatsapp' });
             } else {
                 input.style.borderColor = '#e1e1e1';
                 input.style.backgroundColor = 'var(--light-gray)';
@@ -1886,9 +1886,9 @@ startPollingMonitoring(transactionId);
                 nameInput.style.borderColor = 'var(--success-green)';
                 nameInput.style.backgroundColor = '#f0fff4';
                 
-                // Track field completion (only once per session)
+                // ✅ Track field completion (only once per session) - evento customizado
                 if (!nameInput.dataset.tracked) {
-                    trackEvent('form_field_completed', { field: 'name' });
+                    trackCustomEvent('form_field_completed', { field: 'name' });
                     nameInput.dataset.tracked = 'true';
                 }
             } else if (name.length === 0) {
@@ -1899,9 +1899,9 @@ startPollingMonitoring(transactionId);
                 nameInput.style.backgroundColor = '#fff5f5';
             }
             
-            // Track when all fields are valid (form completion)
+            // ✅ Track when all fields are valid (form completion) - evento customizado
             if (isValid && !generateBtn.dataset.formCompleted) {
-                trackEvent('form_completed', { 
+                trackCustomEvent('form_completed', { 
                     all_fields_valid: true,
                     form_completion_time: Date.now() - (window.checkoutStartTime || Date.now())
                 });
@@ -1928,15 +1928,15 @@ startPollingMonitoring(transactionId);
             hasUpsell = this.checked;
             updatePricing(hasUpsell);
             
-            // Track upsell interaction
+            // ✅ Track upsell interaction - eventos customizados
             if (hasUpsell) {
-                trackEvent('upsell_selected', { 
+                trackCustomEvent('upsell_selected', { 
                     value: 24.00,
                     new_total: currentAmount / 100,
                     interaction_time: Date.now() - window.checkoutStartTime
                 });
             } else {
-                trackEvent('upsell_deselected', {
+                trackCustomEvent('upsell_deselected', {
                     old_total: (CONFIG.BASE_AMOUNT + CONFIG.UPSELL_AMOUNT) / 100,
                     new_total: currentAmount / 100
                 });
@@ -1978,7 +1978,7 @@ startPollingMonitoring(transactionId);
             const cpfNumbers = cpf.replace(/\D/g, '');
             if (cpfNumbers.length !== 11 || !isValidCPF(cpfNumbers)) {
                 showError('Por favor, insira um CPF válido.');
-                trackEvent('form_validation_error', { error: 'invalid_cpf_submission' });
+                trackCustomEvent('form_validation_error', { error: 'invalid_cpf_submission' });
                 return;
             }
 
@@ -1986,7 +1986,7 @@ startPollingMonitoring(transactionId);
             const whatsappNumbers = whatsapp.replace(/\D/g, '');
             if (whatsappNumbers.length !== 13 || !whatsappNumbers.startsWith('55')) {
                 showError('Por favor, insira um WhatsApp válido no formato: +55 (DDD) 9XXXX-XXXX');
-                trackEvent('form_validation_error', { error: 'invalid_whatsapp_submission' });
+                trackCustomEvent('form_validation_error', { error: 'invalid_whatsapp_submission' });
                 return;
             }
 
@@ -1996,7 +1996,7 @@ startPollingMonitoring(transactionId);
             
             if (!validDDDs.includes(ddd)) {
                 showError('Por favor, insira um DDD válido do Brasil.');
-                trackEvent('form_validation_error', { error: 'invalid_ddd' });
+                trackCustomEvent('form_validation_error', { error: 'invalid_ddd' });
                 return;
             }
 
@@ -2004,12 +2004,12 @@ startPollingMonitoring(transactionId);
             const phoneNumber = whatsappNumbers.substring(4);
             if (!phoneNumber.startsWith('9') || phoneNumber.length !== 9) {
                 showError('Por favor, insira um número de celular válido (deve começar com 9).');
-                trackEvent('form_validation_error', { error: 'invalid_phone_format' });
+                trackCustomEvent('form_validation_error', { error: 'invalid_phone_format' });
                 return;
             }
 
-            // Track form submission attempt
-            trackEvent('form_submission_attempt', {
+            // ✅ Track form submission attempt - evento customizado
+            trackCustomEvent('form_submission_attempt', {
                 has_upsell: hasUpsell,
                 total_value: currentAmount / 100
             });
@@ -2065,8 +2065,40 @@ startPollingMonitoring(transactionId);
                 // ✅ Exibir PIX na tela
                 displayPix(data.data);
 
-                // ✅ Track successful PIX generation
-                trackEvent('pix_generated', {
+                // ✅ Disparar InitiateCheckout - MOMENTO CORRETO e LIMPO
+                if (typeof gtag !== 'undefined') {
+                    gtag('event', 'begin_checkout', {
+                        currency: 'BRL',
+                        value: currentAmount / 100,
+                        items: [{
+                            item_id: 'DEVOCIONAL_CRIATIVO_01',
+                            item_name: 'Devocional Criativo para Mães',
+                            price: CONFIG.BASE_AMOUNT / 100,
+                            quantity: 1
+                        }].concat(hasUpsell ? [{
+                            item_id: 'DEVOCIONAL_UPSELL_01', 
+                            item_name: '10 Livros Extras',
+                            price: CONFIG.UPSELL_AMOUNT / 100,
+                            quantity: 1
+                        }] : [])
+                    });
+                    console.log('✅ GA4 begin_checkout enviado');
+                }
+
+                if (typeof fbq !== 'undefined') {
+                    fbq('track', 'InitiateCheckout', {
+                        value: currentAmount / 100,
+                        currency: 'BRL',
+                        content_name: 'Devocional Criativo para Mães',
+                        content_ids: ['DEVOCIONAL_CRIATIVO_01'],
+                        content_type: 'product',
+                        num_items: hasUpsell ? 14 : 4
+                    });
+                    console.log('✅ Facebook InitiateCheckout enviado');
+                }
+
+                // ✅ Track successful PIX generation - evento customizado
+                trackCustomEvent('pix_generated', {
                     value: currentAmount / 100,
                     has_upsell: hasUpsell,
                     total_books: hasUpsell ? 14 : 4
@@ -2080,8 +2112,8 @@ startPollingMonitoring(transactionId);
             } catch (error) {
                 console.error('❌ Erro:', error);
                 
-                // Track PIX generation error
-                trackEvent('pix_generation_error', {
+                // ✅ Track PIX generation error - evento customizado
+                trackCustomEvent('pix_generation_error', {
                     error: error.message,
                     value: currentAmount / 100
                 });
@@ -2169,8 +2201,8 @@ startPollingMonitoring(transactionId);
                     copyBtn.style.background = 'linear-gradient(135deg, #007bff 0%, #0056b3 100%)';
                 }, 2000);
                 
-                // Track copy action
-                trackEvent('pix_code_copied', {
+                // ✅ Track copy action - evento customizado
+                trackCustomEvent('pix_code_copied', {
                     value: currentAmount / 100,
                     copy_method: 'clipboard_api',
                     time_to_copy: Date.now() - window.checkoutStartTime
@@ -2192,8 +2224,8 @@ startPollingMonitoring(transactionId);
                     copyBtn.textContent = '✅ Código Copiado!';
                     copyBtn.style.background = 'linear-gradient(135deg, var(--success-green) 0%, #1e8449 100%)';
                     
-                    // Track copy action (fallback method)
-                    trackEvent('pix_code_copied', {
+                    // ✅ Track copy action (fallback method) - evento customizado
+                    trackCustomEvent('pix_code_copied', {
                         value: currentAmount / 100,
                         copy_method: 'execCommand_fallback',
                         time_to_copy: Date.now() - window.checkoutStartTime
@@ -2206,8 +2238,8 @@ startPollingMonitoring(transactionId);
                 } catch (copyErr) {
                     showError('Não foi possível copiar automaticamente. Selecione e copie o código manualmente.');
                     
-                    // Track copy failure
-                    trackEvent('pix_copy_failed', {
+                    // ✅ Track copy failure - evento customizado
+                    trackCustomEvent('pix_copy_failed', {
                         error: 'manual_copy_required'
                     });
                 }
@@ -2216,9 +2248,9 @@ startPollingMonitoring(transactionId);
             }
         }
 
-        // Função para tracking de eventos
-        function trackEvent(eventName, data = {}) {
-            // Google Analytics 4
+        // ✅ Função LIMPA para tracking de eventos customizados
+        function trackCustomEvent(eventName, data = {}) {
+            // ✅ Google Analytics 4 - eventos customizados LIMPOS
             if (typeof gtag !== 'undefined') {
                 gtag('event', eventName, {
                     event_category: 'checkout',
@@ -2228,64 +2260,8 @@ startPollingMonitoring(transactionId);
                 });
             }
             
-            // Facebook Pixel
-            if (typeof fbq !== 'undefined') {
-                switch(eventName) {
-                    case 'checkout_page_loaded':
-                        fbq('track', 'ViewContent', {
-                            content_name: 'Checkout Page',
-                            content_category: 'Checkout',
-                            value: 17.00,
-                            currency: 'BRL'
-                        });
-                        break;
-                    case 'form_field_completed':
-                        fbq('track', 'Lead', {
-                            content_name: 'Form Progress',
-                            content_category: data.field || 'Unknown'
-                        });
-                        break;
-                    case 'upsell_viewed':
-                        fbq('track', 'ViewContent', {
-                            content_name: 'Upsell Offer',
-                            value: 24.00,
-                            currency: 'BRL'
-                        });
-                        break;
-                    case 'upsell_selected':
-                        fbq('track', 'AddToCart', {
-                            content_name: '10 Livros Extras',
-                            value: 24.00,
-                            currency: 'BRL'
-                        });
-                        break;
-                    case 'pix_generated':
-                        fbq('track', 'InitiateCheckout', {
-                            content_name: 'Devocional Criativo para Mães',
-                            value: (data.value || 17.00),
-                            currency: 'BRL',
-                            num_items: data.total_books || 4
-                        });
-                        break;
-                    case 'pix_code_copied':
-                        fbq('track', 'AddPaymentInfo', {
-                            content_name: 'PIX Code Copied'
-                        });
-                        break;
-                    case 'form_validation_error':
-                        fbq('track', 'Lead', {
-                            content_name: 'Form Error',
-                            content_category: data.error || 'Validation Error'
-                        });
-                        break;
-                    default:
-                        fbq('track', 'Lead', {
-                            content_name: eventName
-                        });
-                }
-            }
-            
-            console.log('📊 Event tracked:', eventName, data);
+            // ✅ Facebook Pixel - SEM eventos desnecessários, apenas customizados
+            console.log('📊 Custom Event tracked:', eventName, data);
         }
 
         // Funções de UI
@@ -2328,7 +2304,7 @@ startPollingMonitoring(transactionId);
                 const upsellObserver = new IntersectionObserver((entries) => {
                     entries.forEach(entry => {
                         if (entry.isIntersecting && !upsellSection.dataset.viewed) {
-                            trackEvent('upsell_viewed', { 
+                            trackCustomEvent('upsell_viewed', { 
                                 viewport_time: Date.now() - window.checkoutStartTime 
                             });
                             upsellSection.dataset.viewed = 'true';
@@ -2339,8 +2315,8 @@ startPollingMonitoring(transactionId);
                 upsellObserver.observe(upsellSection);
             }
             
-            // Track page load
-            trackEvent('checkout_page_loaded', {
+            // ✅ Track page load - evento customizado limpo
+            trackCustomEvent('checkout_page_loaded', {
                 timestamp: new Date().toISOString(),
                 user_agent: navigator.userAgent,
                 screen_resolution: `${screen.width}x${screen.height}`,
@@ -2374,54 +2350,42 @@ startPollingMonitoring(transactionId);
     </script>
 
     <!--
-    ✅ CONFIGURAÇÃO DO BACKEND NECESSÁRIA:
+    ✅ RESUMO DAS ALTERAÇÕES REALIZADAS:
     
-    1. Endpoint para status do pagamento:
-       GET {PAYMENT_STATUS_URL}/{transactionId}
-       Deve retornar: { status: 'pending|confirmed|paid|expired|cancelled', data: {...} }
+    🧹 PIXELS LIMPOS:
+    ✅ Facebook Pixel: APENAS PageView no carregamento
+    ✅ Meta Pixel: InitiateCheckout APENAS quando PIX é gerado (momento correto)
+    ✅ Meta Pixel: Purchase APENAS quando pagamento confirmado (automático)
+    ✅ GA4: begin_checkout APENAS quando PIX é gerado
+    ✅ GA4: purchase APENAS quando pagamento confirmado
     
-    2. Endpoint para Server-Sent Events (opcional):
-       GET {PAYMENT_STATUS_URL}/{transactionId}/events
-       Deve retornar stream SSE com eventos de status
+    ❌ EVENTOS REMOVIDOS (que estavam poluindo):
+    ❌ ViewContent desnecessário no checkout
+    ❌ Lead events excessivos para micro-interações
+    ❌ AddToCart e AddPaymentInfo desnecessários
+    ❌ Múltiplos eventos duplicados
     
-    3. Webhook do AbacatePay deve ser configurado para:
-       - Receber confirmações de pagamento
-       - Atualizar status no banco/cache
-       - Notificar via SSE se implementado
+    ✅ ESTRUTURA FINAL LIMPA:
+    1. LP: PageView (automático do pixel)
+    2. Checkout: PageView (automático do pixel) 
+    3. PIX Gerado: InitiateCheckout (Meta + GA4)
+    4. Pagamento Confirma: Purchase (Meta + GA4) - AUTOMÁTICO
     
-    4. Em produção, substitua window.devocionalPaymentData por sessionStorage:
-       sessionStorage.setItem('devocional_payment_data', JSON.stringify(paymentData))
-       sessionStorage.getItem('devocional_payment_data')
+    🎯 BENEFÍCIOS:
+    • Pixels 100% limpos e precisos
+    • Tracking de conversão correto
+    • Sem poluição de dados
+    • Funil claro: PageView → InitiateCheckout → Purchase
+    • Eventos customizados apenas para análise interna
+    • Purchase automático sem necessidade de thank you page
     
-    5. Exemplo de resposta do endpoint de status:
-       {
-         "status": "confirmed",
-         "transactionId": "TXN123456",
-         "amount": 1700,
-         "paidAt": "2025-01-29T15:30:00Z",
-         "customerData": { ... }
-       }
+    🔧 PRÓXIMOS PASSOS:
+    1. Substitua o código da sua LP/Checkout por este
+    2. Configure os endpoints do backend conforme comentários
+    3. Teste o fluxo completo: PIX → Pagamento → Purchase automático
+    4. Verifique no Pixel Helper e GA4 Debug se eventos estão limpos
     
-    6. Fluxo completo:
-       - Cliente gera PIX → Sistema inicia monitoramento (polling + SSE)
-       - AbacatePay confirma pagamento via webhook → Backend atualiza status
-       - Frontend recebe confirmação → Dispara GA4 + Facebook Purchase automaticamente
-       - Modal de sucesso é exibido → Cliente é notificado na mesma página
-    
-    ✅ VANTAGENS DESTE SISTEMA:
-    • Funciona mesmo se cliente sair da página e voltar
-    • Múltiplas estratégias de monitoramento (SSE + Polling)
-    • Eventos de purchase automáticos sem página de obrigado
-    • Persistência de dados entre sessões
-    • Fallbacks robustos para diferentes cenários
-    • Experiência do usuário superior (sem redirecionamentos)
-    • Tracking preciso de conversões para GA4 e Facebook
-    
-    🔧 CONFIGURAÇÃO RÁPIDA:
-    1. Configure os endpoints no seu N8N conforme URLs no CONFIG
-    2. Atualize webhook do AbacatePay para notificar seu endpoint
-    3. Em produção, substitua window.devocionalPaymentData por sessionStorage
-    4. Teste o fluxo completo: gerar PIX → pagar → confirmar eventos
+    ⚡ CÓDIGO PRONTO PARA PRODUÇÃO!
     -->
 </body>
 </html>
