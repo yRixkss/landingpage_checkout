@@ -1452,13 +1452,8 @@
                 hasUpsell
             });
 
-            // Tentar Server-Sent Events primeiro
-            try {
-                await startServerSentEvents(transactionId);
-            } catch (error) {
-                console.log('📡 SSE não disponível, usando polling:', error.message);
-                startPollingMonitoring(transactionId);
-            }
+            console.log('📡 Usando estratégia de monitoramento via Polling.');
+startPollingMonitoring(transactionId);
 
             // Backup com polling independente
             setTimeout(() => {
