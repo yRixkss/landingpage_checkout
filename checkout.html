@@ -1170,6 +1170,7 @@
             // URLs do seu backend
             BACKEND_URL: 'https://dinastia-n8n-webhook.0grcvg.easypanel.host/webhook/checkout',
             PAYMENT_STATUS_URL: 'https://dinastia-n8n-webhook.0grcvg.easypanel.host/webhook/payment-status',
+            SSE_URL: 'https://dinastia-n8n-webhook.0grcvg.easypanel.host/webhook/events',
             
             // Configurações do produto
             PRODUCT: {
@@ -1470,7 +1471,7 @@
 
         // ✅ Server-Sent Events para monitoramento em tempo real
         async function startServerSentEvents(transactionId) {
-            const sseUrl = `${CONFIG.PAYMENT_STATUS_URL}/${transactionId}/events`;
+            const sseUrl = `${CONFIG.SSE_URL}/${transactionId}`;
             
             return new Promise((resolve, reject) => {
                 try {
